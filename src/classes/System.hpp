@@ -3,6 +3,9 @@
 
 #include"Ball.hpp"
 #include"Pool.hpp"
+#include"Collision.hpp"
+#include<vector>
+
 
 
 template <typename T>
@@ -25,9 +28,10 @@ System(System&& p_system);
 System& operator=(System&& p_system);
     ~System();
 
-    Ball<T>& getBall() const;
-    Pool<T>& getPool() const;
+    Ball<T>& getBall() ;
+    Pool<T>& getPool() ;
     T getTime() const;
+    std::vector<Collision<T>>& getCollisions();
     void setTime(const T& p_time);
     void computeNextCollision();
     void computeNextBallVel();

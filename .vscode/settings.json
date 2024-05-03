@@ -4,6 +4,12 @@
     "iostream": "cpp",
     "stdexcept": "cpp",
     "array": "cpp",
-    "xlocinfo": "cpp"
+    "xlocinfo": "cpp",
+    "atomic": "cpp",
+    "ios": "cpp",
+    "system_error": "cpp",
+    "xiosbase": "cpp",
+    "xstring": "cpp",
+    "xtr1common": "cpp"
   }
 }

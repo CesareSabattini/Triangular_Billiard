@@ -17,14 +17,24 @@ class Pool
         T p_r1,
         T p_r2
     );
+
+    Pool(const Pool& p_pool);
+    Pool& operator=(const Pool& p_pool);
+    Pool(Pool&& p_pool);
+    Pool& operator=(Pool&& p_pool);
+
     ~Pool();
     const T& getL() const;
+    const T& getR1() const;
+    const T& getR2() const;
+    
+
 
 private:
 
-    const T l;
-    const T r1;
-    const T r2;
+     T l;
+     T r1;
+     T r2;
     
 };
 

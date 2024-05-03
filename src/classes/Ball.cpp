@@ -57,8 +57,8 @@ Ball<T>::Ball(
     T p_theta,
     T p_vx
 )
-: pos({p_theta, p_y}), vel({p_vx, tan(p_theta)*p_vx}) {
-    p_theta>=0 && p_theta<=std::pi? std::cout << "Ball created at position: " << p_theta << ", " << p_y << std::endl : throw std::invalid_argument("x must be greater than or equal to 0");
+: pos({p_theta, p_y}), vel({p_vx, static_cast<T>((p_theta))*p_vx}) {
+    p_theta>=0 && p_theta<=M_PI? std::cout << "Ball created at position: " << p_theta << ", " << p_y << std::endl : throw std::invalid_argument("x must be greater than or equal to 0");
     p_vx>=0 ? std::cout << "Ball created with velocity: " << p_vx << ", " << 0 << std::endl : throw std::invalid_argument("vx must be greater than or equal to 0");
 }
 
@@ -69,12 +69,12 @@ Ball<T>::~Ball() {
 }
 
 template <typename T>
-std::array<T,2>& Ball<T>::getPos() const {
+std::array<T,2>& Ball<T>::getPos() {
     return pos;
 }
 
 template <typename T>
-std::array<T,2>& Ball<T>::getVel() const {
+std::array<T,2>& Ball<T>::getVel() {
     return vel;
 }
 

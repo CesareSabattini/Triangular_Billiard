@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <iostream>
 #include<array>
+#include <cmath>
 
 template <typename T>
 class Ball
@@ -38,11 +39,10 @@ Ball(
 );
 
 ~Ball();
-std::array<T,2>& getPos() const;
-std::array<T,2>& getVel() const;
+std::array<T,2>& getPos() ;
+std::array<T,2>& getVel() ;
 void setPos(const std::array<T,2>& p_pos);
 void setVel(const std::array<T,2>& p_vel);
-cons
 
 
 private:
