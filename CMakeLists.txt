@@ -19,5 +19,6 @@ add_executable(${PROJECT_NAME}
     src/graphics/MainWindow.cpp
     src/graphics/Menu.cpp
     src/graphics/SimulationWindow.cpp
+    src/graphics/components/TextInput.cpp
 )
 target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system)

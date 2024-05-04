@@ -1,5 +1,9 @@
+#ifndef MAINWINDOW_HPP
+#define MAINWINDOW_HPP
+
 #include "../simulation/System.hpp"
 #include "Menu.hpp"
+#include "Scene.hpp"
 #include "SimulationWindow.hpp"
 #include <SFML/Graphics.hpp>
 #include <memory>
@@ -8,6 +12,7 @@ class MainWindow {
   public:
     MainWindow();
     void run();
+    Scene selectedScene;
 
   private:
     std::shared_ptr<sf::RenderWindow> window;
@@ -17,3 +22,5 @@ class MainWindow {
 
     void switchToSimulation();
 };
+
+#endif
