@@ -78,55 +78,168 @@ template <typename T> void System<T>::setTime(const T &p_time) {
 
 template <typename T> void System<T>::computeNextCollision() {
 
-    if (ball.getPos()[1] < 0) {
+    if (ball.getPos()[1] > 0) {
         T collisionX =
-            (pool.getR1() - ball.getPos()[1] +
-             (ball.getVel()[1] / ball.getVel()[0]) * ball.getPos()[0]) /
-            (ball.getVel()[1] / ball.getVel()[0] -
+            (-ball.getPos()[1] -
+             abs(ball.getVel()[1] / ball.getVel()[0]) * ball.getPos()[0] +
+             ((pool.getR2() - pool.getR1()) / pool.getL()) * pool.getL() -
+             pool.getR2()) /
+            (-abs(ball.getVel()[1] / ball.getVel()[0]) +
              (pool.getR2() - pool.getR1()) / pool.getL());
-        T collisionY = pool.getR1() + (pool.getR2() - pool.getR1()) *
-                                          (collisionX) / pool.getL();
+
+        T collisionY = ((-pool.getR2() + pool.getR1()) / pool.getL()) *
+                           (collisionX - pool.getL()) +
+                       pool.getR2();
+
         T collisionTime =
             time + (collisionX - ball.getPos()[0]) / ball.getVel()[0];
-        collisions.push_back(
-            Collision<T>(collisionX, collisionY, collisionTime));
 
-    } else {
-        // da verificare
+        if (collisionX < 0 || collisionX > pool.getL()) {
+            collisions.push_back(
+                Collision<T>(pool.getL(), computeOutputY(), 0));
+            ball.setPos({pool.getL(), computeOutputY()});
+        } else {
+            collisions.push_back(
+                Collision<T>(collisionX, collisionY, collisionTime));
+            ball.setPos({collisionX, collisionY});
+        }
+
+    } else if (ball.getPos()[1] < 0) {
+
         T collisionX =
-            (pool.getR1() - ball.getPos()[1] +
-             (ball.getVel()[1] / ball.getVel()[0]) * ball.getPos()[0]) /
-            (ball.getVel()[1] / ball.getVel()[0] +
+            (-ball.getPos()[1] -
+             abs(ball.getVel()[1] / ball.getVel()[0]) * ball.getPos()[0] +
+             ((pool.getR2() - pool.getR1()) / pool.getL()) * pool.getL() -
+             pool.getR2()) /
+            (-abs(ball.getVel()[1] / ball.getVel()[0]) +
              (pool.getR2() - pool.getR1()) / pool.getL());
-        T collisionY = pool.getR1() + (pool.getR2() - pool.getR1()) *
-                                          (collisionX) / pool.getL();
+
+        T collisionY = ((pool.getR2() - pool.getR1()) / pool.getL()) *
+                           (collisionX - pool.getL()) -
+                       pool.getR2();
+
         T collisionTime = (collisionX - ball.getPos()[0]) / ball.getVel()[0];
-        collisions.push_back(
-            Collision<T>(collisionX, collisionY, collisionTime));
+        if (collisionX < 0 || collisionX > pool.getL()) {
+            collisions.push_back(
+                Collision<T>(pool.getL(), computeOutputY(), 0));
+            ball.setPos({pool.getL(), computeOutputY()});
+        } else {
+            collisions.push_back(
+                Collision<T>(collisionX, collisionY, collisionTime));
+            ball.setPos({collisionX, collisionY});
+        }
+
+    } else if (ball.getPos()[1] == 0) {
+        T collisionX = 0;
+        if (ball.getVel()[0] > 0) {
+            T collisionX =
+                (-ball.getPos()[1] -
+                 abs(ball.getVel()[1] / ball.getVel()[0]) * ball.getPos()[0] +
+                 ((pool.getR2() - pool.getR1()) / pool.getL()) * pool.getL() -
+                 pool.getR2()) /
+                (-abs(ball.getVel()[1] / ball.getVel()[0]) +
+                 (pool.getR2() - pool.getR1()) / pool.getL());
+
+            T collisionY = ((-pool.getR2() + pool.getR1()) / pool.getL()) *
+                               (collisionX - pool.getL()) +
+                           pool.getR2();
+
+            T collisionTime =
+                time + (collisionX - ball.getPos()[0]) / ball.getVel()[0];
+
+            if (collisionX < 0 || collisionX > pool.getL()) {
+                collisions.push_back(
+                    Collision<T>(pool.getL(), computeOutputY(), 0));
+                ball.setPos({pool.getL(), computeOutputY()});
+            } else {
+                collisions.push_back(
+                    Collision<T>(collisionX, collisionY, collisionTime));
+                ball.setPos({collisionX, collisionY});
+            }
+
+        } else {
+            T collisionX =
+                (-ball.getPos()[1] -
+                 abs(ball.getVel()[1] / ball.getVel()[0]) * ball.getPos()[0] +
+                 ((pool.getR2() - pool.getR1()) / pool.getL()) * pool.getL() -
+                 pool.getR2()) /
+                (-abs(ball.getVel()[1] / ball.getVel()[0]) +
+                 (pool.getR2() - pool.getR1()) / pool.getL());
+
+            T collisionY = ((pool.getR2() - pool.getR1()) / pool.getL()) *
+                               (collisionX - pool.getL()) -
+                           pool.getR2();
+
+            T collisionTime =
+                (collisionX - ball.getPos()[0]) / ball.getVel()[0];
+            collisions.push_back(
+                Collision<T>(collisionX, collisionY, collisionTime));
+            ball.setPos({collisionX, collisionY});
+            std::cout << "Collision at: " << collisionX << ", " << collisionY
+                      << std::endl;
+            std::cout << "Ball position: " << ball.getPos()[0] << ", "
+                      << ball.getPos()[1] << std::endl;
+        }
     }
 }
 
 template <typename T> void System<T>::computeNextBallVel() {
-    T newVy = ball.getVel()[0] *
-              tan(2 * atan((pool.getR1() - pool.getR2()) / pool.getL()) -
-                  atan(ball.getVel()[1] / ball.getVel()[0]));
-    T newVx = ball.getVel()[0] + ball.getVel()[1] - newVy;
-    collisions[collisions.size()].setVel({newVx, newVy});
-    ball.setVel({newVx, newVy});
+    T newVx = sqrt(
+        (pow(ball.getVel()[0], 2) + pow(ball.getVel()[1], 2)) /
+        (1 +
+         pow(tan(2 * atan(abs((pool.getR2() - pool.getR1()) / pool.getL())) -
+                 atan(abs(ball.getVel()[1] / ball.getVel()[0]))),
+             2)));
+
+    if (ball.getVel()[1] < 0) {
+        T newVy =
+            newVx *
+            tan(2 * atan(abs((pool.getR2() - pool.getR1()) / pool.getL())) -
+                atan(abs(ball.getVel()[1] / ball.getVel()[0])));
+        collisions[collisions.size() - 1].setVel({newVx, newVy});
+        ball.setVel({newVx, newVy});
+    } else {
+
+        T newVy =
+            -newVx *
+            tan(2 * atan(abs((pool.getR2() - pool.getR1()) / pool.getL())) -
+                atan(abs(ball.getVel()[1] / ball.getVel()[0])));
+        collisions[collisions.size() - 1].setVel({newVx, newVy});
+        ball.setVel({newVx, newVy});
+    }
 }
 
 template <typename T> T System<T>::computeOutputY() {
-    return collisions[collisions.size()].getPos()[1] +
+    return collisions[collisions.size() - 1].getPos()[1] +
            (ball.getVel()[1] / ball.getVel()[0]) *
-               (pool.getL() - collisions[collisions.size()].getPos()[0]);
+               (pool.getL() - collisions[collisions.size() - 1].getPos()[0]);
 }
 
 template <typename T> void System<T>::simulate() {
-    while (ball.getPos()[0] < pool.getL()) {
+
+    while (ball.getPos()[0] < pool.getL() && ball.getPos()[0] > 0) {
+
         computeNextCollision();
         computeNextBallVel();
-        time = collisions[collisions.size()].getTime();
+        time = collisions[collisions.size() - 1].getTime();
+
+        if (ball.getPos()[0] < 0 || ball.getPos()[0] > pool.getL() ||
+            ball.getPos()[1] > pool.getR1() ||
+            ball.getPos()[1] < -pool.getR1()) {
+            std::cout << "Ball out of bounds." << std::endl;
+
+        } else {
+            std::cout << "Time: " << time << std::endl;
+            std::cout << "Ball position: " << ball.getPos()[0] << ", "
+                      << ball.getPos()[1] << std::endl;
+            std::cout << "Ball velocity: " << ball.getVel()[0] << ", "
+                      << ball.getVel()[1] << std::endl;
+            std::cout << "--------------------------------" << std::endl;
+        }
     }
+
+    std::cout << "Simulation ended, with output Y of:" << computeOutputY()
+              << std::endl;
 }
 
 template <typename T> void System<T>::reset() {

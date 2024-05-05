@@ -7,7 +7,8 @@ class TextInput {
   public:
     TextInput(sf::Vector2f position, sf::Vector2f size, unsigned int fontSize,
               const sf::Color backgroundColor,
-              const sf::Color &textColor = sf::Color::Black);
+              const sf::Color &textColor = sf::Color::Black,
+              const std::string &defaultText = "");
 
     void handleEvent(const sf::Event &event);
     void draw(sf::RenderWindow &window);
@@ -24,6 +25,7 @@ class TextInput {
     sf::Text displayText;
     sf::Color textColor;
     std::string text;
+    std::string defaultText;
 
     sf::Font font;
 };

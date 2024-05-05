@@ -2,8 +2,9 @@
 
 TextInput::TextInput(sf::Vector2f position, sf::Vector2f size,
                      unsigned int fontSize, const sf::Color backgroundColor,
-                     const sf::Color &p_textColor)
-    : isFocused(false) {
+                     const sf::Color &p_textColor,
+                     const std::string &p_defaultText)
+    : isFocused(false), textColor(p_textColor), defaultText(p_defaultText) {
     inputBox.setPosition(position);
     inputBox.setSize(size);
     inputBox.setFillColor(backgroundColor);
@@ -12,8 +13,11 @@ TextInput::TextInput(sf::Vector2f position, sf::Vector2f size,
 
     displayText.setFont(font);
     displayText.setCharacterSize(fontSize);
-    displayText.setFillColor(p_textColor);
+    displayText.setFillColor(textColor);
     displayText.setPosition(position + sf::Vector2f(5.f, 5.f));
+
+    text = defaultText;
+    displayText.setString(text);
 }
 
 void TextInput::handleEvent(const sf::Event &event) {
@@ -51,4 +55,14 @@ void TextInput::setSize(sf::Vector2f size) { inputBox.setSize(size); }
 void TextInput::setFocus(bool hasFocus) {
     this->isFocused = hasFocus;
     inputBox.setFillColor(hasFocus ? sf::Color::Green : sf::Color::Red);
+    if (displayText.getString() == defaultText) {
+        if (hasFocus) {
+            text = "";
+        } else {
+            text = defaultText;
+        }
+    } else if (!hasFocus && text.empty()) {
+        text = defaultText;
+    }
+    displayText.setString(text);
 }

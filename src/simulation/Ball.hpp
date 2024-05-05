@@ -15,16 +15,13 @@ template <typename T> class Ball {
   public:
     Ball();
     Ball(T p_x, T p_y, T p_vx, T p_vy);
-    Ball(const std::array<T, 2> &p_pos, const std::array<T, 2> &p_vel
-
-    );
+    Ball(const std::array<T, 2> &p_pos, const std::array<T, 2> &p_vel);
+    Ball(T p_y, T p_theta, T p_vx);
 
     Ball(const Ball &p_ball);
     Ball &operator=(const Ball &p_ball);
     Ball(Ball &&p_ball);
     Ball &operator=(Ball &&p_ball);
-
-    Ball(T p_y, T p_theta, T p_vx);
 
     ~Ball();
     std::array<T, 2> &getPos();
