@@ -3,18 +3,18 @@
 Menu::Menu(std::shared_ptr<sf::RenderWindow> window,
            std::shared_ptr<System<double>> system, Scene &p_selectedScene)
     : window(window), system(system), selectedScene(p_selectedScene),
-      textInputs({TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
-                            sf::Color::Red, sf::Color::Black, "1"),
-                  TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
-                            sf::Color::Red, sf::Color::Black, "20"),
-                  TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
-                            sf::Color::Red, sf::Color::Black, "0"),
-                  TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
-                            sf::Color::Red, sf::Color::Black, "100"),
-                  TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
-                            sf::Color::Red, sf::Color::Black, "50"),
-                  TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
-                            sf::Color::Red, sf::Color::Black, "40")}) {
+      textInputs({
+          TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
+                    sf::Color::Red, sf::Color::Black, "1"), // theta
+          TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
+                    sf::Color::Red, sf::Color::Black, "0"), // y
+          TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
+                    sf::Color::Red, sf::Color::Black, "100"), // l
+          TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
+                    sf::Color::Red, sf::Color::Black, "50"), // r1
+          TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
+                    sf::Color::Red, sf::Color::Black, "40") // r2
+      }) {
 
     if (!font.loadFromFile("../resources/theme_font.ttf")) {
         std::cerr << "Error loading font" << std::endl;
@@ -22,7 +22,6 @@ Menu::Menu(std::shared_ptr<sf::RenderWindow> window,
     initializeComponents();
 }
 void Menu::initializeComponents() {
-
     title.setFont(font);
     title.setString("Triangular Pool Simulation");
     title.setCharacterSize(window->getSize().x / 20);
@@ -102,15 +101,13 @@ void Menu::processEvents() {
 
             if (startButton.getGlobalBounds().contains(mousePosition.x,
                                                        mousePosition.y)) {
-                system = std::make_shared<System<double>>(
-                    std::stod(textInputs[0].getText()),
-                    std::stod(textInputs[1].getText()),
-                    std::stod(textInputs[2].getText()),
-                    std::stod(textInputs[3].getText()),
-                    std::stod(textInputs[4].getText()),
-                    std::stod(textInputs[5].getText()));
 
-                system->simulate();
+                system->updateParams(std::stod(textInputs[0].getText()),
+                                     std::stod(textInputs[1].getText()),
+                                     std::stod(textInputs[2].getText()),
+                                     std::stod(textInputs[3].getText()),
+                                     std::stod(textInputs[4].getText()));
+
                 selectedScene = Scene::SIMULATION;
             }
 

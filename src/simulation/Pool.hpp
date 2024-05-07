@@ -24,6 +24,9 @@ class Pool {
     const T &getR1() const;
     const T &getR2() const;
 
+    void setL(const T &p_l);
+    void setRs(const T &p_r1, const T &p_r2);
+
   private:
     T l;
     T r1;

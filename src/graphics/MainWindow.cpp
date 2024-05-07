@@ -19,6 +19,7 @@ void MainWindow::run() {
             menu.draw();
         }
         if (selectedScene == Scene::SIMULATION) {
+            system->simulate();
             switchToSimulation();
         }
     }

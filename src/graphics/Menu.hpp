@@ -25,7 +25,7 @@ class Menu {
     sf::RectangleShape startButton;
     sf::Text startButtonText;
 
-    std::array<TextInput, 6> textInputs;
+    std::array<TextInput, 5> textInputs;
 
     void initializeComponents();
 };

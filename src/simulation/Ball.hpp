@@ -14,9 +14,8 @@ template <typename T> class Ball {
 
   public:
     Ball();
-    Ball(T p_x, T p_y, T p_vx, T p_vy);
-    Ball(const std::array<T, 2> &p_pos, const std::array<T, 2> &p_vel);
-    Ball(T p_y, T p_theta, T p_vx);
+    Ball(T p_x, T p_y, T theta);
+    Ball(const std::array<T, 2> &p_pos, T theta);
 
     Ball(const Ball &p_ball);
     Ball &operator=(const Ball &p_ball);
@@ -25,13 +24,13 @@ template <typename T> class Ball {
 
     ~Ball();
     std::array<T, 2> &getPos();
-    std::array<T, 2> &getVel();
+    double getTheta() const;
     void setPos(const std::array<T, 2> &p_pos);
-    void setVel(const std::array<T, 2> &p_vel);
+    void setTheta(double p_theta);
 
   private:
     std::array<T, 2> pos;
-    std::array<T, 2> vel;
+    T theta;
 };
 
 #endif // BALL_HPP
