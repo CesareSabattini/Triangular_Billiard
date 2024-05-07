@@ -81,6 +81,7 @@ template <typename T> void System<T>::throwTheBall() {
 
         collisions.push_back(Collision<T>(newX, newY, newTheta));
         ball.setPos({newX, newY});
+
     } else if (abs(ball.getPos()[1]) >= pool.getR2() &&
                abs(ball.getPos()[1]) <= pool.getR1() && ball.getPos()[1] < 0 &&
                abs(ball.getTheta()) <
@@ -99,8 +100,8 @@ template <typename T> void System<T>::throwTheBall() {
 }
 
 template <typename T> void System<T>::computeNextCollision() {
-
-    if (collisions[collisions.size() - 1].getTheta() > 0) {
+    std::cout << "num" << collisions.size();
+    if (collisions[collisions.size() - 1].getTheta() >= 0) {
         double newTheta =
             -(collisions[collisions.size() - 1].getTheta() +
               2 * (atan(abs((pool.getR2() - pool.getR1()) / pool.getL()))));
@@ -162,7 +163,9 @@ template <typename T> void System<T>::simulate() {
 
     if (ball.getPos()[0] < pool.getL()) {
 
-        while (ball.getPos()[0] < pool.getL()) {
+        while (ball.getPos()[0] <= pool.getL()) {
+            std::mutex mtx;
+            std::lock_guard<std::mutex> lock(mtx);
 
             computeNextCollision();
 
@@ -200,6 +203,7 @@ void System<T>::updateParams(T p_theta, T p_y, T p_l, T p_r1, T p_r2) {
     pool.setRs(p_r1, p_r2);
     time = 0;
     collisions.clear();
+    collisions.push_back(Collision<T>(0, p_y, p_theta));
 }
 
 template <typename T> void System<T>::reset() {

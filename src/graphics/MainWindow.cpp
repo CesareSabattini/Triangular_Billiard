@@ -20,9 +20,13 @@ void MainWindow::run() {
         }
         if (selectedScene == Scene::SIMULATION) {
             system->simulate();
+            std::cout << "Simulation running" << std::endl;
             switchToSimulation();
         }
     }
 }
 
-void MainWindow::switchToSimulation() { simulationWindow.run(); }
+void MainWindow::switchToSimulation() {
+    std::cout << "Switching to simulation" << std::endl;
+    simulationWindow.run();
+}
