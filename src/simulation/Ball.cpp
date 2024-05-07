@@ -44,9 +44,7 @@ template <typename T> Ball<T> &Ball<T>::operator=(Ball &&p_ball) {
     return *this;
 }
 
-template <typename T> Ball<T>::~Ball() {
-    std::cout << "Ball destroyed." << std::endl;
-}
+template <typename T> Ball<T>::~Ball() {}
 
 template <typename T> std::array<T, 2> &Ball<T>::getPos() { return pos; }
 

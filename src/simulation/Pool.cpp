@@ -37,9 +37,7 @@ template <typename T> Pool<T> &Pool<T>::operator=(Pool &&p_pool) {
     return *this;
 }
 
-template <typename T> Pool<T>::~Pool() {
-    std::cout << "Pool destroyed." << std::endl;
-}
+template <typename T> Pool<T>::~Pool() {}
 
 template <typename T> const T &Pool<T>::getL() const { return l; }
 
