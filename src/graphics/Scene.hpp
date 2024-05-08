@@ -1,6 +1,6 @@
 #ifndef SCENE_HPP
 #define SCENE_HPP
 
-enum class Scene { MENU, SIMULATION };
+enum class Scene { MENU, CONFIG, SIMULATION, GAUSS };
 
 #endif

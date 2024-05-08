@@ -5,8 +5,9 @@ MainWindow::MainWindow()
           sf::VideoMode(sf::VideoMode::getFullscreenModes()[0]),
           "Triangular Pool Simulation")),
       system(std::make_shared<System<double>>()),
-      menu(window, system, selectedScene), simulationWindow(window, system),
-      selectedScene(Scene::MENU) {
+      menu(window, system, selectedScene),
+      configSimulation(window, system, selectedScene),
+      simulationWindow(window, system), selectedScene(Scene::MENU) {
     window->setPosition(sf::Vector2i(0, 0));
 }
 
@@ -18,6 +19,9 @@ void MainWindow::run() {
             menu.processEvents();
             menu.draw();
         }
+        if (selectedScene == Scene::CONFIG) {
+            switchToConfig();
+        }
         if (selectedScene == Scene::SIMULATION) {
             system->simulate();
             switchToSimulation();
@@ -26,3 +30,8 @@ void MainWindow::run() {
 }
 
 void MainWindow::switchToSimulation() { simulationWindow.run(); }
+
+void MainWindow::switchToConfig() {
+    configSimulation.processEvents();
+    configSimulation.draw();
+}

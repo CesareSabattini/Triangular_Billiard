@@ -60,16 +60,16 @@ template <typename T> void System<T>::setTime(const T &p_time) {
 
 template <typename T> void System<T>::throwTheBall() {
 
-    const T alpha = atan((pool.getR1() - pool.getR2()) / pool.getL());
+    const T alpha = std::atan((pool.getR1() - pool.getR2()) / pool.getL());
 
     if (abs(ball.getPos()[1]) >= pool.getR2() &&
         abs(ball.getPos()[1]) <= pool.getR1() && ball.getPos()[1] >= 0 &&
         abs(ball.getTheta()) <=
-            atan((abs(ball.getPos()[1]) - pool.getR2()) / pool.getL())) {
+            std::atan((abs(ball.getPos()[1]) - pool.getR2()) / pool.getL())) {
 
         T newTheta = -ball.getTheta() + 2 * alpha;
         T newX = (ball.getPos()[1] + pool.getR1()) /
-                 (-tan(ball.getTheta()) +
+                 (-std::tan(ball.getTheta()) +
                   (pool.getR1() - pool.getR2()) / pool.getL());
         T newY = -pool.getR1() +
                  ((pool.getR1() - pool.getR2()) / pool.getL()) * newX;
@@ -80,11 +80,12 @@ template <typename T> void System<T>::throwTheBall() {
     } else if (abs(ball.getPos()[1]) >= pool.getR2() &&
                abs(ball.getPos()[1]) <= pool.getR1() && ball.getPos()[1] < 0 &&
                abs(ball.getTheta()) <
-                   atan((abs(ball.getPos()[1]) - pool.getR2()) / pool.getL())) {
+                   std::atan((abs(ball.getPos()[1]) - pool.getR2()) /
+                             pool.getL())) {
 
         T newTheta = +ball.getTheta() - 2 * alpha;
         T newX = (-ball.getPos()[1] + pool.getR1()) /
-                 (tan(ball.getTheta()) +
+                 (std::tan(ball.getTheta()) +
                   (pool.getR1() - pool.getR2()) / pool.getL());
         T newY =
             pool.getR1() - ((pool.getR1() - pool.getR2()) / pool.getL()) * newX;
@@ -97,13 +98,19 @@ template <typename T> void System<T>::throwTheBall() {
 template <typename T> void System<T>::computeNextCollision() {
 
     if (collisions[collisions.size() - 1].getTheta() >= 0) {
-        T newTheta =
-            -(collisions[collisions.size() - 1].getTheta() +
-              2 * (atan(abs((pool.getR2() - pool.getR1()) / pool.getL()))));
+        T newTheta = -(collisions[collisions.size() - 1].getTheta() +
+                       2 * (std::atan(std::abs((pool.getR2() - pool.getR1()) /
+                                               pool.getL()))));
+
+        if (newTheta < -M_PI / 2) {
+            throw std::invalid_argument(
+                "theta must be between -half pi and half pi");
+        }
+
         T newX = (pool.getR1() - collisions[collisions.size() - 1].getPos()[1] +
-                  tan(collisions[collisions.size() - 1].getTheta()) *
+                  std::tan(collisions[collisions.size() - 1].getTheta()) *
                       collisions[collisions.size() - 1].getPos()[0]) /
-                 (tan(collisions[collisions.size() - 1].getTheta()) +
+                 (std::tan(collisions[collisions.size() - 1].getTheta()) +
                   (pool.getR1() - pool.getR2()) / pool.getL());
 
         T newY =
@@ -111,26 +118,29 @@ template <typename T> void System<T>::computeNextCollision() {
 
         collisions.push_back(Collision<T>(newX, newY, newTheta));
         ball.setPos({newX, newY});
+
         if (newX >= pool.getL()) {
-            T foolAngle = 0;
-            collisions.push_back(
-                Collision<T>(pool.getL(), computeOutputY(), foolAngle));
+            collisions.push_back(Collision<T>(
+                pool.getL(), computeOutputY(),
+                M_PI - collisions[collisions.size() - 1].getTheta()));
             ball.setPos({pool.getL(), computeOutputY()});
+            std::cout << "Simulation ended, with output Y of: "
+                      << computeOutputY() << std::endl;
 
         } else {
             collisions.push_back(Collision<T>(newX, newY, newTheta));
             ball.setPos({newX, newY});
         }
     } else if (collisions[collisions.size() - 1].getTheta() < 0) {
-        T newTheta =
-            -(collisions[collisions.size() - 1].getTheta() +
-              2 * (atan(abs((pool.getR2() - pool.getR1()) / pool.getL()))));
+        T newTheta = -(
+            collisions[collisions.size() - 1].getTheta() +
+            2 * (std::atan(abs((pool.getR2() - pool.getR1()) / pool.getL()))));
 
         T newX = (pool.getR1() -
-                  tan(collisions[collisions.size() - 1].getTheta()) *
+                  std::tan(collisions[collisions.size() - 1].getTheta()) *
                       collisions[collisions.size() - 1].getPos()[0] +
                   collisions[collisions.size() - 1].getPos()[1]) /
-                 (-tan(collisions[collisions.size() - 1].getTheta()) +
+                 (-std::tan(collisions[collisions.size() - 1].getTheta()) +
                   (pool.getR1() - pool.getR2()) / pool.getL());
 
         T newY = -pool.getR1() +
@@ -141,6 +151,8 @@ template <typename T> void System<T>::computeNextCollision() {
             collisions.push_back(
                 Collision<T>(pool.getL(), computeOutputY(), foolAngle));
             ball.setPos({pool.getL(), computeOutputY()});
+            std::cout << "Simulation ended, with output Y of: "
+                      << computeOutputY() << std::endl;
 
         } else {
             collisions.push_back(Collision<T>(newX, newY, newTheta));
@@ -151,7 +163,7 @@ template <typename T> void System<T>::computeNextCollision() {
 
 template <typename T> T System<T>::computeOutputY() {
     T y = collisions[collisions.size() - 1].getPos()[1] +
-          tan(collisions[collisions.size() - 1].getTheta()) *
+          std::tan(collisions[collisions.size() - 1].getTheta()) *
               (pool.getL() - collisions[collisions.size() - 1].getPos()[0]);
     return y;
 }
@@ -173,7 +185,13 @@ template <typename T> void System<T>::simulate() {
 
         while (ball.getPos()[0] < pool.getL()) {
 
-            computeNextCollision();
+            try {
+
+                computeNextCollision();
+            } catch (std::invalid_argument &e) {
+                std::cout << "the ball can't escape!";
+                break;
+            }
 
             if (ball.getPos()[0] < 0 || ball.getPos()[0] > pool.getL() ||
                 ball.getPos()[1] > pool.getR1() ||
@@ -185,11 +203,13 @@ template <typename T> void System<T>::simulate() {
                 std::cout << "Time: " << time << std::endl;
                 std::cout << "Ball position: " << ball.getPos()[0] << ", "
                           << ball.getPos()[1] << std::endl;
+                std::cout << "Ball angle: "
+                          << collisions[collisions.size() - 1].getTheta()
+                          << std::endl;
                 std::cout << "--------------------------------" << std::endl;
             }
         }
-        std::cout << "Simulation ended, with output Y of: " << computeOutputY()
-                  << std::endl;
+
     } else {
         std::cout << "Simulation ended, with output Y of: " << ball.getPos()[1]
                   << std::endl;

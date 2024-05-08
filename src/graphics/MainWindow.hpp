@@ -2,6 +2,7 @@
 #define MAINWINDOW_HPP
 
 #include "../simulation/System.hpp"
+#include "ConfigSimulation.hpp"
 #include "Menu.hpp"
 #include "Scene.hpp"
 #include "SimulationWindow.hpp"
@@ -19,8 +20,10 @@ class MainWindow {
     std::shared_ptr<System<double>> system;
     Menu menu;
     SimulationWindow simulationWindow;
+    ConfigSimulation configSimulation;
 
     void switchToSimulation();
+    void switchToConfig();
 };
 
 #endif

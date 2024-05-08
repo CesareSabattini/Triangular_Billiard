@@ -1,6 +1,6 @@
-// Menu.hpp
-#ifndef MENU_HPP
-#define MENU_HPP
+// ConfigSimulation.hpp
+#ifndef CONFGSIMULATION_HPP
+#define CONFGSIMULATION_HPP
 #include "../simulation/System.hpp"
 
 #include "Scene.hpp"
@@ -8,10 +8,11 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 
-class Menu {
+class ConfigSimulation {
   public:
-    Menu(std::shared_ptr<sf::RenderWindow> window,
-         std::shared_ptr<System<double>> system, Scene &selectedScene);
+    ConfigSimulation(std::shared_ptr<sf::RenderWindow> window,
+                     std::shared_ptr<System<double>> system,
+                     Scene &selectedScene);
     void draw();
     void processEvents();
 
@@ -22,15 +23,10 @@ class Menu {
     sf::Font font;
     sf::Text title;
     sf::RectangleShape titleBox;
-
-    sf::RectangleShape configButton;
-    sf::Text configButtonText;
-
-    sf::RectangleShape gaussButton;
-    sf::Text gaussButtonText;
-
-    sf::Texture backgroundTexture;
-    sf::Sprite bg;
+    sf::RectangleShape inputBox;
+    sf::RectangleShape startButton;
+    sf::Text startButtonText;
+    std::array<TextInput, 5> textInputs;
 
     void initializeComponents();
 };

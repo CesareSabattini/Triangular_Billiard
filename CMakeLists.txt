@@ -18,6 +18,7 @@ add_executable(${PROJECT_NAME}
     src/simulation/System.cpp
     src/graphics/MainWindow.cpp
     src/graphics/Menu.cpp
+    src/graphics/ConfigSimulation.cpp
     src/graphics/SimulationWindow.cpp
     src/graphics/components/TextInput.cpp
 )
