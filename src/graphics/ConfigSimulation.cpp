@@ -6,15 +6,19 @@ ConfigSimulation::ConfigSimulation(std::shared_ptr<sf::RenderWindow> window,
     : window(window), system(system), selectedScene(p_selectedScene),
       textInputs({
           TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
-                    sf::Color::Red, sf::Color::Black, "1"), // theta
+                    sf::Color::Red, sf::Color::Black,
+                    "Ball start Angle (radians)",
+                    "1"), // theta
           TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
-                    sf::Color::Red, sf::Color::Black, "0"), // y
+                    sf::Color::Red, sf::Color::Black, "Ball start y", "0"), // y
           TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
-                    sf::Color::Red, sf::Color::Black, "100"), // l
+                    sf::Color::Red, sf::Color::Black, "Pool length",
+                    "1000"), // l
           TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
-                    sf::Color::Red, sf::Color::Black, "50"), // r1
+                    sf::Color::Red, sf::Color::Black, "Start Radius",
+                    "200"), // r1
           TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
-                    sf::Color::Red, sf::Color::Black, "40") // r2
+                    sf::Color::Red, sf::Color::Black, "End radius", "100") // r2
       }) {
 
     if (!font.loadFromFile("../resources/theme_font.ttf")) {
@@ -37,21 +41,21 @@ void ConfigSimulation::initializeComponents() {
                              titleBox.getGlobalBounds().width / 2,
                          title.getPosition().y);
 
-    double inputBoxWidth = window->getSize().x / 2;
+    double inputBoxWidth = window->getSize().x / 3;
     double inputBoxHeight = window->getSize().y / 1.5;
     double inputBoxX = window->getSize().x / 2 - inputBoxWidth / 2;
     double inputBoxY = window->getSize().y / 5;
 
     inputBox.setSize(sf::Vector2f(inputBoxWidth, inputBoxHeight));
-    inputBox.setFillColor(sf::Color::White);
+    inputBox.setFillColor(sf::Color(0, 147, 45));
     inputBox.setPosition(inputBoxX, inputBoxY);
 
     double startButtonWidth = inputBoxWidth / 2;
     double startButtonHeight = inputBoxHeight / 10;
     double startButtonX = window->getSize().x / 2 - startButtonWidth / 2;
-    double startButtonY = inputBoxY + inputBoxHeight + 10;
+    double startButtonY = inputBoxY + inputBoxHeight - startButtonHeight - 20;
     startButton.setSize(sf::Vector2f(startButtonWidth, startButtonHeight));
-    startButton.setFillColor(sf::Color::Green);
+    startButton.setFillColor(sf::Color());
     startButton.setPosition(startButtonX, startButtonY);
 
     startButtonText.setFont(font);
@@ -66,8 +70,8 @@ void ConfigSimulation::initializeComponents() {
 
     for (int i = 0; i < textInputs.size(); i++) {
         textInputs[i].setPosition(
-            sf::Vector2f(inputBoxX + 10, inputBoxY + 10 + i * 60));
-        textInputs[i].setSize(sf::Vector2f(inputBoxWidth - 20, 50));
+            sf::Vector2f(inputBoxX + 10, inputBoxY + 10 + i * 120));
+        textInputs[i].setSize(sf::Vector2f(inputBoxWidth - 20, 120));
     }
 }
 

@@ -2,6 +2,7 @@
 #define SIMULATION_WINDOW_HPP
 
 #include "../simulation/System.hpp"
+#include "components/Legend.hpp"
 #include <SFML/Graphics.hpp>
 #include <memory>
 
@@ -14,6 +15,11 @@ class SimulationWindow {
   private:
     std::shared_ptr<sf::RenderWindow> window;
     std::shared_ptr<System<double>> system;
+
+    sf::Texture backgroundTexture;
+    sf::Sprite bg;
+
+    Legend<double> legend;
 };
 
 #endif

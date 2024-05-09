@@ -1,20 +1,36 @@
 #include "TextInput.hpp"
 
+#include "TextInput.hpp"
 TextInput::TextInput(sf::Vector2f position, sf::Vector2f size,
                      unsigned int fontSize, const sf::Color backgroundColor,
                      const sf::Color &p_textColor,
+                     const std::string &p_propName,
                      const std::string &p_defaultText)
-    : isFocused(false), textColor(p_textColor), defaultText(p_defaultText) {
-    inputBox.setPosition(position);
-    inputBox.setSize(size);
-    inputBox.setFillColor(backgroundColor);
+    : isFocused(false), textColor(p_textColor), propName(p_propName),
+      defaultText(p_defaultText) {
 
     font.loadFromFile("../resources/theme_font.ttf");
+    font2.loadFromFile("../resources/theme_font.ttf");
+
+    propText.setFont(font2);
+    propText.setCharacterSize(fontSize);
+    propText.setFillColor(textColor);
+    propText.setPosition(position);
+    propText.setString(propName);
+
+    float verticalOffset = propText.getGlobalBounds().height + 5;
 
     displayText.setFont(font);
     displayText.setCharacterSize(fontSize);
     displayText.setFillColor(textColor);
-    displayText.setPosition(position + sf::Vector2f(5.f, 5.f));
+
+    inputBox.setPosition(position.x, position.y + verticalOffset);
+    inputBox.setSize(sf::Vector2f(size.x, size.y - verticalOffset));
+    inputBox.setFillColor(backgroundColor);
+
+    displayText.setPosition(
+        position.x, inputBox.getPosition().y + inputBox.getSize().y / 2 -
+                        displayText.getGlobalBounds().height / 2);
 
     text = defaultText;
     displayText.setString(text);
@@ -35,6 +51,7 @@ void TextInput::handleEvent(const sf::Event &event) {
 
 void TextInput::draw(sf::RenderWindow &window) {
     window.draw(inputBox);
+    window.draw(propText);
     window.draw(displayText);
 }
 
@@ -46,11 +63,21 @@ void TextInput::setText(const std::string &newText) {
 }
 
 void TextInput::setPosition(sf::Vector2f position) {
-    inputBox.setPosition(position);
-    displayText.setPosition(position + sf::Vector2f(5.f, 5.f));
+    propText.setPosition(position);
+    float verticalOffset = propText.getGlobalBounds().height + 5;
+    inputBox.setPosition(position.x, position.y + verticalOffset);
 }
 
-void TextInput::setSize(sf::Vector2f size) { inputBox.setSize(size); }
+void TextInput::setSize(sf::Vector2f size) {
+    displayText.setCharacterSize(size.y / 5);
+    sf::Vector2f inputBoxSize(size.x,
+                              size.y - propText.getGlobalBounds().height - 5);
+    inputBox.setSize(inputBoxSize);
+    displayText.setPosition(inputBox.getPosition().x,
+                            inputBox.getPosition().y +
+                                inputBox.getSize().y / 2 -
+                                displayText.getGlobalBounds().height / 2);
+}
 
 void TextInput::setFocus(bool hasFocus) {
     this->isFocused = hasFocus;

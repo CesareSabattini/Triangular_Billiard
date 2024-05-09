@@ -8,6 +8,7 @@ class TextInput {
     TextInput(sf::Vector2f position, sf::Vector2f size, unsigned int fontSize,
               const sf::Color backgroundColor,
               const sf::Color &textColor = sf::Color::Black,
+              const std::string &propName = "",
               const std::string &defaultText = "");
 
     void handleEvent(const sf::Event &event);
@@ -22,12 +23,14 @@ class TextInput {
     bool isFocused;
 
   private:
+    sf::Text propText;
     sf::Text displayText;
     sf::Color textColor;
     std::string text;
+    std::string propName;
     std::string defaultText;
-
     sf::Font font;
+    sf::Font font2;
 };
 
 #endif
