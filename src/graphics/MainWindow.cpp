@@ -26,6 +26,10 @@ void MainWindow::run() {
             system->simulate();
             switchToSimulation();
         }
+        if (selectedScene == Scene::ANALYSIS) {
+            analysisWindow.processEvents();
+            analysisWindow.draw();
+        }
     }
 }
 

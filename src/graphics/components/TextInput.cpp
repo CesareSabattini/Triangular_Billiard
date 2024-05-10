@@ -55,7 +55,7 @@ void TextInput::draw(sf::RenderWindow &window) {
     window.draw(displayText);
 }
 
-const std::string &TextInput::getText() const { return text; }
+const std::string TextInput::getText() const { return text; }
 
 void TextInput::setText(const std::string &newText) {
     text = newText;

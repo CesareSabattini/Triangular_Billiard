@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(Triangular_Pool)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
@@ -20,9 +20,13 @@ add_executable(${PROJECT_NAME}
     src/graphics/Menu.cpp
     src/graphics/ConfigSimulation.cpp
     src/graphics/SimulationWindow.cpp
+    src/graphics/AnalysisWindow.cpp
     src/graphics/components/TextInput.cpp
     src/graphics/components/Legend.cpp
     src/graphics/components/LegendItem.cpp
+    src/analysis/Results.hpp
+    src/analysis/Analysis.hpp
+
 
 
 )

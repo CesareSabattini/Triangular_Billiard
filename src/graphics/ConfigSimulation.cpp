@@ -4,22 +4,18 @@ ConfigSimulation::ConfigSimulation(std::shared_ptr<sf::RenderWindow> window,
                                    std::shared_ptr<System<double>> system,
                                    Scene &p_selectedScene)
     : window(window), system(system), selectedScene(p_selectedScene),
-      textInputs({
-          TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
-                    sf::Color::Red, sf::Color::Black,
-                    "Ball start Angle (radians)",
-                    "1"), // theta
-          TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
-                    sf::Color::Red, sf::Color::Black, "Ball start y", "0"), // y
-          TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
-                    sf::Color::Red, sf::Color::Black, "Pool length",
-                    "1000"), // l
-          TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
-                    sf::Color::Red, sf::Color::Black, "Start Radius",
-                    "200"), // r1
-          TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
-                    sf::Color::Red, sf::Color::Black, "End radius", "100") // r2
-      }) {
+      textInputs(
+          {TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
+                     sf::Color::Red, sf::Color::Black,
+                     "Ball start Angle (radians)", "1"),
+           TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
+                     sf::Color::Red, sf::Color::Black, "Ball start y", "0"),
+           TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
+                     sf::Color::Red, sf::Color::Black, "Pool length", "1000"),
+           TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
+                     sf::Color::Red, sf::Color::Black, "Start Radius", "200"),
+           TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
+                     sf::Color::Red, sf::Color::Black, "End radius", "100")}) {
 
     if (!font.loadFromFile("../resources/theme_font.ttf")) {
         std::cerr << "Error loading font" << std::endl;

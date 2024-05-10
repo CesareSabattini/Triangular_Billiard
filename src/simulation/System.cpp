@@ -227,6 +227,15 @@ void System<T>::updateParams(T p_theta, T p_y, T p_l, T p_r1, T p_r2) {
     collisions.push_back(Collision<T>(0, p_y, p_theta));
 }
 
+template <typename T>
+void System<T>::updateParams(std::array<T, 2> inputCoordinates) {
+    ball.setPos(inputCoordinates);
+    time = 0;
+    collisions.clear();
+    collisions.push_back(Collision<T>(inputCoordinates[0], inputCoordinates[1],
+                                      ball.getTheta()));
+}
+
 template <typename T> void System<T>::reset() {
     ball.setPos({0, 0});
     time = 0;

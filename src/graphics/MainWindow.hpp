@@ -2,6 +2,7 @@
 #define MAINWINDOW_HPP
 
 #include "../simulation/System.hpp"
+#include "AnalysisWindow.hpp"
 #include "ConfigSimulation.hpp"
 #include "Menu.hpp"
 #include "Scene.hpp"
@@ -21,6 +22,7 @@ class MainWindow {
     Menu menu;
     SimulationWindow simulationWindow;
     ConfigSimulation configSimulation;
+    AnalysisWindow analysisWindow;
 
     void switchToSimulation();
     void switchToConfig();

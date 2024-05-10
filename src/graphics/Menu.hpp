@@ -26,8 +26,8 @@ class Menu {
     sf::RectangleShape configButton;
     sf::Text configButtonText;
 
-    sf::RectangleShape gaussButton;
-    sf::Text gaussButtonText;
+    sf::RectangleShape analysisButton;
+    sf::Text analysisButtonText;
 
     sf::Texture backgroundTexture;
     sf::Sprite bg;

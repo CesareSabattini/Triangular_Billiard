@@ -54,21 +54,21 @@ void Menu::initializeComponents() {
         configButtonY + buttonHeight / 2 -
             configButtonText.getGlobalBounds().height / 2);
 
-    double gaussButtonX = 3 * window->getSize().x / 4 - buttonWidth / 2;
-    double gaussButtonY = window->getSize().y / 2 - buttonHeight / 2;
-    gaussButton.setSize(sf::Vector2f(buttonWidth, buttonHeight));
-    gaussButton.setFillColor(sf::Color::Green);
-    gaussButton.setPosition(gaussButtonX, gaussButtonY);
+    double analysisButtonX = 3 * window->getSize().x / 4 - buttonWidth / 2;
+    double analysisButtonY = window->getSize().y / 2 - buttonHeight / 2;
+    analysisButton.setSize(sf::Vector2f(buttonWidth, buttonHeight));
+    analysisButton.setFillColor(sf::Color::Green);
+    analysisButton.setPosition(analysisButtonX, analysisButtonY);
 
-    gaussButtonText.setFont(font);
-    gaussButtonText.setString("Gaussian Distribution");
-    gaussButtonText.setCharacterSize(20);
-    gaussButtonText.setFillColor(sf::Color::Black);
-    gaussButtonText.setPosition(gaussButtonX + buttonWidth / 2 -
-                                    gaussButtonText.getGlobalBounds().width / 2,
-                                gaussButtonY + buttonHeight / 2 -
-                                    gaussButtonText.getGlobalBounds().height /
-                                        2);
+    analysisButtonText.setFont(font);
+    analysisButtonText.setString("Data Analysis");
+    analysisButtonText.setCharacterSize(20);
+    analysisButtonText.setFillColor(sf::Color::Black);
+    analysisButtonText.setPosition(
+        analysisButtonX + buttonWidth / 2 -
+            analysisButtonText.getGlobalBounds().width / 2,
+        analysisButtonY + buttonHeight / 2 -
+            analysisButtonText.getGlobalBounds().height / 2);
 }
 
 void Menu::draw() {
@@ -77,8 +77,8 @@ void Menu::draw() {
     window->draw(title);
     window->draw(configButton);
     window->draw(configButtonText);
-    window->draw(gaussButton);
-    window->draw(gaussButtonText);
+    window->draw(analysisButton);
+    window->draw(analysisButtonText);
 
     window->display();
 }
@@ -99,6 +99,10 @@ void Menu::processEvents() {
                                                         mousePosition.y)) {
 
                 selectedScene = Scene::CONFIG;
+            }
+            if (analysisButton.getGlobalBounds().contains(mousePosition.x,
+                                                          mousePosition.y)) {
+                selectedScene = Scene::ANALYSIS;
             }
         }
     }

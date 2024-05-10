@@ -13,7 +13,7 @@ class TextInput {
 
     void handleEvent(const sf::Event &event);
     void draw(sf::RenderWindow &window);
-    const std::string &getText() const;
+    const std::string getText() const;
     void setText(const std::string &text);
     void setPosition(sf::Vector2f position);
     void setSize(sf::Vector2f size);

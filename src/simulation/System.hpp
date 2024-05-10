@@ -31,6 +31,7 @@ template <typename T> class System {
     void throwTheBall();
     void simulate();
     void updateParams(T p_theta, T p_y, T p_l, T p_r1, T p_r2);
+    void updateParams(std::array<T, 2> inputCoordinates);
     void reset();
 
   private:
