@@ -23,7 +23,8 @@ class Analysis {
         : system(p_system), numSimulations(n) {}
 
     void generate() {
-        std::default_random_engine generator;
+        std::random_device rd;
+        std::mt19937 generator(rd());
 
         T lower_boundY = -system->getPool().getR1();
         T upper_boundY = system->getPool().getR1();
@@ -55,6 +56,8 @@ class Analysis {
     void simulate() {
         for (int i = 0; i < numSimulations; i++) {
             system->updateParams(inputs[i]);
+            system->simulate();
+            std::cout << "Simulation " << i + 1 << " completed." << std::endl;
 
             outputs.push_back(
                 {system->getCollisions()[system->getCollisions().size() - 1]
@@ -64,6 +67,8 @@ class Analysis {
             outputs[i][1] =
                 system->getCollisions()[system->getCollisions().size() - 1]
                     .getTheta();
+
+            system->reset();
         }
     }
     void analyze() {

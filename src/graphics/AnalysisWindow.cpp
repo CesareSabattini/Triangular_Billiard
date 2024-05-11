@@ -185,6 +185,9 @@ void AnalysisWindow::processEvents() {
         if (analyzeButton.getGlobalBounds().contains(event.mouseButton.x,
                                                      event.mouseButton.y)) {
             const int numSimulations = std::stoi(textInputs[3].getText());
+            system->updateParams(0, 0, std::stod(textInputs[0].getText()),
+                                 std::stod(textInputs[1].getText()),
+                                 std::stod(textInputs[2].getText()));
             Analysis<double> analyzer(system, numSimulations);
             analyzer.generate();
             analyzer.simulate();
