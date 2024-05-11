@@ -7,6 +7,7 @@
 #include <cmath>
 #include <concepts>
 #include <memory>
+#include <numeric>
 #include <random>
 #include <vector>
 
@@ -19,7 +20,7 @@ class Analysis {
 
   public:
     Analysis(std::shared_ptr<System<T>> p_system, int n)
-        : system(p_system), numSimulation(n) {}
+        : system(p_system), numSimulations(n) {}
 
     void generate() {
         std::default_random_engine generator;
@@ -28,20 +29,20 @@ class Analysis {
         T upper_boundY = system->getPool().getR1();
         T sigma1 = system->getPool().getR2() / 2;
 
-        for (int i = 0; i < N; i++) {
+        for (int i = 0; i < numSimulations; i++) {
             std::normal_distribution<T> distribution1(0, sigma1);
             T value;
             do {
                 value = distribution1(generator);
             } while (value < lower_boundY || value > upper_boundY);
-            inputs[i][0] = value;
+            inputs.push_back({value, 0});
         }
 
         T lower_boundT = -M_PI / 2;
         T upper_boundT = M_PI / 2;
         T sigma2 = M_PI / 6;
 
-        for (int i = 0; i < N; i++) {
+        for (int i = 0; i < numSimulations; i++) {
             std::normal_distribution<T> distribution2(0, sigma2);
             T value;
             do {
@@ -52,22 +53,24 @@ class Analysis {
     }
 
     void simulate() {
-        for (int i = 0; i < N; i++) {
+        for (int i = 0; i < numSimulations; i++) {
             system->updateParams(inputs[i]);
-            outputs[i] = system->simulate();
-            outputs[i][0] =
-                system->getCollisions()[system->getCollisions().size() - 1]
-                    .getPos()[1];
+
+            outputs.push_back(
+                {system->getCollisions()[system->getCollisions().size() - 1]
+                     .getPos()[1],
+                 0});
+
             outputs[i][1] =
                 system->getCollisions()[system->getCollisions().size() - 1]
                     .getTheta();
         }
     }
     void analyze() {
-        results.meanY = mean(outputs[0]);
-        results.meanTheta = mean(outputs[1]);
-        results.stdY = standardDeviation(outputs[0]);
-        results.stdTheta = standardDeviation(outputs[1]);
+        results.meanY = meanY(outputs);
+        results.meanTheta = meanTheta(outputs);
+        results.stdY = standardDeviationY(outputs);
+        results.stdTheta = standardDeviationTheta(outputs);
     }
     void printResults() {
         std::cout << "Results: " << std::endl;
@@ -78,20 +81,54 @@ class Analysis {
                   << std::endl;
     }
 
-    T mean(std::array<T, N> values) {
-        T sum = 0;
-        for (int i = 0; i < values.size(); i++) {
-            sum += values[i];
-        }
+    T meanY(const std::vector<std::array<T, 2>> &values) {
+        if (values.empty())
+            return T(0);
+        T sum = std::accumulate(
+            values.begin(), values.end(), T(0),
+            [](const T &a, const std::array<T, 2> &b) { return a + b[0]; });
+
         return sum / values.size();
     }
-    T standardDeviation(std::array<T, N> values) {
-        T mean = mean(values);
-        T sum = 0;
-        for (int i = 0; i < values.size(); i++) {
-            sum += (values[i] - mean) * (values[i] - mean);
-        }
-        return std::sqrt(sum / values.size());
+
+    T meanTheta(const std::vector<std::array<T, 2>> &values) {
+        if (values.empty())
+            return T(0);
+        T sum = std::accumulate(
+            values.begin(), values.end(), T(0),
+            [](const T &a, const std::array<T, 2> &b) { return a + b[1]; });
+
+        return sum / values.size();
+    }
+
+    T standardDeviationY(const std::vector<std::array<T, 2>> &values) {
+        if (values.empty())
+            return T(0);
+
+        T m = meanY(values);
+
+        T sum_squares =
+            std::accumulate(values.begin(), values.end(), T(0),
+                            [m](const T &a, const std::array<T, 2> &b) {
+                                return (a + (b[0] - m) * (b[0] - m));
+                            });
+
+        return std::sqrt(sum_squares / (values.size() - 1));
+    }
+
+    T standardDeviationTheta(const std::vector<std::array<T, 2>> &values) {
+        if (values.empty())
+            return T(0);
+
+        T m = meanTheta(values);
+
+        T sum_squares =
+            std::accumulate(values.begin(), values.end(), T(0),
+                            [m](const T &a, const std::array<T, 2> &b) {
+                                return (a + (b[1] - m) * (b[1] - m));
+                            });
+
+        return std::sqrt(sum_squares / (values.size() - 1));
     }
 
     Results<T> getResults() { return results; }
@@ -99,8 +136,8 @@ class Analysis {
   private:
     int numSimulations;
     std::shared_ptr<System<T>> system;
-    std::array<std::array<T, 2>, N> inputs;
-    std::array<T, numSimulations> outputs;
+    std::vector<std::array<T, 2>> inputs;
+    std::vector<std::array<T, 2>> outputs;
     Results<T> results;
 };
 

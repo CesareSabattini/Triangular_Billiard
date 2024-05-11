@@ -1,6 +1,5 @@
-// ConfigSimulation.hpp
-#ifndef CONFGSIMULATION_HPP
-#define CONFGSIMULATION_HPP
+#ifndef CONFIGSIMULATION_HPP
+#define CONFIGSIMULATION_HPP
 #include "../simulation/System.hpp"
 
 #include "Scene.hpp"

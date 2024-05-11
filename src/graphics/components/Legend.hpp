@@ -10,21 +10,22 @@
 template <typename T> class Legend : public sf::Drawable {
   public:
     Legend(std::vector<LegendItem<T>> items, sf::Vector2f size,
-           sf::Color p_color);
+           sf::Color p_bgColor, sf::Color textColor = sf::Color::Black);
     ~Legend();
 
-    void setPosition(const sf::Vector2f &position);
+    sf::Vector2f getPosition() const;
+    sf::Vector2f getSize() const;
 
-    void addItem(const LegendItem<T> &item) {
-        sf::Text text;
-        text.setFont(font);
-        text.setString(item.getName() + ": " + std::to_string(item.getValue()) +
-                       " " + item.getUnit());
-        text.setCharacterSize(20);
-        text.setFillColor(sf::Color::Black);
-        texts.push_back(text);
-        items.push_back(item);
-    }
+    void setPosition(const sf::Vector2f &position);
+    void setSize(const sf::Vector2f &size);
+
+    void addItem(const LegendItem<T> &item);
+
+    void removeItem(const std::string &name);
+
+    void clearItems();
+
+    void addItems(const std::vector<LegendItem<T>> &newItems);
 
   protected:
     virtual void draw(sf::RenderTarget &target,
@@ -35,6 +36,7 @@ template <typename T> class Legend : public sf::Drawable {
     std::vector<sf::Text> texts;
     std::vector<LegendItem<T>> items;
     sf::Font font;
+    sf::Color textColor;
 };
 
 #endif

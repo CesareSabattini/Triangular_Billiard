@@ -66,10 +66,13 @@ void TextInput::setPosition(sf::Vector2f position) {
     propText.setPosition(position);
     float verticalOffset = propText.getGlobalBounds().height + 5;
     inputBox.setPosition(position.x, position.y + verticalOffset);
+    displayText.setPosition(
+        position.x, inputBox.getPosition().y + inputBox.getSize().y / 2 -
+                        displayText.getGlobalBounds().height / 2);
 }
 
 void TextInput::setSize(sf::Vector2f size) {
-    displayText.setCharacterSize(size.y / 5);
+    displayText.setCharacterSize(size.y / 4);
     sf::Vector2f inputBoxSize(size.x,
                               size.y - propText.getGlobalBounds().height - 5);
     inputBox.setSize(inputBoxSize);
