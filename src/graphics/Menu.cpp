@@ -9,28 +9,29 @@ Menu::Menu(std::shared_ptr<sf::RenderWindow> window,
     }
     initializeComponents();
 
-    if (!backgroundTexture.loadFromFile("../resources/pool.jpg")) {
+    if (!backgroundTexture.loadFromFile("../resources/pool.jpeg")) {
         throw std::runtime_error("Cannot load background texture");
     } else {
         bg.setTexture(backgroundTexture);
     }
 
-    bg.setScale(window->getSize().x / bg.getLocalBounds().width,
+    bg.setScale(window->getSize().x / (2 * bg.getLocalBounds().width),
                 window->getSize().y / bg.getLocalBounds().height);
 
-    bg.setPosition(0, 0);
+    bg.setPosition(window->getSize().x / 2 - bg.getGlobalBounds().width / 2,
+                   window->getSize().y / 2 - bg.getGlobalBounds().height / 2);
 }
 void Menu::initializeComponents() {
     title.setFont(font);
     title.setString("Triangular Pool Simulation");
     title.setCharacterSize(window->getSize().x / 20);
-    title.setFillColor(sf::Color::White);
+    title.setFillColor(sf::Color(2, 138, 160));
     title.setPosition(
         window->getSize().x / 2 - title.getGlobalBounds().width / 2, 50);
 
     titleBox.setSize(sf::Vector2f(title.getGlobalBounds().width + 50,
                                   title.getGlobalBounds().height + 50));
-    titleBox.setFillColor(sf::Color(0, 147, 45));
+    titleBox.setFillColor(sf::Color(246, 250, 222));
     titleBox.setPosition(window->getSize().x / 2 -
                              titleBox.getGlobalBounds().width / 2,
                          title.getPosition().y);
@@ -41,13 +42,13 @@ void Menu::initializeComponents() {
     double configButtonX = window->getSize().x / 4 - buttonWidth / 2;
     double configButtonY = window->getSize().y / 2 - buttonHeight / 2;
     configButton.setSize(sf::Vector2f(buttonWidth, buttonHeight));
-    configButton.setFillColor(sf::Color::Green);
+    configButton.setFillColor(sf::Color(246, 250, 222));
     configButton.setPosition(configButtonX, configButtonY);
 
     configButtonText.setFont(font);
     configButtonText.setString("Simulation");
-    configButtonText.setCharacterSize(20);
-    configButtonText.setFillColor(sf::Color::Black);
+    configButtonText.setCharacterSize(30);
+    configButtonText.setFillColor(sf::Color(2, 138, 160));
     configButtonText.setPosition(
         configButtonX + buttonWidth / 2 -
             configButtonText.getGlobalBounds().width / 2,
@@ -57,13 +58,13 @@ void Menu::initializeComponents() {
     double analysisButtonX = 3 * window->getSize().x / 4 - buttonWidth / 2;
     double analysisButtonY = window->getSize().y / 2 - buttonHeight / 2;
     analysisButton.setSize(sf::Vector2f(buttonWidth, buttonHeight));
-    analysisButton.setFillColor(sf::Color::Green);
+    analysisButton.setFillColor(sf::Color(246, 250, 222));
     analysisButton.setPosition(analysisButtonX, analysisButtonY);
 
     analysisButtonText.setFont(font);
     analysisButtonText.setString("Data Analysis");
-    analysisButtonText.setCharacterSize(20);
-    analysisButtonText.setFillColor(sf::Color::Black);
+    analysisButtonText.setCharacterSize(30);
+    analysisButtonText.setFillColor(sf::Color(2, 138, 160));
     analysisButtonText.setPosition(
         analysisButtonX + buttonWidth / 2 -
             analysisButtonText.getGlobalBounds().width / 2,
@@ -72,6 +73,7 @@ void Menu::initializeComponents() {
 }
 
 void Menu::draw() {
+    window->clear(sf::Color(2, 138, 160));
     window->draw(bg);
     window->draw(titleBox);
     window->draw(title);

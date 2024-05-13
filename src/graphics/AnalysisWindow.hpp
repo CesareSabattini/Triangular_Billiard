@@ -38,7 +38,6 @@ class AnalysisWindow {
     sf::RectangleShape inputBox;
     std::array<TextInput, 4> textInputs;
 
-    sf::RectangleShape resultsBox;
     sf::Text resultsText;
     Legend<double> resultsPanel;
 

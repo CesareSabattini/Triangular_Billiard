@@ -2,12 +2,13 @@
 #include "SimulationWindow.hpp"
 
 SimulationWindow::SimulationWindow(std::shared_ptr<sf::RenderWindow> window,
-                                   std::shared_ptr<System<double>> system)
+                                   std::shared_ptr<System<double>> system,
+                                   Scene &scene)
     : window(window), system(system),
       legend(std::vector<LegendItem<double>>{},
              sf::Vector2f(window->getSize().x / 6, window->getSize().y / 4),
-             sf::Color::White) {
-
+             sf::Color(0, 0, 0, 150), sf::Color::White),
+      selectedScene(scene) {
     // Image by
     // https://www.freepik.com/free-vector/flat-design-poker-table-background_88532182.htm#query=pool%20table%20texture&position=3&from_view=keyword&track=ais&uuid=d397caa0-f20e-4ea8-a4cc-3ff86f785fbd
 
@@ -16,7 +17,6 @@ SimulationWindow::SimulationWindow(std::shared_ptr<sf::RenderWindow> window,
     } else {
         bg.setTexture(backgroundTexture);
     }
-
     bg.setScale(window->getSize().x / bg.getLocalBounds().width,
                 window->getSize().y / bg.getLocalBounds().height);
 
@@ -34,10 +34,27 @@ SimulationWindow::SimulationWindow(std::shared_ptr<sf::RenderWindow> window,
     legend.addItem(LegendItem<double>(std::string("Number of collisions"),
                                       (int)system->getCollisions().size(),
                                       std::string("")));
+
+    menuButton.setSize(sf::Vector2f(window->getSize().x / 10, 60));
+    menuButton.setFillColor(sf::Color(0, 0, 0, 150));
+    menuButton.setPosition(20, 20);
+
+    if (!font.loadFromFile("../resources/theme_font.ttf")) {
+        std::cerr << "Error loading font" << std::endl;
+    }
+
+    menuButtonText.setFont(font);
+    menuButtonText.setString("Menu");
+    menuButtonText.setCharacterSize(20);
+    menuButtonText.setFillColor(sf::Color::White);
+    menuButtonText.setPosition(
+        menuButton.getPosition().x + menuButton.getSize().x / 2 -
+            menuButtonText.getGlobalBounds().width / 2,
+        menuButton.getPosition().y + menuButton.getSize().y / 2 -
+            menuButtonText.getGlobalBounds().height / 2);
 }
 
 void SimulationWindow::run() {
-
     sf::CircleShape ball(5);
     ball.setFillColor(sf::Color::Red);
 
@@ -47,9 +64,17 @@ void SimulationWindow::run() {
         while (window->pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window->close();
-        }
 
-        window->clear(sf::Color::Blue);
+            if (event.type == sf::Event::MouseButtonPressed &&
+                event.mouseButton.button == sf::Mouse::Left) {
+                sf::Vector2i mousePosition = sf::Mouse::getPosition(*window);
+
+                if (menuButton.getGlobalBounds().contains(mousePosition.x,
+                                                          mousePosition.y)) {
+                    selectedScene = Scene::MENU;
+                }
+            }
+        }
 
         const auto &collisions = system->getCollisions();
         const auto &pool = system->getPool();
@@ -103,6 +128,8 @@ void SimulationWindow::run() {
         window->draw(legend);
         window->draw(inclinedUpperWall);
         window->draw(inclinedLowerWall);
+        window->draw(menuButton);
+        window->draw(menuButtonText);
 
         window->draw(lines);
         window->display();

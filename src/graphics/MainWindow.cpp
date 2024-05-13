@@ -7,7 +7,8 @@ MainWindow::MainWindow()
       system(std::make_shared<System<double>>()),
       menu(window, system, selectedScene),
       configSimulation(window, system, selectedScene),
-      simulationWindow(window, system), selectedScene(Scene::MENU),
+      simulationWindow(window, system, selectedScene),
+      selectedScene(Scene::MENU),
       analysisWindow(window, system, selectedScene) {
     window->setPosition(sf::Vector2i(0, 0));
 }

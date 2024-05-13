@@ -11,16 +11,24 @@
 #include <random>
 #include <vector>
 
+namespace Analysis {
+
 template <typename T>
 concept DoubleOrFloat = std::is_same_v<T, double> || std::is_same_v<T, float>;
 
 template <typename T>
 requires DoubleOrFloat<T>
-class Analysis {
+class Analyzer {
 
   public:
-    Analysis(std::shared_ptr<System<T>> p_system, int n)
-        : system(p_system), numSimulations(n) {}
+    Analyzer(std::shared_ptr<System<T>> p_system, int n)
+        : system(p_system), numSimulations(n) {
+
+        if (numSimulations <= 0) {
+            throw std::invalid_argument(
+                "Number of simulations must be greater than 0.");
+        }
+    }
 
     void generate() {
         std::random_device rd;
@@ -87,23 +95,49 @@ class Analysis {
     }
 
     T meanY(const std::vector<std::array<T, 2>> &values) {
-        if (values.empty())
-            return T(0);
-        T sum = std::accumulate(
-            values.begin(), values.end(), T(0),
-            [](const T &a, const std::array<T, 2> &b) { return a + b[0]; });
+        if (std::find_if(values.begin(), values.end(),
+                         [this](const std::array<T, 2> &elem) {
+                             return elem[0] < -system->getPool().getR1() ||
+                                    elem[0] > system->getPool().getR1();
+                         }))
+            throw std::invalid_argument("Y values must be in [-r1, r1].");
+        else {
+            if (values.empty())
+                throw std::invalid_argument("Empty vector.");
 
-        return sum / values.size();
+            if (values.size() == 1)
+                return values[0][0];
+
+            T sum = std::accumulate(
+                values.begin(), values.end(), T(0),
+                [](const T &a, const std::array<T, 2> &b) { return a + b[0]; });
+
+            return sum / values.size();
+        }
     }
 
     T meanTheta(const std::vector<std::array<T, 2>> &values) {
-        if (values.empty())
-            return T(0);
-        T sum = std::accumulate(
-            values.begin(), values.end(), T(0),
-            [](const T &a, const std::array<T, 2> &b) { return a + b[1]; });
 
-        return sum / values.size();
+        if (std::find_if(values.begin(), values.end(),
+                         [this](const std::array<T, 2> &elem) {
+                             return elem[1] < -M_PI / 2 || elem[1] > M_PI / 2;
+                         })) {
+            throw std::invalid_argument(
+                "Theta values must be in [-pi/2, pi/2].");
+
+        } else {
+            if (values.empty())
+                throw std::invalid_argument("Empty vector.");
+
+            if (values.size() == 1)
+                return values[0][1];
+
+            T sum = std::accumulate(
+                values.begin(), values.end(), T(0),
+                [](const T &a, const std::array<T, 2> &b) { return a + b[1]; });
+
+            return sum / values.size();
+        }
     }
 
     T standardDeviationY(const std::vector<std::array<T, 2>> &values) {
@@ -145,5 +179,5 @@ class Analysis {
     std::vector<std::array<T, 2>> outputs;
     Results<T> results;
 };
-
+} // namespace Analysis
 #endif

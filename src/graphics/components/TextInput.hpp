@@ -25,6 +25,7 @@ class TextInput {
   private:
     sf::Text propText;
     sf::Text displayText;
+    sf::Color backgroundColor;
     sf::Color textColor;
     std::string text;
     std::string propName;

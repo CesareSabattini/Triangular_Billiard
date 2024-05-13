@@ -27,6 +27,9 @@ class ConfigSimulation {
     sf::Text startButtonText;
     std::array<TextInput, 5> textInputs;
 
+    sf::RectangleShape menuButton;
+    sf::Text menuButtonText;
+
     void initializeComponents();
 };
 

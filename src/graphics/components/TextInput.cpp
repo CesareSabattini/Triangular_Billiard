@@ -7,7 +7,7 @@ TextInput::TextInput(sf::Vector2f position, sf::Vector2f size,
                      const std::string &p_propName,
                      const std::string &p_defaultText)
     : isFocused(false), textColor(p_textColor), propName(p_propName),
-      defaultText(p_defaultText) {
+      defaultText(p_defaultText), backgroundColor(backgroundColor) {
 
     font.loadFromFile("../resources/theme_font.ttf");
     font2.loadFromFile("../resources/theme_font.ttf");
@@ -84,7 +84,8 @@ void TextInput::setSize(sf::Vector2f size) {
 
 void TextInput::setFocus(bool hasFocus) {
     this->isFocused = hasFocus;
-    inputBox.setFillColor(hasFocus ? sf::Color::Green : sf::Color::Red);
+    inputBox.setFillColor(hasFocus ? sf::Color(backgroundColor.Cyan)
+                                   : sf::Color(backgroundColor));
     if (displayText.getString() == defaultText) {
         if (hasFocus) {
             text = "";
