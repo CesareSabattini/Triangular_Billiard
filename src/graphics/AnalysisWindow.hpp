@@ -3,10 +3,12 @@
 
 #include "../analysis/Analysis.hpp"
 #include "../analysis/Results.hpp"
-#include "../graphics/components/Legend.hpp"
+#include "../graphics/components/button/Button.hpp"
+#include "../graphics/components/legend/Legend.hpp"
 #include "../simulation/System.hpp"
+#include "AppStyle.hpp"
 #include "Scene.hpp"
-#include "components/TextInput.hpp"
+#include "components/textInput/TextInput.hpp"
 #include <SFML/Graphics.hpp>
 #include <memory>
 
@@ -26,11 +28,9 @@ class AnalysisWindow {
     sf::Text title;
     sf::RectangleShape titleBox;
 
-    sf::RectangleShape menuButton;
-    sf::Text menuButtonText;
+    Button menuButton;
 
-    sf::RectangleShape analyzeButton;
-    sf::Text analyzeButtonText;
+    Button analyzeButton;
 
     sf::Texture backgroundTexture;
     sf::Sprite bg;

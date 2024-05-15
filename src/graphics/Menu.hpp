@@ -3,8 +3,10 @@
 #define MENU_HPP
 #include "../simulation/System.hpp"
 
+#include "AppStyle.hpp"
 #include "Scene.hpp"
-#include "components/TextInput.hpp"
+#include "components/button/Button.hpp"
+#include "components/textInput/TextInput.hpp"
 #include <SFML/Graphics.hpp>
 #include <memory>
 
@@ -23,11 +25,9 @@ class Menu {
     sf::Text title;
     sf::RectangleShape titleBox;
 
-    sf::RectangleShape configButton;
-    sf::Text configButtonText;
+    Button configButton;
 
-    sf::RectangleShape analysisButton;
-    sf::Text analysisButtonText;
+    Button analysisButton;
 
     sf::Texture backgroundTexture;
     sf::Sprite bg;

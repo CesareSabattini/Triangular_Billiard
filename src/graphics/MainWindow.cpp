@@ -6,7 +6,7 @@ MainWindow::MainWindow()
           "Triangular Pool Simulation")),
       system(std::make_shared<System<double>>()),
       menu(window, system, selectedScene),
-      configSimulation(window, system, selectedScene),
+      configSimulation(window, system, selectedScene, simulationWindow),
       simulationWindow(window, system, selectedScene),
       selectedScene(Scene::MENU),
       analysisWindow(window, system, selectedScene) {
@@ -25,8 +25,9 @@ void MainWindow::run() {
             switchToConfig();
         }
         if (selectedScene == Scene::SIMULATION) {
-            system->simulate();
-            switchToSimulation();
+
+            simulationWindow.processEvents();
+            simulationWindow.draw();
         }
         if (selectedScene == Scene::ANALYSIS) {
             analysisWindow.processEvents();
@@ -34,8 +35,6 @@ void MainWindow::run() {
         }
     }
 }
-
-void MainWindow::switchToSimulation() { simulationWindow.run(); }
 
 void MainWindow::switchToConfig() {
     configSimulation.processEvents();

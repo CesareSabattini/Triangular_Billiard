@@ -2,8 +2,10 @@
 #define SIMULATION_WINDOW_HPP
 
 #include "../simulation/System.hpp"
+#include "AppStyle.hpp"
 #include "Scene.hpp"
-#include "components/Legend.hpp"
+#include "components/button/Button.hpp"
+#include "components/legend/Legend.hpp"
 #include <SFML/Graphics.hpp>
 #include <memory>
 
@@ -12,7 +14,11 @@ class SimulationWindow {
     SimulationWindow(std::shared_ptr<sf::RenderWindow> window,
                      std::shared_ptr<System<double>> system,
                      Scene &selectedScene);
-    void run();
+
+    void draw();
+    void processEvents();
+
+    Legend<double> &getLegend() { return legend; }
 
   private:
     std::shared_ptr<sf::RenderWindow> window;
@@ -23,12 +29,13 @@ class SimulationWindow {
 
     sf::Font font;
 
-    sf::RectangleShape menuButton;
-    sf::Text menuButtonText;
+    Button menuButton;
 
     Legend<double> legend;
 
     Scene &selectedScene;
+
+    void initializeComponents();
 };
 
 #endif

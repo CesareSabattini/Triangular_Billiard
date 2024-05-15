@@ -26,7 +26,6 @@ template <typename T> class System {
     std::vector<Collision<T>> &getCollisions();
     void setTime(const T &p_time);
     void computeNextCollision();
-    void computeNextBallVel();
     T computeOutputY();
     void throwTheBall();
     void simulate();

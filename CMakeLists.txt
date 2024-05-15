@@ -21,11 +21,13 @@ add_library(core_lib
     src/graphics/ConfigSimulation.cpp
     src/graphics/SimulationWindow.cpp
     src/graphics/AnalysisWindow.cpp
-    src/graphics/components/TextInput.cpp
-    src/graphics/components/Legend.cpp
-    src/graphics/components/LegendItem.cpp
+    src/graphics/components/textInput/TextInput.cpp
+    src/graphics/components/legend/Legend.cpp
+    src/graphics/components/legend/LegendItem.cpp
+    src/graphics/components/button/Button.cpp
     src/analysis/Results.hpp
     src/analysis/Analysis.hpp
+    src/graphics/AppStyle.cpp
 )
 
 add_executable(${PROJECT_NAME} src/main.cpp)

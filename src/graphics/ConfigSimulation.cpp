@@ -2,23 +2,33 @@
 
 ConfigSimulation::ConfigSimulation(std::shared_ptr<sf::RenderWindow> window,
                                    std::shared_ptr<System<double>> system,
-                                   Scene &p_selectedScene)
+                                   Scene &p_selectedScene,
+                                   SimulationWindow &simulationWindow)
     : window(window), system(system), selectedScene(p_selectedScene),
       textInputs({TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
-                            sf::Color(246, 250, 222), sf::Color(2, 138, 160),
+                            AppStyle::Colors::cream, AppStyle::Colors::bgCyan,
                             "Ball start Angle (radians)", "1"),
                   TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
-                            sf::Color(246, 250, 222), sf::Color(2, 138, 160),
+                            AppStyle::Colors::cream, AppStyle::Colors::bgCyan,
                             "Ball start y", "0"),
                   TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
-                            sf::Color(246, 250, 222), sf::Color(2, 138, 160),
+                            AppStyle::Colors::cream, AppStyle::Colors::bgCyan,
                             "Pool length", "1000"),
                   TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
-                            sf::Color(246, 250, 222), sf::Color(2, 138, 160),
+                            AppStyle::Colors::cream, AppStyle::Colors::bgCyan,
                             "Start Radius", "200"),
                   TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
-                            sf::Color(246, 250, 222), sf::Color(2, 138, 160),
-                            "End radius", "100")}) {
+                            AppStyle::Colors::cream, AppStyle::Colors::bgCyan,
+                            "End radius", "100")}),
+      simulationWindow(simulationWindow),
+      menuButton(sf::Vector2f(0, 0), sf::Vector2f(0, 0),
+                 AppStyle::Colors::cream, AppStyle::Colors::cream.Blue,
+                 AppStyle::Colors::cream.Black, AppStyle::Colors::bgCyan, font,
+                 "Menu", 20),
+      startButton(sf::Vector2f(0, 0), sf::Vector2f(0, 0),
+                  AppStyle::Colors::darkGreen, AppStyle::Colors::darkGreen.Blue,
+                  AppStyle::Colors::darkGreen.Black, AppStyle::Colors::cream,
+                  font, "Start Simulation", 20) {
 
     if (!font.loadFromFile("../resources/theme_font.ttf")) {
         std::cerr << "Error loading font" << std::endl;
@@ -29,13 +39,13 @@ void ConfigSimulation::initializeComponents() {
     title.setFont(font);
     title.setString("Configure Simulation");
     title.setCharacterSize(window->getSize().x / 20);
-    title.setFillColor(sf::Color(2, 138, 160));
+    title.setFillColor(AppStyle::Colors::bgCyan);
     title.setPosition(
         window->getSize().x / 2 - title.getGlobalBounds().width / 2, 50);
 
     titleBox.setSize(sf::Vector2f(title.getGlobalBounds().width + 50,
                                   title.getGlobalBounds().height + 50));
-    titleBox.setFillColor(sf::Color(246, 250, 222));
+    titleBox.setFillColor(AppStyle::Colors::cream);
     titleBox.setPosition(window->getSize().x / 2 -
                              titleBox.getGlobalBounds().width / 2,
                          title.getPosition().y);
@@ -46,7 +56,7 @@ void ConfigSimulation::initializeComponents() {
     double inputBoxY = window->getSize().y / 5;
 
     inputBox.setSize(sf::Vector2f(inputBoxWidth, inputBoxHeight));
-    inputBox.setFillColor(sf::Color(0, 0, 0, 150));
+    inputBox.setFillColor(AppStyle::Colors::opaqueBlack);
     inputBox.setPosition(inputBoxX, inputBoxY);
 
     double startButtonWidth = inputBoxWidth / 2;
@@ -54,34 +64,12 @@ void ConfigSimulation::initializeComponents() {
     double startButtonX = window->getSize().x / 2 - startButtonWidth / 2;
     double startButtonY = inputBoxY + inputBoxHeight - startButtonHeight - 20;
     startButton.setSize(sf::Vector2f(startButtonWidth, startButtonHeight));
-    startButton.setFillColor(sf::Color(0, 147, 45));
-    startButton.setPosition(startButtonX, startButtonY);
-
-    startButtonText.setFont(font);
-    startButtonText.setString("Start Simulation");
-    startButtonText.setCharacterSize(20);
-    startButtonText.setFillColor(sf::Color(246, 250, 222));
-    startButtonText.setPosition(startButtonX + startButtonWidth / 2 -
-                                    startButtonText.getGlobalBounds().width / 2,
-                                startButtonY + startButtonHeight / 2 -
-                                    startButtonText.getGlobalBounds().height /
-                                        2);
+    startButton.setPosition({startButtonX, startButtonY});
 
     menuButton.setSize(sf::Vector2f(title.getGlobalBounds().width / 3,
                                     title.getGlobalBounds().height / 2));
-    menuButton.setFillColor(sf::Color(246, 250, 222));
-    menuButton.setPosition(50, 50 + title.getGlobalBounds().height / 2 -
-                                   menuButton.getGlobalBounds().height / 2);
-
-    menuButtonText.setFont(font);
-    menuButtonText.setString("Menu");
-    menuButtonText.setCharacterSize(20);
-    menuButtonText.setFillColor(sf::Color(2, 138, 160));
-    menuButtonText.setPosition(
-        menuButton.getPosition().x + menuButton.getGlobalBounds().width / 2 -
-            menuButtonText.getGlobalBounds().width / 2,
-        menuButton.getPosition().y + menuButton.getGlobalBounds().height / 2 -
-            menuButtonText.getGlobalBounds().height / 2);
+    menuButton.setPosition({50, 50 + title.getGlobalBounds().height / 2 -
+                                    menuButton.getGlobalBounds().height / 2});
 
     for (int i = 0; i < textInputs.size(); i++) {
         textInputs[i].setPosition(
@@ -91,17 +79,15 @@ void ConfigSimulation::initializeComponents() {
 }
 
 void ConfigSimulation::draw() {
-    window->clear(sf::Color(2, 138, 160));
+    window->clear(AppStyle::Colors::bgCyan);
     window->draw(titleBox);
     window->draw(title);
     window->draw(inputBox);
-    window->draw(startButton);
-    window->draw(menuButton);
-    window->draw(menuButtonText);
+    startButton.draw(*window);
+    menuButton.draw(*window);
     for (auto &textInput : textInputs) {
         textInput.draw(*window);
     }
-    window->draw(startButtonText);
     window->display();
 }
 
@@ -141,6 +127,20 @@ void ConfigSimulation::processEvents() {
                                      std::stod(textInputs[2].getText()),
                                      std::stod(textInputs[3].getText()),
                                      std::stod(textInputs[4].getText()));
+
+                system->simulate();
+
+                simulationWindow.getLegend().clearItems();
+                simulationWindow.getLegend().addItems(
+                    {LegendItem<double>(
+                         std::string("End X:"),
+                         system->getCollisions().back().getPos()[0], "m"),
+                     LegendItem<double>(
+                         std::string("End Y:"),
+                         system->getCollisions().back().getPos()[1], "m"),
+                     LegendItem<double>(
+                         "End Theta", system->getCollisions().back().getTheta(),
+                         "rad")});
 
                 selectedScene = Scene::SIMULATION;
             }

@@ -24,7 +24,6 @@ class MainWindow {
     ConfigSimulation configSimulation;
     AnalysisWindow analysisWindow;
 
-    void switchToSimulation();
     void switchToConfig();
 };
 

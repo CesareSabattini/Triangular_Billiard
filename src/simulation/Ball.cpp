@@ -5,10 +5,19 @@ template <typename T> Ball<T>::Ball() {}
 
 template <typename T>
 Ball<T>::Ball(T p_x, T p_y, T p_theta) : pos({p_x, p_y}), theta(p_theta) {
-    p_x >= 0 ? std::cout << "Ball created at position: " << p_x << ", " << p_y
-                         << std::endl
-             : throw std::invalid_argument(
-                   "Ball: x must be greater than or equal to 0");
+    if (p_x >= 0) {
+        std::cout << "Ball created at position: " << p_x << ", " << p_y
+                  << std::endl;
+    } else
+        throw std::invalid_argument(
+            "Ball: x must be greater than or equal to 0");
+
+    if (p_theta >= -M_PI / 2 && p_theta <= M_PI / 2) {
+        theta = p_theta;
+    } else {
+        throw std::invalid_argument(
+            "Ball: theta must be between -half pi and half pi");
+    }
 }
 
 template <typename T>
