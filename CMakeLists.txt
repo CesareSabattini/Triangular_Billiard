@@ -4,7 +4,6 @@ project(Triangular_Pool)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-
 find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
@@ -12,6 +11,14 @@ include_directories(${PROJECT_SOURCE_DIR}/src/classes)
 include_directories(${PROJECT_SOURCE_DIR}/libs)
 
 add_compile_options(-Wall -Wextra -pedantic)
+
+    set(SANITIZE_FLAGS "-fsanitize=address -fno-omit-frame-pointer -g")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SANITIZE_FLAGS}")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${SANITIZE_FLAGS}")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${SANITIZE_FLAGS}")
+    set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} ${SANITIZE_FLAGS}")
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${SANITIZE_FLAGS}")
+
 
 add_library(core_lib
     src/simulation/Ball.cpp

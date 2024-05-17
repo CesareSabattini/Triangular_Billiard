@@ -9,7 +9,7 @@ SimulationWindow::SimulationWindow(std::shared_ptr<sf::RenderWindow> window,
                  AppStyle::Colors::opaqueBlack,
                  AppStyle::Colors::opaqueBlack.Blue,
                  AppStyle::Colors::opaqueBlack.Black, AppStyle::Colors::cream,
-                 font, "Menu", 20),
+                 "Menu", 20),
       legend(std::vector<LegendItem<double>>{},
              sf::Vector2f(window->getSize().x / 6, window->getSize().y / 4),
              AppStyle::Colors::opaqueBlack, sf::Color::White)

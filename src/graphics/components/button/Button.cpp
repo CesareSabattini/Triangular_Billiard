@@ -2,7 +2,7 @@
 
 Button::Button(sf::Vector2f p_position, sf::Vector2f p_size, sf::Color p_color,
                sf::Color p_hoverColor, sf::Color p_clickColor,
-               sf::Color p_textColor, sf::Font &p_font, std::string p_text,
+               sf::Color p_textColor, std::string p_text,
                unsigned int p_textSize)
     : color(p_color), hoverColor(p_hoverColor), clickColor(p_clickColor),
       isHover(false), isClick(false) {
@@ -10,7 +10,11 @@ Button::Button(sf::Vector2f p_position, sf::Vector2f p_size, sf::Color p_color,
     button.setSize(p_size);
     button.setFillColor(color);
 
-    text.setFont(p_font);
+    if (!font.loadFromFile("../resources/theme_font.ttf")) {
+        std::cerr << "Error loading font" << std::endl;
+    }
+
+    text.setFont(font);
     text.setString(p_text);
     text.setCharacterSize(p_textSize);
     text.setFillColor(p_textColor);

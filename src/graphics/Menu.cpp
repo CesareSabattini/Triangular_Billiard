@@ -6,11 +6,11 @@ Menu::Menu(std::shared_ptr<sf::RenderWindow> window,
       configButton(sf::Vector2f(0, 0), sf::Vector2f(0, 0),
                    AppStyle::Colors::cream, AppStyle::Colors::cream.Blue,
                    AppStyle::Colors::cream.Black, AppStyle::Colors::bgCyan,
-                   font, "Simulation", 30),
+                   "Simulation", 30),
       analysisButton(sf::Vector2f(0, 0), sf::Vector2f(0, 0),
                      AppStyle::Colors::cream, AppStyle::Colors::cream.Blue,
                      AppStyle::Colors::cream.Black, AppStyle::Colors::bgCyan,
-                     font, "Data Analysis", 30) {
+                     "Data Analysis", 30) {
 
     if (!font.loadFromFile("../resources/theme_font.ttf")) {
         std::cerr << "Error loading font" << std::endl;
