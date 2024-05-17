@@ -53,7 +53,10 @@ class Analyzer {
         T upper_boundT = M_PI / 2;
         T sigma2 = M_PI / 6;
 
-        for (int i = 0; i < numSimulations; i++) {
+        for (std::allocator<std::array<double, 2>>::size_type i = 0;
+             i < static_cast<std::allocator<std::array<double, 2>>::size_type>(
+                     numSimulations);
+             i++) {
             std::normal_distribution<T> distribution2(0, sigma2);
             T value;
             do {
@@ -65,7 +68,8 @@ class Analyzer {
 
     void simulate() {
         for (int i = 0; i < numSimulations; i++) {
-            system->updateParams(inputs[i]);
+            system->updateParams(inputs[static_cast<
+                std::allocator<std::array<double, 2>>::size_type>(i)]);
             system->simulate();
             std::cout << "Simulation " << i + 1 << " completed." << std::endl;
 
@@ -120,7 +124,7 @@ class Analyzer {
                                     return a + b[0];
                                 });
 
-            return sum / outputs.size();
+            return sum / static_cast<T>(outputs.size());
         }
     }
 
@@ -149,7 +153,7 @@ class Analyzer {
                                     return a + b[1];
                                 });
 
-            return sum / outputs.size();
+            return sum / static_cast<T>(outputs.size());
         }
     }
 
@@ -176,7 +180,7 @@ class Analyzer {
                                     return (a + (b[0] - m) * (b[0] - m));
                                 });
 
-            return std::sqrt(sum_squares / (outputs.size()));
+            return std::sqrt(sum_squares / static_cast<T>(outputs.size()));
         }
     }
 
@@ -202,7 +206,7 @@ class Analyzer {
                                     return (a + (b[1] - m) * (b[1] - m));
                                 });
 
-            return std::sqrt(sum_squares / (outputs.size()));
+            return std::sqrt(sum_squares / static_cast<T>(outputs.size()));
         }
     }
 

@@ -65,7 +65,7 @@ template <typename T> void Ball<T>::setPos(const std::array<T, 2> &p_pos) {
     }
 }
 
-template <typename T> void Ball<T>::setTheta(double p_theta) {
+template <typename T> void Ball<T>::setTheta(T p_theta) {
     if (p_theta >= -M_PI / 2 && p_theta <= M_PI / 2) {
         theta = p_theta;
     } else {
@@ -74,7 +74,7 @@ template <typename T> void Ball<T>::setTheta(double p_theta) {
     }
 }
 
-template <typename T> double Ball<T>::getTheta() const { return theta; }
+template <typename T> T Ball<T>::getTheta() const { return theta; }
 
 template class Ball<int>;
 template class Ball<float>;

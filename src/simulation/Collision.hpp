@@ -15,7 +15,7 @@ template <typename T> class Collision {
     Collision(T p_x, T p_y, T p_theta);
     ~Collision();
     std::array<T, 2> getPos() const;
-    double getTheta() const;
+    T getTheta() const;
     void setTheta(double p_theta);
     T getTime() const;
     void setTime(const T &p_time);
@@ -25,7 +25,7 @@ template <typename T> class Collision {
     /*
     theta rispetto all'asse x
     */
-    double theta;
+    T theta;
     T time;
 };
 

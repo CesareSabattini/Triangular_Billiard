@@ -52,10 +52,11 @@ template <typename T> void System<T>::throwTheBall() {
 
     const T alpha = std::atan((pool.getR1() - pool.getR2()) / pool.getL());
 
-    if (abs(ball.getPos()[1]) >= pool.getR2() &&
-        abs(ball.getPos()[1]) <= pool.getR1() && ball.getPos()[1] >= 0 &&
-        abs(ball.getTheta()) <=
-            std::atan((abs(ball.getPos()[1]) - pool.getR2()) / pool.getL()) &&
+    if (std::abs(ball.getPos()[1]) >= pool.getR2() &&
+        std::abs(ball.getPos()[1]) <= pool.getR1() && ball.getPos()[1] >= 0 &&
+        std::abs(ball.getTheta()) <=
+            std::atan((std::abs(ball.getPos()[1]) - pool.getR2()) /
+                      pool.getL()) &&
         ball.getTheta() < 0) {
 
         T newTheta = ball.getTheta() + 2 * alpha;
@@ -73,10 +74,11 @@ template <typename T> void System<T>::throwTheBall() {
             ball.setPos({newX, newY});
         }
 
-    } else if (abs(ball.getPos()[1]) >= pool.getR2() &&
-               abs(ball.getPos()[1]) <= pool.getR1() && ball.getPos()[1] < 0 &&
-               abs(ball.getTheta()) <
-                   std::atan((abs(ball.getPos()[1]) - pool.getR2()) /
+    } else if (std::abs(ball.getPos()[1]) >= pool.getR2() &&
+               std::abs(ball.getPos()[1]) <= pool.getR1() &&
+               ball.getPos()[1] < 0 &&
+               std::abs(ball.getTheta()) <
+                   std::atan((std::abs(ball.getPos()[1]) - pool.getR2()) /
                              pool.getL()) &&
                ball.getTheta() > 0) {
 
@@ -126,9 +128,9 @@ template <typename T> void System<T>::computeNextCollision() {
             ball.setPos({newX, newY});
         }
     } else if (collisions[collisions.size() - 1].getTheta() < 0) {
-        T newTheta = -(
-            collisions[collisions.size() - 1].getTheta() -
-            2 * (std::atan(abs((pool.getR2() - pool.getR1()) / pool.getL()))));
+        T newTheta = -(collisions[collisions.size() - 1].getTheta() -
+                       2 * (std::atan(std::abs((pool.getR2() - pool.getR1()) /
+                                               pool.getL()))));
 
         T newX = (pool.getR1() -
                   std::tan(collisions[collisions.size() - 1].getTheta()) *

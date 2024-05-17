@@ -3,11 +3,11 @@
 #include "TextInput.hpp"
 
 TextInput::TextInput(sf::Vector2f position, sf::Vector2f size,
-                     unsigned int fontSize, const sf::Color backgroundColor,
+                     unsigned int fontSize, const sf::Color p_backgroundColor,
                      const sf::Color &p_textColor,
                      const std::string &p_propName,
                      const std::string &p_defaultText)
-    : isFocused(false), backgroundColor(backgroundColor),
+    : isFocused(false), backgroundColor(p_backgroundColor),
       textColor(p_textColor), propName(p_propName), defaultText(p_defaultText) {
 
     font.loadFromFile("../resources/theme_font.ttf");
@@ -73,7 +73,7 @@ void TextInput::setPosition(sf::Vector2f position) {
 }
 
 void TextInput::setSize(sf::Vector2f size) {
-    displayText.setCharacterSize(size.y / 4);
+    displayText.setCharacterSize(static_cast<unsigned int>(size.y / 4));
     sf::Vector2f inputBoxSize(size.x,
                               size.y - propText.getGlobalBounds().height - 5);
     inputBox.setSize(inputBoxSize);

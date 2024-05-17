@@ -30,7 +30,7 @@ template <typename T> std::array<T, 2> Collision<T>::getPos() const {
     return pos;
 }
 
-template <typename T> double Collision<T>::getTheta() const { return theta; }
+template <typename T> T Collision<T>::getTheta() const { return theta; }
 
 template <typename T> void Collision<T>::setTheta(double p_theta) {
     theta = p_theta;

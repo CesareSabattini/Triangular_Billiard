@@ -24,9 +24,9 @@ template <typename T> class Ball {
 
     ~Ball();
     std::array<T, 2> &getPos();
-    double getTheta() const;
+    T getTheta() const;
     void setPos(const std::array<T, 2> &p_pos);
-    void setTheta(double p_theta);
+    void setTheta(T p_theta);
 
   private:
     std::array<T, 2> pos;

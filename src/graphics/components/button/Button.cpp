@@ -30,7 +30,8 @@ void Button::draw(sf::RenderWindow &window) {
 
 void Button::update(sf::RenderWindow &window) {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-    if (button.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+    if (button.getGlobalBounds().contains(static_cast<float>(mousePos.x),
+                                          static_cast<float>(mousePos.y))) {
         button.setFillColor(hoverColor);
         isHover = true;
     } else {

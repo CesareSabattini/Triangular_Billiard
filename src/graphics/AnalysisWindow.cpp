@@ -1,9 +1,9 @@
 #include "AnalysisWindow.hpp"
 
-AnalysisWindow::AnalysisWindow(std::shared_ptr<sf::RenderWindow> window,
-                               std::shared_ptr<System<double>> system,
-                               Scene &selectedScene)
-    : system(system), window(window), selectedScene(selectedScene),
+AnalysisWindow::AnalysisWindow(std::shared_ptr<sf::RenderWindow> p_window,
+                               std::shared_ptr<System<double>> p_system,
+                               Scene &p_selectedScene)
+    : system(p_system), window(p_window), selectedScene(p_selectedScene),
       menuButton(sf::Vector2f(0, 0), sf::Vector2f(0, 0),
                  AppStyle::Colors::cream, AppStyle::Colors::cream.Blue,
                  AppStyle::Colors::cream.Black, AppStyle::Colors::bgCyan,
@@ -39,13 +39,14 @@ void AnalysisWindow::initializeComponents() {
     title.setString("Simulation Analysis");
     title.setCharacterSize(window->getSize().x / 20);
     title.setFillColor(AppStyle::Colors::bgCyan);
-    title.setPosition(
-        window->getSize().x / 2 - title.getGlobalBounds().width / 2, 50);
+    title.setPosition(static_cast<float>(window->getSize().x) / 2.f -
+                          title.getGlobalBounds().width / 2.f,
+                      50.f);
 
     titleBox.setSize(sf::Vector2f(title.getGlobalBounds().width + 50,
                                   title.getGlobalBounds().height + 50));
     titleBox.setFillColor(AppStyle::Colors::cream);
-    titleBox.setPosition(window->getSize().x / 2 -
+    titleBox.setPosition(static_cast<float>(window->getSize().x) / 2.f -
                              titleBox.getGlobalBounds().width / 2,
                          title.getPosition().y);
 
@@ -56,21 +57,24 @@ void AnalysisWindow::initializeComponents() {
                                     menuButton.getGlobalBounds().height / 2});
 
     inputBox.setSize(
-        sf::Vector2f(window->getSize().x / 3, window->getSize().y / 2));
+        sf::Vector2f(static_cast<float>(window->getSize().x) / 3.f,
+                     static_cast<float>(window->getSize().y) / 2.f));
     inputBox.setFillColor(AppStyle::Colors::opaqueBlack);
-    inputBox.setPosition(window->getSize().x / 4 -
+    inputBox.setPosition(static_cast<float>(window->getSize().x) / 4.f -
                              inputBox.getGlobalBounds().width / 2,
-                         window->getSize().y / 5);
+                         static_cast<float>(window->getSize().y) / 5.f);
 
-    double textInputWidth = inputBox.getGlobalBounds().width * 0.8;
-    double textInputHeight =
-        inputBox.getGlobalBounds().height / (textInputs.size() + 3);
-    for (int i = 0; i < static_cast<int>(textInputs.size()); i++) {
+    float textInputWidth = inputBox.getGlobalBounds().width * 0.8f;
+    float textInputHeight = inputBox.getGlobalBounds().height /
+                            (static_cast<float>(textInputs.size()) + 3.f);
+    for (std::array<TextInput, 4>::size_type i = 0; i < textInputs.size();
+         i++) {
         textInputs[i].setSize(sf::Vector2f(textInputWidth, textInputHeight));
         textInputs[i].setPosition(sf::Vector2f(
-            inputBox.getPosition().x + inputBox.getGlobalBounds().width / 2 -
+            inputBox.getPosition().x + inputBox.getGlobalBounds().width / 2.f -
                 textInputWidth / 2,
-            inputBox.getPosition().y + i * textInputHeight * 1.3 +
+            inputBox.getPosition().y +
+                static_cast<float>(i) * textInputHeight * 1.3f +
                 textInputHeight / 2));
     }
 
@@ -92,10 +96,12 @@ void AnalysisWindow::initializeComponents() {
     resultsText.setFillColor(AppStyle::Colors::bgCyan);
 
     resultsPanel.setSize(
-        sf::Vector2f(window->getSize().x / 3, window->getSize().y / 2));
+        sf::Vector2f(static_cast<float>(window->getSize().x) / 3,
+                     static_cast<float>(window->getSize().y) / 2));
     resultsPanel.setPosition(
-        {window->getSize().x * 3.0f / 4.0f - window->getSize().x / 6.0f,
-         window->getSize().y / 5.0f});
+        {static_cast<float>(window->getSize().x) * 3.0f / 4.0f -
+             static_cast<float>(window->getSize().x) / 6.0f,
+         static_cast<float>(window->getSize().y) / 5.0f});
 }
 
 void AnalysisWindow::draw() {
@@ -127,7 +133,8 @@ void AnalysisWindow::processEvents() {
             bool anyInputFocused = false;
             for (auto &textInput : textInputs) {
                 if (textInput.inputBox.getGlobalBounds().contains(
-                        mousePosition.x, mousePosition.y)) {
+                        static_cast<float>(mousePosition.x),
+                        static_cast<float>(mousePosition.y))) {
                     textInput.setFocus(true);
                     anyInputFocused = true;
                 } else {
@@ -148,12 +155,14 @@ void AnalysisWindow::processEvents() {
             }
         }
 
-        if (menuButton.getGlobalBounds().contains(event.mouseButton.x,
-                                                  event.mouseButton.y)) {
+        if (menuButton.getGlobalBounds().contains(
+                static_cast<float>(event.mouseButton.x),
+                static_cast<float>(event.mouseButton.y))) {
             selectedScene = Scene::MENU;
         }
-        if (analyzeButton.getGlobalBounds().contains(event.mouseButton.x,
-                                                     event.mouseButton.y)) {
+        if (analyzeButton.getGlobalBounds().contains(
+                static_cast<float>(event.mouseButton.x),
+                static_cast<float>(event.mouseButton.y))) {
             const int numSimulations = std::stoi(textInputs[3].getText());
             system->updateParams(0, 0, std::stod(textInputs[0].getText()),
                                  std::stod(textInputs[1].getText()),
