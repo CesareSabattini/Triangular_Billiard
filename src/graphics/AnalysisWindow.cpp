@@ -3,7 +3,21 @@
 AnalysisWindow::AnalysisWindow(std::shared_ptr<sf::RenderWindow> window,
                                std::shared_ptr<System<double>> system,
                                Scene &selectedScene)
-    : window(window), system(system), selectedScene(selectedScene),
+    : system(system), window(window), selectedScene(selectedScene),
+      menuButton(sf::Vector2f(0, 0), sf::Vector2f(0, 0),
+                 AppStyle::Colors::cream, AppStyle::Colors::cream.Blue,
+                 AppStyle::Colors::cream.Black, AppStyle::Colors::bgCyan, font,
+                 "Menu", 20),
+      analyzeButton(sf::Vector2f(0, 0), sf::Vector2f(0, 0),
+                    AppStyle::Colors::cream, AppStyle::Colors::cream.Blue,
+                    AppStyle::Colors::cream.Black, AppStyle::Colors::bgCyan,
+                    font, "Analyze", 30),
+      resultsPanel({LegendItem<double>("Mean Y", 0.00, "m"),
+                    LegendItem<double>("Std Y", 0.00, "m"),
+                    LegendItem<double>("Mean Theta", 0.00, "rad"),
+                    LegendItem<double>("Std Theta", 0.00, "rad")},
+                   sf::Vector2f(20, 20), AppStyle::Colors::opaqueBlack,
+                   sf::Color::White),
       textInputs({TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
                             AppStyle::Colors::cream, AppStyle::Colors::bgCyan,
                             "Pool length", "1000"),
@@ -15,21 +29,7 @@ AnalysisWindow::AnalysisWindow(std::shared_ptr<sf::RenderWindow> window,
                             "End radius", "100"),
                   TextInput(sf::Vector2f(100, 500), sf::Vector2f(200, 50), 24,
                             AppStyle::Colors::cream, AppStyle::Colors::bgCyan,
-                            "Num Simulations", "100")}),
-      resultsPanel({LegendItem<double>("Mean Y", 0.00, "m"),
-                    LegendItem<double>("Std Y", 0.00, "m"),
-                    LegendItem<double>("Mean Theta", 0.00, "rad"),
-                    LegendItem<double>("Std Theta", 0.00, "rad")},
-                   sf::Vector2f(20, 20), AppStyle::Colors::opaqueBlack,
-                   sf::Color::White),
-      analyzeButton(sf::Vector2f(0, 0), sf::Vector2f(0, 0),
-                    AppStyle::Colors::cream, AppStyle::Colors::cream.Blue,
-                    AppStyle::Colors::cream.Black, AppStyle::Colors::bgCyan,
-                    font, "Analyze", 30),
-      menuButton(sf::Vector2f(0, 0), sf::Vector2f(0, 0),
-                 AppStyle::Colors::cream, AppStyle::Colors::cream.Blue,
-                 AppStyle::Colors::cream.Black, AppStyle::Colors::bgCyan, font,
-                 "Menu", 20) {
+                            "Num Simulations", "100")}) {
     font.loadFromFile("../resources/theme_font.ttf");
     initializeComponents();
 }
@@ -65,7 +65,7 @@ void AnalysisWindow::initializeComponents() {
     double textInputWidth = inputBox.getGlobalBounds().width * 0.8;
     double textInputHeight =
         inputBox.getGlobalBounds().height / (textInputs.size() + 3);
-    for (int i = 0; i < textInputs.size(); i++) {
+    for (int i = 0; i < static_cast<int>(textInputs.size()); i++) {
         textInputs[i].setSize(sf::Vector2f(textInputWidth, textInputHeight));
         textInputs[i].setPosition(sf::Vector2f(
             inputBox.getPosition().x + inputBox.getGlobalBounds().width / 2 -

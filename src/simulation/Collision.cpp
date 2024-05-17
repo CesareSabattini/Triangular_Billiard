@@ -4,13 +4,12 @@ template <typename T>
 
 Collision<T>::Collision(T p_x, T p_y, T p_theta, T p_time)
     : pos({p_x, p_y}), theta(p_theta), time(p_time) {
-    p_x >= 0
-        ?: throw std::invalid_argument(
-               "Collision: x must be greater than or equal to 0");
+    if (p_theta < -M_PI / 2 || p_theta > M_PI / 2)
+        throw std::invalid_argument(
+            "theta must be between -half pi and half pi");
 
-    p_time >= 0
-        ?: throw std::invalid_argument(
-               "time must be greater than or equal to 0");
+    if (p_x < 0)
+        throw std::invalid_argument("x must be greater than or equal to 0");
 }
 
 template <typename T>

@@ -1,13 +1,14 @@
 #include "TextInput.hpp"
 
 #include "TextInput.hpp"
+
 TextInput::TextInput(sf::Vector2f position, sf::Vector2f size,
                      unsigned int fontSize, const sf::Color backgroundColor,
                      const sf::Color &p_textColor,
                      const std::string &p_propName,
                      const std::string &p_defaultText)
-    : isFocused(false), textColor(p_textColor), propName(p_propName),
-      defaultText(p_defaultText), backgroundColor(backgroundColor) {
+    : isFocused(false), backgroundColor(backgroundColor),
+      textColor(p_textColor), propName(p_propName), defaultText(p_defaultText) {
 
     font.loadFromFile("../resources/theme_font.ttf");
     font2.loadFromFile("../resources/theme_font.ttf");

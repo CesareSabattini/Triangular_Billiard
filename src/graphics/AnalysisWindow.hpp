@@ -21,25 +21,24 @@ class AnalysisWindow {
     void processEvents();
 
   private:
-    Scene &selectedScene;
-    std::shared_ptr<sf::RenderWindow> window;
     std::shared_ptr<System<double>> system;
+    std::shared_ptr<sf::RenderWindow> window;
+    Scene &selectedScene;
+    Button menuButton;
+    Button analyzeButton;
+    Legend<double> resultsPanel;
+    std::array<TextInput, 4> textInputs;
+
     sf::Font font;
     sf::Text title;
     sf::RectangleShape titleBox;
-
-    Button menuButton;
-
-    Button analyzeButton;
 
     sf::Texture backgroundTexture;
     sf::Sprite bg;
 
     sf::RectangleShape inputBox;
-    std::array<TextInput, 4> textInputs;
 
     sf::Text resultsText;
-    Legend<double> resultsPanel;
 
     void initializeComponents();
 };

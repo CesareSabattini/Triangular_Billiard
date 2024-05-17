@@ -48,7 +48,7 @@ template <typename T>
 void Legend<T>::setPosition(const sf::Vector2f &position) {
     background.setPosition(position);
     float heightPortion = background.getSize().y / texts.size();
-    for (int i = 0; i < texts.size(); i++) {
+    for (int i = 0; i < static_cast<int>(texts.size()); i++) {
         texts[i].setPosition(position.x + 10,
                              position.y + i * heightPortion + 10);
     }
@@ -57,7 +57,7 @@ void Legend<T>::setPosition(const sf::Vector2f &position) {
 template <typename T> void Legend<T>::setSize(const sf::Vector2f &size) {
     background.setSize(size);
     float heightPortion = size.y / texts.size();
-    for (int i = 0; i < texts.size(); i++) {
+    for (int i = 0; i < static_cast<int>(texts.size()); i++) {
         texts[i].setPosition(background.getPosition().x + 10,
                              background.getPosition().y + i * heightPortion +
                                  10);
@@ -76,7 +76,7 @@ template <typename T> void Legend<T>::addItem(const LegendItem<T> &item) {
 }
 
 template <typename T> void Legend<T>::removeItem(const std::string &name) {
-    for (int i = 0; i < items.size(); i++) {
+    for (int i = 0; i < static_cast<int>(items.size()); i++) {
         if (items[i].getName() == name) {
             items.erase(items.begin() + i);
             texts.erase(texts.begin() + i);

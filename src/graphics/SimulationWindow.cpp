@@ -4,16 +4,17 @@
 SimulationWindow::SimulationWindow(std::shared_ptr<sf::RenderWindow> window,
                                    std::shared_ptr<System<double>> system,
                                    Scene &scene)
-    : window(window), system(system),
-      legend(std::vector<LegendItem<double>>{},
-             sf::Vector2f(window->getSize().x / 6, window->getSize().y / 4),
-             AppStyle::Colors::opaqueBlack, sf::Color::White),
-      selectedScene(scene),
+    : system(system), window(window), selectedScene(scene),
       menuButton(sf::Vector2f(0, 0), sf::Vector2f(0, 0),
                  AppStyle::Colors::opaqueBlack,
                  AppStyle::Colors::opaqueBlack.Blue,
                  AppStyle::Colors::opaqueBlack.Black, AppStyle::Colors::cream,
-                 font, "Menu", 20) {
+                 font, "Menu", 20),
+      legend(std::vector<LegendItem<double>>{},
+             sf::Vector2f(window->getSize().x / 6, window->getSize().y / 4),
+             AppStyle::Colors::opaqueBlack, sf::Color::White)
+
+{
 
     if (!font.loadFromFile("../resources/theme_font.ttf")) {
         std::cerr << "Error loading font" << std::endl;
@@ -87,27 +88,38 @@ void SimulationWindow::draw() {
     }
     double wallThickness = 10;
     sf::Color wallColor = sf::Color::Black;
+    // Calcolo dell'angolo di inclinazione delle pareti
+    float deltaHeight =
+        (window->getSize().y / 4) *
+        (pool.getR2() - pool.getR1()); // Differenza di altezza tra la base
+                                       // maggiore e la minore
+    float trapezoidLength =
+        window->getSize().x *
+        (pool.getL() /
+         window->getSize()
+             .x); // Lunghezza del trapezio proporzionata alla finestra
+    float angle = std::atan(deltaHeight / trapezoidLength) * 180 /
+                  M_PI; // Angolo in gradi
 
-    float angle =
-        std::atan((((window->getSize().y / 4) * pool.getR2() / pool.getR1()) -
-                   window->getSize().y / 4) /
-                  window->getSize().x) *
-        180 / M_PI;
-
+    // Parete superiore inclinata
     sf::RectangleShape inclinedUpperWall(
-        sf::Vector2f(window->getSize().x, wallThickness));
+        sf::Vector2f(trapezoidLength, wallThickness));
     inclinedUpperWall.setPosition(
         0, window->getSize().y / 2 - window->getSize().y / 4 - wallThickness);
-    inclinedUpperWall.setRotation(-angle);
+    inclinedUpperWall.setRotation(
+        -angle); // Inclinazione negativa per la parete superiore
     inclinedUpperWall.setFillColor(wallColor);
 
+    // Parete inferiore inclinata
     sf::RectangleShape inclinedLowerWall(
-        sf::Vector2f(window->getSize().x, wallThickness));
+        sf::Vector2f(trapezoidLength, wallThickness));
     inclinedLowerWall.setPosition(0, window->getSize().y / 2 +
-
                                          window->getSize().y / 4);
-    inclinedLowerWall.setRotation(angle);
+    inclinedLowerWall.setRotation(
+        angle); // Inclinazione positiva per la parete inferiore
     inclinedLowerWall.setFillColor(wallColor);
+
+    // Disegno delle pareti nel contesto della finestra
 
     legend.setPosition(
         sf::Vector2f(window->getSize().x - window->getSize().x / 6 - 20, 20));

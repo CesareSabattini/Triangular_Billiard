@@ -19,17 +19,17 @@ class ConfigSimulation {
     void processEvents();
 
   private:
+    std::shared_ptr<System<double>> system;
+    std::shared_ptr<sf::RenderWindow> window;
     Scene &selectedScene;
     SimulationWindow &simulationWindow;
-    std::shared_ptr<sf::RenderWindow> window;
-    std::shared_ptr<System<double>> system;
+    Button startButton;
+    Button menuButton;
     sf::Font font;
     sf::Text title;
     sf::RectangleShape titleBox;
     sf::RectangleShape inputBox;
-    Button startButton;
     std::array<TextInput, 5> textInputs;
-    Button menuButton;
 
     void initializeComponents();
 };

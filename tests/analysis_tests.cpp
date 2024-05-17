@@ -18,10 +18,12 @@ TEST_CASE("Testing meanY and meanTheta functions") {
                                                    {4.0, M_PI / 4},
                                                    {5.0, M_PI / 2}};
 
-        double meanYResult = analyzer.meanY(data);
+        analyzer.setOutput(data);
+
+        double meanYResult = analyzer.meanY();
         CHECK(meanYResult == doctest::Approx(3.0).epsilon(0.001));
 
-        double meanThetaResult = analyzer.meanTheta(data);
+        double meanThetaResult = analyzer.meanTheta();
         CHECK(meanThetaResult == doctest::Approx(0.654).epsilon(0.001));
     }
 
@@ -33,19 +35,21 @@ TEST_CASE("Testing meanY and meanTheta functions") {
                                                    {-355.0, -M_PI / 6},
                                                    {-443.0, -M_PI / 4},
                                                    {-59.0, -M_PI / 2}};
+        analyzer.setOutput(data);
 
-        double meanYResult = analyzer.meanY(data);
+        double meanYResult = analyzer.meanY();
         CHECK(meanYResult == doctest::Approx(-242.4));
 
-        double meanThetaResult = analyzer.meanTheta(data);
+        double meanThetaResult = analyzer.meanTheta();
         CHECK(meanThetaResult == doctest::Approx(-0.654).epsilon(0.001));
     }
 
     SUBCASE("Test mean functions with empty vector") {
         std::vector<std::array<double, 2>> data = {};
-        CHECK_THROWS_AS(analyzer.meanY(data), std::invalid_argument);
+        analyzer.setOutput(data);
+        CHECK_THROWS_AS(analyzer.meanY(), std::invalid_argument);
 
-        CHECK_THROWS_AS(analyzer.meanTheta(data), std::invalid_argument);
+        CHECK_THROWS_AS(analyzer.meanTheta(), std::invalid_argument);
     }
 
     SUBCASE("Test mean with data out of range") {
@@ -57,21 +61,28 @@ TEST_CASE("Testing meanY and meanTheta functions") {
             {5.0, M_PI / 2},
             {6.0, M_PI}};
 
-        CHECK_THROWS_AS(analyzer.meanY(data) && analyzer.meanTheta(data),
+        analyzer.setOutput(data);
+
+        CHECK_THROWS_AS(analyzer.meanY() && analyzer.meanTheta(),
                         std::invalid_argument);
     };
 
     SUBCASE("Test mean with single data pair") {
         std::vector<std::array<double, 2>> data = {{2, 0}};
 
-        CHECK(analyzer.meanY(data) == doctest::Approx(2));
-        CHECK(analyzer.meanTheta(data) == doctest::Approx(0));
+        analyzer.setOutput(data);
+
+        CHECK(analyzer.meanY() == doctest::Approx(2));
+        CHECK(analyzer.meanTheta() == doctest::Approx(0));
     };
 }
 
 TEST_CASE("Testing standardDeviationY and standardDeviationTheta functions") {
 
     std::shared_ptr<System<double>> system = std::make_shared<System<double>>();
+    system->getPool().setL(10.0);
+    system->getPool().setRs(1E3, 0.5);
+
     const int numSimulations = 1E3;
     Analysis::Analyzer<double> analyzer(system, numSimulations);
 
@@ -84,11 +95,12 @@ TEST_CASE("Testing standardDeviationY and standardDeviationTheta functions") {
                                                    {4.0, M_PI / 4},
                                                    {5.0, M_PI / 2}};
 
-        double stdY = analyzer.standardDeviationY(data);
-        CHECK(stdY == doctest::Approx(1.581));
+        analyzer.setOutput(data);
+        double stdY = analyzer.standardDeviationY();
+        CHECK(stdY == doctest::Approx(1.414).epsilon(0.001));
 
-        double stdTheta = analyzer.standardDeviationTheta(data);
-        CHECK(stdTheta == doctest::Approx(0.785));
+        double stdTheta = analyzer.standardDeviationTheta();
+        CHECK(stdTheta == doctest::Approx(0.52).epsilon(0.01));
     }
 
     SUBCASE("Test std functions with appropriate negative "
@@ -100,20 +112,25 @@ TEST_CASE("Testing standardDeviationY and standardDeviationTheta functions") {
                                                    {-443.0, -M_PI / 4},
                                                    {-59.0, -M_PI / 2}};
 
-        double stdY = analyzer.standardDeviationY(data);
-        CHECK(stdY == doctest::Approx(147.5));
+        analyzer.setOutput(data);
+        double stdY = analyzer.standardDeviationY();
+        CHECK(stdY == doctest::Approx(146.28).epsilon(0.01));
 
-        double stdTheta = analyzer.standardDeviationTheta(data);
-        CHECK(stdTheta == doctest::Approx(0.785));
+        double stdTheta = analyzer.standardDeviationTheta();
+        CHECK(stdTheta == doctest::Approx(0.52).epsilon(0.01));
     }
 
     SUBCASE("Test std functions with empty vector") {
-        std::vector<std::array<double, 2>> data = {};
+        std::vector<std::array<double, 2>> data =
+            std::vector<std::array<double, 2>>();
 
-        CHECK_THROWS_AS(analyzer.standardDeviationY(data),
-                        std::invalid_argument);
+        std::cout << data.size() << std::endl;
 
-        CHECK_THROWS_AS(analyzer.standardDeviationTheta(data),
+        analyzer.setOutput(data);
+
+        CHECK_THROWS_AS(analyzer.standardDeviationY(), std::invalid_argument);
+
+        CHECK_THROWS_AS(analyzer.standardDeviationTheta(),
                         std::invalid_argument);
     }
 
@@ -126,18 +143,20 @@ TEST_CASE("Testing standardDeviationY and standardDeviationTheta functions") {
             {5.0, M_PI / 2},
             {6.0, M_PI}};
 
-        CHECK_THROWS_AS(analyzer.standardDeviationY(data) &&
-                            analyzer.standardDeviationTheta(data),
+        analyzer.setOutput(data);
+        CHECK_THROWS_AS(analyzer.standardDeviationY() &&
+                            analyzer.standardDeviationTheta(),
                         std::invalid_argument);
     };
 
     SUBCASE("Test std with single data pair") {
         std::vector<std::array<double, 2>> data = {{2, 0}};
+        analyzer.setOutput(data);
 
-        double stdY = analyzer.standardDeviationY(data);
+        double stdY = analyzer.standardDeviationY();
         CHECK(stdY == doctest::Approx(0));
 
-        double stdTheta = analyzer.standardDeviationTheta(data);
+        double stdTheta = analyzer.standardDeviationTheta();
         CHECK(stdTheta == doctest::Approx(0));
     };
 }

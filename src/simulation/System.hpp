@@ -22,9 +22,7 @@ template <typename T> class System {
 
     Ball<T> &getBall();
     Pool<T> &getPool();
-    T getTime() const;
     std::vector<Collision<T>> &getCollisions();
-    void setTime(const T &p_time);
     void computeNextCollision();
     T computeOutputY();
     void throwTheBall();
@@ -36,7 +34,6 @@ template <typename T> class System {
   private:
     Ball<T> ball;
     Pool<T> pool;
-    T time;
     std::vector<Collision<T>> collisions;
 };
 

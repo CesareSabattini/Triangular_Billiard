@@ -4,7 +4,17 @@ ConfigSimulation::ConfigSimulation(std::shared_ptr<sf::RenderWindow> window,
                                    std::shared_ptr<System<double>> system,
                                    Scene &p_selectedScene,
                                    SimulationWindow &simulationWindow)
-    : window(window), system(system), selectedScene(p_selectedScene),
+    : system(system), window(window), selectedScene(p_selectedScene),
+      simulationWindow(simulationWindow),
+      startButton(sf::Vector2f(0, 0), sf::Vector2f(0, 0),
+                  AppStyle::Colors::darkGreen, AppStyle::Colors::darkGreen.Blue,
+                  AppStyle::Colors::darkGreen.Black, AppStyle::Colors::cream,
+                  font, "Start Simulation", 20),
+      menuButton(sf::Vector2f(0, 0), sf::Vector2f(0, 0),
+                 AppStyle::Colors::cream, AppStyle::Colors::cream.Blue,
+                 AppStyle::Colors::cream.Black, AppStyle::Colors::bgCyan, font,
+                 "Menu", 20),
+
       textInputs({TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
                             AppStyle::Colors::cream, AppStyle::Colors::bgCyan,
                             "Ball start Angle (radians)", "1"),
@@ -19,16 +29,7 @@ ConfigSimulation::ConfigSimulation(std::shared_ptr<sf::RenderWindow> window,
                             "Start Radius", "200"),
                   TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
                             AppStyle::Colors::cream, AppStyle::Colors::bgCyan,
-                            "End radius", "100")}),
-      simulationWindow(simulationWindow),
-      menuButton(sf::Vector2f(0, 0), sf::Vector2f(0, 0),
-                 AppStyle::Colors::cream, AppStyle::Colors::cream.Blue,
-                 AppStyle::Colors::cream.Black, AppStyle::Colors::bgCyan, font,
-                 "Menu", 20),
-      startButton(sf::Vector2f(0, 0), sf::Vector2f(0, 0),
-                  AppStyle::Colors::darkGreen, AppStyle::Colors::darkGreen.Blue,
-                  AppStyle::Colors::darkGreen.Black, AppStyle::Colors::cream,
-                  font, "Start Simulation", 20) {
+                            "End radius", "100")}) {
 
     if (!font.loadFromFile("../resources/theme_font.ttf")) {
         std::cerr << "Error loading font" << std::endl;
@@ -61,8 +62,8 @@ void ConfigSimulation::initializeComponents() {
 
     double startButtonWidth = inputBoxWidth / 2;
     double startButtonHeight = inputBoxHeight / 10;
-    double startButtonX = window->getSize().x / 2 - startButtonWidth / 2;
-    double startButtonY = inputBoxY + inputBoxHeight - startButtonHeight - 20;
+    float startButtonX = window->getSize().x / 2 - startButtonWidth / 2;
+    float startButtonY = inputBoxY + inputBoxHeight - startButtonHeight - 20;
     startButton.setSize(sf::Vector2f(startButtonWidth, startButtonHeight));
     startButton.setPosition({startButtonX, startButtonY});
 
@@ -71,7 +72,7 @@ void ConfigSimulation::initializeComponents() {
     menuButton.setPosition({50, 50 + title.getGlobalBounds().height / 2 -
                                     menuButton.getGlobalBounds().height / 2});
 
-    for (int i = 0; i < textInputs.size(); i++) {
+    for (int i = 0; i < static_cast<int>(textInputs.size()); i++) {
         textInputs[i].setPosition(
             sf::Vector2f(inputBoxX + 10, inputBoxY + 10 + i * 120));
         textInputs[i].setSize(sf::Vector2f(inputBoxWidth - 20, 120));
@@ -133,10 +134,10 @@ void ConfigSimulation::processEvents() {
                 simulationWindow.getLegend().clearItems();
                 simulationWindow.getLegend().addItems(
                     {LegendItem<double>(
-                         std::string("End X:"),
+                         std::string("End X"),
                          system->getCollisions().back().getPos()[0], "m"),
                      LegendItem<double>(
-                         std::string("End Y:"),
+                         std::string("End Y"),
                          system->getCollisions().back().getPos()[1], "m"),
                      LegendItem<double>(
                          "End Theta", system->getCollisions().back().getTheta(),

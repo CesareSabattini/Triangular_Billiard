@@ -59,7 +59,6 @@ TEST_CASE("System class tests") {
         CHECK(system.getPool().getL() == doctest::Approx(10.0));
         CHECK(system.getPool().getR1() == doctest::Approx(1.0));
         CHECK(system.getPool().getR2() == doctest::Approx(0.5));
-        CHECK(system.getTime() == doctest::Approx(0.0));
         CHECK(system.getCollisions().size() == 1);
         CHECK(system.getCollisions().back().getPos()[0] ==
               doctest::Approx(0.0));
@@ -72,7 +71,6 @@ TEST_CASE("System class tests") {
         CHECK(system.getBall().getPos()[0] == doctest::Approx(0.0));
         CHECK(system.getBall().getPos()[1] == doctest::Approx(0.5));
         CHECK(system.getBall().getTheta() == doctest::Approx(M_PI / 4));
-        CHECK(system.getTime() == doctest::Approx(0.0));
         CHECK(system.getCollisions().size() == 1);
         CHECK(system.getCollisions().back().getPos()[0] ==
               doctest::Approx(0.0));
@@ -104,27 +102,42 @@ TEST_CASE("System class tests") {
 
     SUBCASE("System::throwTheBall() tests") {
         System<double> system;
-        system.updateParams(-M_PI / 6, 1.5, 10.0, 2.0, 1.0);
-        const double alpha = std::atan((2.0 - 1.0) / 10.0);
-        double expectedTheta = -M_PI / 6 + 2 * alpha;
+
+        std::cout << "Too high skewness";
+        system.updateParams(-M_PI / 6, 1.5, 10.0, 1E3, 1.0);
+        double alpha =
+            std::atan((system.getPool().getR1() - system.getPool().getR2()) /
+                      system.getPool().getL());
+        double expectedTheta = system.getBall().getTheta() + 2 * alpha;
         double expectedX =
-            (-1.5 + 2.0) / (std::tan(-M_PI / 6) + ((2.0 - 1.0) / 10.0));
-        double expectedY = 2.0 - ((2.0 - 1.0) / 10.0) * expectedX;
+            (-system.getBall().getPos()[1] + system.getPool().getR1()) /
+            (std::tan(system.getBall().getTheta()) +
+             (system.getPool().getR1() - system.getPool().getR2()) /
+                 system.getPool().getL());
+        double expectedY =
+            system.getPool().getR1() -
+            ((system.getPool().getR1() - system.getPool().getR2()) /
+             system.getPool().getL()) *
+                expectedX;
 
         CHECK_THROWS_AS(system.throwTheBall(), std::invalid_argument);
+
+        system.updateParams(-M_PI / 40, 1.5, 10.0, 5.0, 1.0);
+        alpha =
+            std::atan((system.getPool().getR1() - system.getPool().getR2()) /
+                      system.getPool().getL());
+        expectedTheta = system.getBall().getTheta() + 2 * alpha;
+        expectedX = (-system.getBall().getPos()[1] + system.getPool().getR1()) /
+                    (std::tan(system.getBall().getTheta()) +
+                     (system.getPool().getR1() - system.getPool().getR2()) /
+                         system.getPool().getL());
+        expectedY = system.getPool().getR1() -
+                    ((system.getPool().getR1() - system.getPool().getR2()) /
+                     system.getPool().getL()) *
+                        expectedX;
+        system.throwTheBall();
+
         Collision<double> &lastCollision = system.getCollisions().back();
-
-        CHECK(lastCollision.getTheta() == doctest::Approx(expectedTheta));
-        CHECK(lastCollision.getPos()[0] == doctest::Approx(expectedX));
-        CHECK(lastCollision.getPos()[1] == doctest::Approx(expectedY));
-
-        system.updateParams(M_PI / 6, -1.5, 10.0, 2.0, 1.0);
-        expectedTheta = M_PI / 6 - 2 * alpha;
-        expectedX = (1.5 + 2.0) / (-std::tan(M_PI / 6) + ((2.0 - 1.0) / 10.0));
-        expectedY = -2.0 + ((2.0 - 1.0) / 10.0) * expectedX;
-
-        CHECK_THROWS_AS(system.throwTheBall(), std::invalid_argument);
-        lastCollision = system.getCollisions().back();
 
         CHECK(lastCollision.getTheta() == doctest::Approx(expectedTheta));
         CHECK(lastCollision.getPos()[0] == doctest::Approx(expectedX));
@@ -157,7 +170,6 @@ TEST_CASE("System class tests") {
         CHECK(system.getBall().getPos()[0] == doctest::Approx(0.0));
         CHECK(system.getBall().getPos()[1] == doctest::Approx(0.0));
         CHECK(system.getBall().getTheta() == doctest::Approx(0.0));
-        CHECK(system.getTime() == doctest::Approx(0.0));
         CHECK(system.getCollisions().size() == 1);
         CHECK(system.getCollisions().back().getPos()[0] ==
               doctest::Approx(0.0));

@@ -18,9 +18,9 @@ class Menu {
     void processEvents();
 
   private:
-    Scene &selectedScene;
-    std::shared_ptr<sf::RenderWindow> window;
     std::shared_ptr<System<double>> system;
+    std::shared_ptr<sf::RenderWindow> window;
+    Scene &selectedScene;
     sf::Font font;
     sf::Text title;
     sf::RectangleShape titleBox;

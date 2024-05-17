@@ -21,19 +21,18 @@ class SimulationWindow {
     Legend<double> &getLegend() { return legend; }
 
   private:
-    std::shared_ptr<sf::RenderWindow> window;
     std::shared_ptr<System<double>> system;
-
-    sf::Texture backgroundTexture;
-    sf::Sprite bg;
-
-    sf::Font font;
+    std::shared_ptr<sf::RenderWindow> window;
+    Scene &selectedScene;
 
     Button menuButton;
 
     Legend<double> legend;
 
-    Scene &selectedScene;
+    sf::Texture backgroundTexture;
+    sf::Sprite bg;
+
+    sf::Font font;
 
     void initializeComponents();
 };

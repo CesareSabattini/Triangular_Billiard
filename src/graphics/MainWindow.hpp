@@ -17,11 +17,11 @@ class MainWindow {
     Scene selectedScene;
 
   private:
-    std::shared_ptr<sf::RenderWindow> window;
     std::shared_ptr<System<double>> system;
+    std::shared_ptr<sf::RenderWindow> window;
     Menu menu;
-    SimulationWindow simulationWindow;
     ConfigSimulation configSimulation;
+    SimulationWindow simulationWindow;
     AnalysisWindow analysisWindow;
 
     void switchToConfig();

@@ -1,14 +1,14 @@
 #include "MainWindow.hpp"
 
 MainWindow::MainWindow()
-    : window(std::make_shared<sf::RenderWindow>(
+    : selectedScene(Scene::MENU), system(std::make_shared<System<double>>()),
+      window(std::make_shared<sf::RenderWindow>(
           sf::VideoMode(sf::VideoMode::getFullscreenModes()[0]),
           "Triangular Pool Simulation")),
-      system(std::make_shared<System<double>>()),
+
       menu(window, system, selectedScene),
       configSimulation(window, system, selectedScene, simulationWindow),
       simulationWindow(window, system, selectedScene),
-      selectedScene(Scene::MENU),
       analysisWindow(window, system, selectedScene) {
     window->setPosition(sf::Vector2i(0, 0));
 }

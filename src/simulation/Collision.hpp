@@ -21,7 +21,7 @@ template <typename T> class Collision {
     void setTime(const T &p_time);
 
   private:
-    std::array<T, 2> pos;
+    std::array<T, 2> pos = {0, 0};
     /*
     theta rispetto all'asse x
     */

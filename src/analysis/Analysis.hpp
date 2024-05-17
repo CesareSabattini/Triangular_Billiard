@@ -81,10 +81,10 @@ class Analyzer {
         }
     }
     void analyze() {
-        results.meanY = meanY(outputs);
-        results.meanTheta = meanTheta(outputs);
-        results.stdY = standardDeviationY(outputs);
-        results.stdTheta = standardDeviationTheta(outputs);
+        results.meanY = meanY();
+        results.meanTheta = meanTheta();
+        results.stdY = standardDeviationY();
+        results.stdTheta = standardDeviationTheta();
     }
     void printResults() {
         std::cout << "Results: " << std::endl;
@@ -95,118 +95,127 @@ class Analyzer {
                   << std::endl;
     }
 
-    T meanY(const std::vector<std::array<T, 2>> &values) {
+    T meanY() {
 
-        auto it = std::find_if(
-            values.begin(), values.end(), [this](const std::array<T, 2> &elem) {
-                return elem[0] < -system->getPool().getR1() ||
-                       elem[0] > system->getPool().getR1();
-            });
+        auto it =
+            std::find_if(outputs.begin(), outputs.end(),
+                         [this](const std::array<T, 2> &elem) {
+                             return elem[0] < -system->getPool().getR1() ||
+                                    elem[0] > system->getPool().getR1();
+                         });
 
-        if (it != values.end()) {
+        if (it != outputs.end()) {
             throw std::invalid_argument(
-                "MeanY: Y values must be in [-r1, r1].");
+                "MeanY: Y outputs must be in [-r1, r1].");
         } else {
-            if (values.empty())
+            if (outputs.empty())
                 throw std::invalid_argument("Empty vector.");
 
-            if (values.size() == 1)
-                return values[0][0];
+            if (outputs.size() == 1)
+                return outputs[0][0];
 
             T sum =
-                std::accumulate(values.begin(), values.end(), T(0),
+                std::accumulate(outputs.begin(), outputs.end(), T(0),
                                 [this](const T &a, const std::array<T, 2> &b) {
                                     return a + b[0];
                                 });
 
-            return sum / values.size();
+            return sum / outputs.size();
         }
     }
 
-    T meanTheta(const std::vector<std::array<T, 2>> &values) {
+    T meanTheta() {
 
-        auto it = std::find_if(
-            values.begin(), values.end(), [this](const std::array<T, 2> &elem) {
-                return elem[1] < -M_PI / 2 || elem[1] > M_PI / 2;
-            });
+        auto it =
+            std::find_if(outputs.begin(), outputs.end(),
+                         [this](const std::array<T, 2> &elem) {
+                             return elem[1] < -M_PI / 2 || elem[1] > M_PI / 2;
+                         });
 
-        if (it != values.end()) {
+        if (it != outputs.end()) {
             throw std::invalid_argument(
-                "Theta values must be in [-pi/2, pi/2].");
+                "Theta outputs must be in [-pi/2, pi/2].");
 
         } else {
-            if (values.empty())
+            if (outputs.empty())
                 throw std::invalid_argument("Empty vector.");
 
-            if (values.size() == 1)
-                return values[0][1];
+            if (outputs.size() == 1)
+                return outputs[0][1];
 
             T sum =
-                std::accumulate(values.begin(), values.end(), T(0),
+                std::accumulate(outputs.begin(), outputs.end(), T(0),
                                 [this](const T &a, const std::array<T, 2> &b) {
                                     return a + b[1];
                                 });
 
-            return sum / values.size();
+            return sum / outputs.size();
         }
     }
 
-    T standardDeviationY(const std::vector<std::array<T, 2>> &values) {
+    T standardDeviationY() {
 
-        auto it = std::find_if(
-            values.begin(), values.end(), [this](const std::array<T, 2> &elem) {
-                return elem[0] < -system->getPool().getR1() ||
-                       elem[0] > system->getPool().getR1();
-            });
+        auto it =
+            std::find_if(outputs.begin(), outputs.end(),
+                         [this](const std::array<T, 2> &elem) {
+                             return elem[0] < -system->getPool().getR1() ||
+                                    elem[0] > system->getPool().getR1();
+                         });
 
-        if (it != values.end())
-            throw std::invalid_argument("Y values must be in [-r1, r1].");
+        if (it != outputs.end())
+            throw std::invalid_argument("Y outputs must be in [-r1, r1].");
         else {
-            if (values.empty())
-                return T(0);
+            if (outputs.empty())
+                throw std::invalid_argument("Empty vector.");
 
-            T m = meanY(values);
+            T m = meanY();
 
             T sum_squares =
-                std::accumulate(values.begin(), values.end(), T(0),
+                std::accumulate(outputs.begin(), outputs.end(), T(0),
                                 [m](const T &a, const std::array<T, 2> &b) {
                                     return (a + (b[0] - m) * (b[0] - m));
                                 });
 
-            return std::sqrt(sum_squares / (values.size()));
+            return std::sqrt(sum_squares / (outputs.size()));
         }
     }
 
-    T standardDeviationTheta(const std::vector<std::array<T, 2>> &values) {
+    T standardDeviationTheta() {
 
-        auto it = std::find_if(
-            values.begin(), values.end(), [this](const std::array<T, 2> &elem) {
-                return elem[1] < -M_PI / 2 || elem[1] > M_PI / 2;
-            });
+        auto it =
+            std::find_if(outputs.begin(), outputs.end(),
+                         [this](const std::array<T, 2> &elem) {
+                             return elem[1] < -M_PI / 2 || elem[1] > M_PI / 2;
+                         });
 
-        if (it != values.end())
-            throw std::invalid_argument("Y values must be in [-r1, r1].");
+        if (it != outputs.end())
+            throw std::invalid_argument("Y outputs must be in [-r1, r1].");
         else {
-            if (values.empty())
-                return T(0);
+            if (outputs.empty())
+                throw std::invalid_argument("Empty vector.");
 
-            T m = meanTheta(values);
+            T m = meanTheta();
 
             T sum_squares =
-                std::accumulate(values.begin(), values.end(), T(0),
+                std::accumulate(outputs.begin(), outputs.end(), T(0),
                                 [m](const T &a, const std::array<T, 2> &b) {
                                     return (a + (b[1] - m) * (b[1] - m));
                                 });
 
-            return std::sqrt(sum_squares / (values.size()));
+            return std::sqrt(sum_squares / (outputs.size()));
         }
     }
 
     Results<T> getResults() { return results; }
 
+    // for testing purposes only
+    void setOutput(const std::vector<std::array<T, 2>> &p_outputs) {
+        outputs = p_outputs;
+    }
+
   private:
-    int numSimulations;
     std::shared_ptr<System<T>> system;
+    int numSimulations;
     std::vector<std::array<T, 2>> inputs;
     std::vector<std::array<T, 2>> outputs;
     Results<T> results;

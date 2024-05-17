@@ -11,6 +11,8 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/src/classes)
 include_directories(${PROJECT_SOURCE_DIR}/libs)
 
+add_compile_options(-Wall -Wextra -pedantic)
+
 add_library(core_lib
     src/simulation/Ball.cpp
     src/simulation/Pool.cpp
