@@ -1,7 +1,7 @@
 #ifndef LEGEND_HPP
 #define LEGEND_HPP
 
-#include "LegendItem.hpp"
+#include "legendItem.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <string>

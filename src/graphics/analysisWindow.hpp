@@ -1,32 +1,31 @@
 #ifndef ANALYSISWINDOW_HPP
 #define ANALYSISWINDOW_HPP
 
-#include "../analysis/Analysis.hpp"
-#include "../analysis/Results.hpp"
-#include "../graphics/components/button/Button.hpp"
-#include "../graphics/components/legend/Legend.hpp"
-#include "../simulation/System.hpp"
-#include "AppStyle.hpp"
-#include "Scene.hpp"
-#include "components/textInput/TextInput.hpp"
+#include "../analysis/analysis.hpp"
+#include "../analysis/results.hpp"
+#include "../graphics/components/button/button.hpp"
+#include "../graphics/components/legend/legend.hpp"
+#include "../simulation/system.hpp"
+#include "appStyle.hpp"
+#include "components/textInput/textInput.hpp"
+#include "scene.hpp"
 #include <SFML/Graphics.hpp>
 #include <memory>
 
 class AnalysisWindow {
   public:
     AnalysisWindow(std::shared_ptr<sf::RenderWindow> window,
-                   std::shared_ptr<System<double>> system,
-                   Scene &selectedScene);
+                   std::shared_ptr<System<float>> system, Scene &selectedScene);
     void draw();
     void processEvents();
 
   private:
-    std::shared_ptr<System<double>> system;
+    std::shared_ptr<System<float>> system;
     std::shared_ptr<sf::RenderWindow> window;
     Scene &selectedScene;
     Button menuButton;
     Button analyzeButton;
-    Legend<double> resultsPanel;
+    Legend<float> resultsPanel;
     std::array<TextInput, 4> textInputs;
 
     sf::Font font;

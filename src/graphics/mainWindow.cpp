@@ -1,7 +1,7 @@
-#include "MainWindow.hpp"
+#include "mainWindow.hpp"
 
 MainWindow::MainWindow()
-    : selectedScene(Scene::MENU), system(std::make_shared<System<double>>()),
+    : selectedScene(Scene::MENU), system(std::make_shared<System<float>>()),
       window(std::make_shared<sf::RenderWindow>(
           sf::VideoMode(sf::VideoMode::getFullscreenModes()[0]),
           "Triangular Pool Simulation")),

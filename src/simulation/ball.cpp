@@ -1,5 +1,5 @@
 
-#include "Ball.hpp"
+#include "ball.hpp"
 
 template <typename T> Ball<T>::Ball() {}
 

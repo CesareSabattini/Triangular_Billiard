@@ -1,4 +1,4 @@
-#include "LegendItem.hpp"
+#include "legendItem.hpp"
 
 template <typename T>
 

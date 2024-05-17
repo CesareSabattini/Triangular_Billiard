@@ -1,9 +1,9 @@
 #ifndef SYSTEM_HPP
 #define SYSTEM_HPP
 
-#include "Ball.hpp"
-#include "Collision.hpp"
-#include "Pool.hpp"
+#include "ball.hpp"
+#include "collision.hpp"
+#include "pool.hpp"
 #include <mutex>
 #include <type_traits>
 #include <vector>

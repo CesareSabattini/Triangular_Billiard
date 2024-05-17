@@ -1,4 +1,4 @@
-#include "../src/analysis/Analysis.hpp"
+#include "../src/analysis/analysis.hpp"
 #include "doctest.h"
 
 TEST_CASE("Testing meanY and meanTheta functions") {

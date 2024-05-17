@@ -1,4 +1,4 @@
-#include "graphics/MainWindow.hpp"
+#include "graphics/mainWindow.hpp"
 
 int main() {
     MainWindow mainWindow;

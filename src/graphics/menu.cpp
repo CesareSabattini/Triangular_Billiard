@@ -1,8 +1,8 @@
-#include "Menu.hpp"
+#include "menu.hpp"
 
-Menu::Menu(std::shared_ptr<sf::RenderWindow> window,
-           std::shared_ptr<System<double>> system, Scene &p_selectedScene)
-    : system(system), window(window), selectedScene(p_selectedScene),
+Menu::Menu(std::shared_ptr<sf::RenderWindow> p_window,
+           std::shared_ptr<System<float>> p_system, Scene &p_selectedScene)
+    : system(p_system), window(p_window), selectedScene(p_selectedScene),
       configButton(sf::Vector2f(0, 0), sf::Vector2f(0, 0),
                    AppStyle::Colors::cream, AppStyle::Colors::cream.Blue,
                    AppStyle::Colors::cream.Black, AppStyle::Colors::bgCyan,
@@ -23,37 +23,48 @@ Menu::Menu(std::shared_ptr<sf::RenderWindow> window,
         bg.setTexture(backgroundTexture);
     }
 
-    bg.setScale(window->getSize().x / (2 * bg.getLocalBounds().width),
-                window->getSize().y / bg.getLocalBounds().height);
+    bg.setScale(static_cast<float>(window->getSize().x) /
+                    (2 * bg.getLocalBounds().width),
+                static_cast<float>(window->getSize().y) /
+                    bg.getLocalBounds().height);
 
-    bg.setPosition(window->getSize().x / 2 - bg.getGlobalBounds().width / 2,
-                   window->getSize().y / 2 - bg.getGlobalBounds().height / 2);
+    bg.setPosition(static_cast<float>(window->getSize().x) / 2.0f -
+                       static_cast<float>(bg.getGlobalBounds().width) / 2.f,
+                   static_cast<float>(window->getSize().y) / 2.0f -
+                       bg.getGlobalBounds().height / 2.f);
 }
 void Menu::initializeComponents() {
     title.setFont(font);
     title.setString("Triangular Pool Simulation");
-    title.setCharacterSize(window->getSize().x / 20);
+    title.setCharacterSize(static_cast<unsigned int>(
+        static_cast<float>(window->getSize().x) / 20.f));
     title.setFillColor(AppStyle::Colors::bgCyan);
-    title.setPosition(
-        window->getSize().x / 2 - title.getGlobalBounds().width / 2, 50);
+    title.setPosition(static_cast<float>(window->getSize().x) / 2.f -
+                          title.getGlobalBounds().width / 2.f,
+                      50.f);
 
     titleBox.setSize(sf::Vector2f(title.getGlobalBounds().width + 50,
                                   title.getGlobalBounds().height + 50));
     titleBox.setFillColor(AppStyle::Colors::cream);
-    titleBox.setPosition(window->getSize().x / 2 -
-                             titleBox.getGlobalBounds().width / 2,
+    titleBox.setPosition(static_cast<float>(window->getSize().x) / 2.f -
+                             titleBox.getGlobalBounds().width / 2.f,
                          title.getPosition().y);
 
-    float buttonWidth = window->getSize().x / 4;
-    float buttonHeight = window->getSize().y / 10;
+    float buttonWidth = static_cast<float>(window->getSize().x) / 4.f;
+    float buttonHeight = static_cast<float>(window->getSize().y) / 10.f;
 
-    float configButtonX = window->getSize().x / 4 - buttonWidth / 2;
-    float configButtonY = window->getSize().y / 2 - buttonHeight / 2;
+    float configButtonX =
+        static_cast<float>(window->getSize().x) / 4.f - buttonWidth / 2.f;
+    float configButtonY =
+        static_cast<float>(window->getSize().y) / 2.f - buttonHeight / 2.f;
     configButton.setSize(sf::Vector2f(buttonWidth, buttonHeight));
     configButton.setPosition({configButtonX, configButtonY});
 
-    float analysisButtonX = 3 * window->getSize().x / 4 - buttonWidth / 2;
-    float analysisButtonY = window->getSize().y / 2 - buttonHeight / 2;
+    float analysisButtonX =
+        3.f * static_cast<float>(window->getSize().x) / 4.f -
+        static_cast<float>(buttonWidth) / 2.f;
+    float analysisButtonY =
+        static_cast<float>(window->getSize().y) / 2.f - buttonHeight / 2.f;
     analysisButton.setSize(sf::Vector2f(buttonWidth, buttonHeight));
 
     analysisButton.setPosition({analysisButtonX, analysisButtonY});
@@ -82,13 +93,15 @@ void Menu::processEvents() {
             event.mouseButton.button == sf::Mouse::Left) {
             sf::Vector2i mousePosition = sf::Mouse::getPosition(*window);
 
-            if (configButton.getGlobalBounds().contains(mousePosition.x,
-                                                        mousePosition.y)) {
+            if (configButton.getGlobalBounds().contains(
+                    static_cast<float>(mousePosition.x),
+                    static_cast<float>(mousePosition.y))) {
 
                 selectedScene = Scene::CONFIG;
             }
-            if (analysisButton.getGlobalBounds().contains(mousePosition.x,
-                                                          mousePosition.y)) {
+            if (analysisButton.getGlobalBounds().contains(
+                    static_cast<float>(mousePosition.x),
+                    static_cast<float>(mousePosition.y))) {
                 selectedScene = Scene::ANALYSIS;
             }
         }

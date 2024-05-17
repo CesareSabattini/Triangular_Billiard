@@ -1,4 +1,4 @@
-#include "Button.hpp"
+#include "button.hpp"
 
 Button::Button(sf::Vector2f p_position, sf::Vector2f p_size, sf::Color p_color,
                sf::Color p_hoverColor, sf::Color p_clickColor,

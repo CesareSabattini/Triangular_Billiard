@@ -1,8 +1,8 @@
 #ifndef ANALYSIS_HPP
 #define ANALYSIS_HPP
 
-#include "../simulation/System.hpp"
-#include "./Results.hpp"
+#include "../simulation/system.hpp"
+#include "./results.hpp"
 #include <array>
 #include <cmath>
 #include <concepts>
@@ -49,9 +49,9 @@ class Analyzer {
             inputs.push_back({value, 0});
         }
 
-        T lower_boundT = -M_PI / 2;
-        T upper_boundT = M_PI / 2;
-        T sigma2 = M_PI / 6;
+        T lower_boundT = -static_cast<T>(M_PI / 2);
+        T upper_boundT = static_cast<T>(M_PI / 2);
+        T sigma2 = static_cast<T>(M_PI / 6);
 
         for (std::allocator<std::array<double, 2>>::size_type i = 0;
              i < static_cast<std::allocator<std::array<double, 2>>::size_type>(

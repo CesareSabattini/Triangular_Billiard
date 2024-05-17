@@ -1,4 +1,4 @@
-#include "Pool.hpp"
+#include "pool.hpp"
 
 template <typename T> Pool<T>::Pool() : l(0), r1(0), r2(0) {}
 template <typename T>

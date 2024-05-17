@@ -6,10 +6,10 @@
 namespace AppStyle {
 
 struct Colors {
-    static sf::Color bgCyan;
-    static sf::Color cream;
-    static sf::Color darkGreen;
-    static sf::Color opaqueBlack;
+  static sf::Color bgCyan;
+  static sf::Color cream;
+  static sf::Color darkGreen;
+  static sf::Color opaqueBlack;
 };
 
 } // namespace AppStyle

@@ -1,4 +1,4 @@
-#include "AppStyle.hpp"
+#include "appStyle.hpp"
 
 namespace AppStyle {
 

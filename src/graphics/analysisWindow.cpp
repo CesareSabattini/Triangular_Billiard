@@ -1,7 +1,7 @@
-#include "AnalysisWindow.hpp"
+#include "analysisWindow.hpp"
 
 AnalysisWindow::AnalysisWindow(std::shared_ptr<sf::RenderWindow> p_window,
-                               std::shared_ptr<System<double>> p_system,
+                               std::shared_ptr<System<float>> p_system,
                                Scene &p_selectedScene)
     : system(p_system), window(p_window), selectedScene(p_selectedScene),
       menuButton(sf::Vector2f(0, 0), sf::Vector2f(0, 0),
@@ -12,10 +12,10 @@ AnalysisWindow::AnalysisWindow(std::shared_ptr<sf::RenderWindow> p_window,
                     AppStyle::Colors::cream, AppStyle::Colors::cream.Blue,
                     AppStyle::Colors::cream.Black, AppStyle::Colors::bgCyan,
                     "Analyze", 30),
-      resultsPanel({LegendItem<double>("Mean Y", 0.00, "m"),
-                    LegendItem<double>("Std Y", 0.00, "m"),
-                    LegendItem<double>("Mean Theta", 0.00, "rad"),
-                    LegendItem<double>("Std Theta", 0.00, "rad")},
+      resultsPanel({LegendItem<float>("Mean Y", 0.00, "m"),
+                    LegendItem<float>("Std Y", 0.00, "m"),
+                    LegendItem<float>("Mean Theta", 0.00, "rad"),
+                    LegendItem<float>("Std Theta", 0.00, "rad")},
                    sf::Vector2f(20, 20), AppStyle::Colors::opaqueBlack,
                    sf::Color::White),
       textInputs({TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
@@ -164,10 +164,10 @@ void AnalysisWindow::processEvents() {
                 static_cast<float>(event.mouseButton.x),
                 static_cast<float>(event.mouseButton.y))) {
             const int numSimulations = std::stoi(textInputs[3].getText());
-            system->updateParams(0, 0, std::stod(textInputs[0].getText()),
-                                 std::stod(textInputs[1].getText()),
-                                 std::stod(textInputs[2].getText()));
-            Analysis::Analyzer<double> analyzer(system, numSimulations);
+            system->updateParams(0, 0, std::stof(textInputs[0].getText()),
+                                 std::stof(textInputs[1].getText()),
+                                 std::stof(textInputs[2].getText()));
+            Analysis::Analyzer<float> analyzer(system, numSimulations);
             analyzer.generate();
             analyzer.simulate();
             analyzer.analyze();
@@ -175,12 +175,12 @@ void AnalysisWindow::processEvents() {
             resultsPanel.clearItems();
             sf::Vector2f currentPos = resultsPanel.getPosition();
             resultsPanel.addItems(
-                {LegendItem<double>("Mean Y", analyzer.getResults().meanY, "m"),
-                 LegendItem<double>("Std Y", analyzer.getResults().stdY, "m"),
-                 LegendItem<double>("Mean Theta",
-                                    analyzer.getResults().meanTheta, "rad"),
-                 LegendItem<double>("Std Theta", analyzer.getResults().stdTheta,
-                                    "rad")});
+                {LegendItem<float>("Mean Y", analyzer.getResults().meanY, "m"),
+                 LegendItem<float>("Std Y", analyzer.getResults().stdY, "m"),
+                 LegendItem<float>("Mean Theta",
+                                   analyzer.getResults().meanTheta, "rad"),
+                 LegendItem<float>("Std Theta", analyzer.getResults().stdTheta,
+                                   "rad")});
             resultsPanel.setPosition(currentPos);
         }
     }

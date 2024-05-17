@@ -1,5 +1,5 @@
 
-#include "System.hpp"
+#include "system.hpp"
 
 template <typename T> System<T>::System() : ball(), pool() {}
 
@@ -50,7 +50,8 @@ template <typename T> std::vector<Collision<T>> &System<T>::getCollisions() {
 
 template <typename T> void System<T>::throwTheBall() {
 
-    const T alpha = std::atan((pool.getR1() - pool.getR2()) / pool.getL());
+    const T alpha =
+        static_cast<T>(std::atan((pool.getR1() - pool.getR2()) / pool.getL()));
 
     if (std::abs(ball.getPos()[1]) >= pool.getR2() &&
         std::abs(ball.getPos()[1]) <= pool.getR1() && ball.getPos()[1] >= 0 &&
@@ -60,9 +61,9 @@ template <typename T> void System<T>::throwTheBall() {
         ball.getTheta() < 0) {
 
         T newTheta = ball.getTheta() + 2 * alpha;
-        T newX = (-ball.getPos()[1] + pool.getR1()) /
-                 (std::tan(ball.getTheta()) +
-                  (pool.getR1() - pool.getR2()) / pool.getL());
+        T newX = static_cast<T>((-ball.getPos()[1] + pool.getR1()) /
+                                (std::tan(ball.getTheta()) +
+                                 (pool.getR1() - pool.getR2()) / pool.getL()));
         T newY =
             pool.getR1() - ((pool.getR1() - pool.getR2()) / pool.getL()) * newX;
 
@@ -83,11 +84,12 @@ template <typename T> void System<T>::throwTheBall() {
                ball.getTheta() > 0) {
 
         T newTheta = ball.getTheta() - 2 * alpha;
-        T newX = (ball.getPos()[1] + pool.getR1()) /
-                 (-std::tan(ball.getTheta()) +
-                  (pool.getR1() - pool.getR2()) / pool.getL());
-        T newY = -pool.getR1() +
-                 ((pool.getR1() - pool.getR2()) / pool.getL()) * newX;
+        T newX = static_cast<T>((ball.getPos()[1] + pool.getR1()) /
+                                (-std::tan(ball.getTheta()) +
+                                 (pool.getR1() - pool.getR2()) / pool.getL()));
+        T newY = -static_cast<T>(pool.getR1() +
+                                 ((pool.getR1() - pool.getR2()) / pool.getL()) *
+                                     newX);
 
         if (newTheta > M_PI / 2 || newTheta < -M_PI / 2)
             throw std::invalid_argument(
@@ -102,15 +104,17 @@ template <typename T> void System<T>::throwTheBall() {
 template <typename T> void System<T>::computeNextCollision() {
 
     if (collisions[collisions.size() - 1].getTheta() >= 0) {
-        T newTheta = -(collisions[collisions.size() - 1].getTheta() +
-                       2 * (std::atan(std::abs((pool.getR2() - pool.getR1()) /
-                                               pool.getL()))));
+        T newTheta = -static_cast<T>(
+            (collisions[collisions.size() - 1].getTheta() +
+             2 * (std::atan(
+                     std::abs((pool.getR2() - pool.getR1()) / pool.getL())))));
 
-        T newX = (pool.getR1() - collisions[collisions.size() - 1].getPos()[1] +
-                  std::tan(collisions[collisions.size() - 1].getTheta()) *
-                      collisions[collisions.size() - 1].getPos()[0]) /
-                 (std::tan(collisions[collisions.size() - 1].getTheta()) +
-                  (pool.getR1() - pool.getR2()) / pool.getL());
+        T newX = static_cast<T>(
+            (pool.getR1() - collisions[collisions.size() - 1].getPos()[1] +
+             std::tan(collisions[collisions.size() - 1].getTheta()) *
+                 collisions[collisions.size() - 1].getPos()[0]) /
+            (std::tan(collisions[collisions.size() - 1].getTheta()) +
+             (pool.getR1() - pool.getR2()) / pool.getL()));
 
         T newY =
             pool.getR1() - ((pool.getR1() - pool.getR2()) / pool.getL()) * newX;
@@ -128,16 +132,18 @@ template <typename T> void System<T>::computeNextCollision() {
             ball.setPos({newX, newY});
         }
     } else if (collisions[collisions.size() - 1].getTheta() < 0) {
-        T newTheta = -(collisions[collisions.size() - 1].getTheta() -
-                       2 * (std::atan(std::abs((pool.getR2() - pool.getR1()) /
-                                               pool.getL()))));
+        T newTheta = -static_cast<T>(
+            (collisions[collisions.size() - 1].getTheta() -
+             2 * (std::atan(
+                     std::abs((pool.getR2() - pool.getR1()) / pool.getL())))));
 
-        T newX = (pool.getR1() -
-                  std::tan(collisions[collisions.size() - 1].getTheta()) *
-                      collisions[collisions.size() - 1].getPos()[0] +
-                  collisions[collisions.size() - 1].getPos()[1]) /
-                 (-std::tan(collisions[collisions.size() - 1].getTheta()) +
-                  (pool.getR1() - pool.getR2()) / pool.getL());
+        T newX = static_cast<T>(
+            (pool.getR1() -
+             std::tan(collisions[collisions.size() - 1].getTheta()) *
+                 collisions[collisions.size() - 1].getPos()[0] +
+             collisions[collisions.size() - 1].getPos()[1]) /
+            (-std::tan(collisions[collisions.size() - 1].getTheta()) +
+             (pool.getR1() - pool.getR2()) / pool.getL()));
 
         T newY = -pool.getR1() +
                  ((pool.getR1() - pool.getR2()) / pool.getL()) * newX;
@@ -159,9 +165,10 @@ template <typename T> void System<T>::computeNextCollision() {
 }
 
 template <typename T> T System<T>::computeOutputY() {
-    T y = collisions[collisions.size() - 1].getPos()[1] +
-          std::tan(collisions[collisions.size() - 1].getTheta()) *
-              (pool.getL() - collisions[collisions.size() - 1].getPos()[0]);
+    T y = static_cast<T>(
+        collisions[collisions.size() - 1].getPos()[1] +
+        std::tan(collisions[collisions.size() - 1].getTheta()) *
+            (pool.getL() - collisions[collisions.size() - 1].getPos()[0]));
     return y;
 }
 

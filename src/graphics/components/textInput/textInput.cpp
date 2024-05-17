@@ -1,6 +1,4 @@
-#include "TextInput.hpp"
-
-#include "TextInput.hpp"
+#include "textInput.hpp"
 
 TextInput::TextInput(sf::Vector2f position, sf::Vector2f size,
                      unsigned int fontSize, const sf::Color p_backgroundColor,

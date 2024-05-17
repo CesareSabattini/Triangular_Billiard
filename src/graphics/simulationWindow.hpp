@@ -1,33 +1,33 @@
 #ifndef SIMULATION_WINDOW_HPP
 #define SIMULATION_WINDOW_HPP
 
-#include "../simulation/System.hpp"
-#include "AppStyle.hpp"
-#include "Scene.hpp"
-#include "components/button/Button.hpp"
-#include "components/legend/Legend.hpp"
+#include "../simulation/system.hpp"
+#include "appStyle.hpp"
+#include "components/button/button.hpp"
+#include "components/legend/legend.hpp"
+#include "scene.hpp"
 #include <SFML/Graphics.hpp>
 #include <memory>
 
 class SimulationWindow {
   public:
     SimulationWindow(std::shared_ptr<sf::RenderWindow> window,
-                     std::shared_ptr<System<double>> system,
+                     std::shared_ptr<System<float>> system,
                      Scene &selectedScene);
 
     void draw();
     void processEvents();
 
-    Legend<double> &getLegend() { return legend; }
+    Legend<float> &getLegend() { return legend; }
 
   private:
-    std::shared_ptr<System<double>> system;
+    std::shared_ptr<System<float>> system;
     std::shared_ptr<sf::RenderWindow> window;
     Scene &selectedScene;
 
     Button menuButton;
 
-    Legend<double> legend;
+    Legend<float> legend;
 
     sf::Texture backgroundTexture;
     sf::Sprite bg;

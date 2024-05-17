@@ -1,4 +1,4 @@
-#include "Legend.hpp"
+#include "legend.hpp"
 
 template <typename T>
 Legend<T>::Legend(std::vector<LegendItem<T>> p_items, sf::Vector2f p_size,

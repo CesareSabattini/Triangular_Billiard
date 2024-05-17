@@ -1,4 +1,4 @@
-#include "Collision.hpp"
+#include "collision.hpp"
 
 template <typename T>
 
@@ -32,7 +32,7 @@ template <typename T> std::array<T, 2> Collision<T>::getPos() const {
 
 template <typename T> T Collision<T>::getTheta() const { return theta; }
 
-template <typename T> void Collision<T>::setTheta(double p_theta) {
+template <typename T> void Collision<T>::setTheta(T p_theta) {
     theta = p_theta;
 }
 

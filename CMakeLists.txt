@@ -21,22 +21,22 @@ set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${SANITIZE_FLAGS}")
 
 
 add_library(core_lib
-    src/simulation/Ball.cpp
-    src/simulation/Pool.cpp
-    src/simulation/Collision.cpp
-    src/simulation/System.cpp
-    src/graphics/MainWindow.cpp
-    src/graphics/Menu.cpp
-    src/graphics/ConfigSimulation.cpp
-    src/graphics/SimulationWindow.cpp
-    src/graphics/AnalysisWindow.cpp
-    src/graphics/components/textInput/TextInput.cpp
-    src/graphics/components/legend/Legend.cpp
-    src/graphics/components/legend/LegendItem.cpp
-    src/graphics/components/button/Button.cpp
-    src/analysis/Results.hpp
-    src/analysis/Analysis.hpp
-    src/graphics/AppStyle.cpp
+    src/simulation/ball.cpp
+    src/simulation/pool.cpp
+    src/simulation/collision.cpp
+    src/simulation/system.cpp
+    src/graphics/mainWindow.cpp
+    src/graphics/menu.cpp
+    src/graphics/configSimulation.cpp
+    src/graphics/simulationWindow.cpp
+    src/graphics/analysisWindow.cpp
+    src/graphics/components/textInput/textInput.cpp
+    src/graphics/components/legend/legend.cpp
+    src/graphics/components/legend/legendItem.cpp
+    src/graphics/components/button/button.cpp
+    src/analysis/results.hpp
+    src/analysis/analysis.hpp
+    src/graphics/appStyle.cpp
 )
 
 add_executable(${PROJECT_NAME} src/main.cpp)

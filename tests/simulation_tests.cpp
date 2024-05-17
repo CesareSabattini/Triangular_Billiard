@@ -1,4 +1,4 @@
-#include "../src/simulation/System.hpp"
+#include "../src/simulation/system.hpp"
 #include "doctest.h"
 
 TEST_CASE("System class tests") {
