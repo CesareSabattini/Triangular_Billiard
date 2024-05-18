@@ -1,41 +1,41 @@
-#include "../src/simulation/system.hpp"
+#include "./mock/mockSystem.hpp"
 #include "doctest.h"
 
 TEST_CASE("System class tests") {
     SUBCASE("System constructor") {
         // r1<r2
-        CHECK_THROWS_AS(System<double>(-1.0, 0.0, 10.0, 1.0, 5),
+        CHECK_THROWS_AS(MockSystem<double>(-1.0, 0.0, 10.0, 1.0, 5),
                         std::invalid_argument);
         // l<0
-        CHECK_THROWS_AS(System<double>(0.0, 0.0, -10.0, 1.0, 0.5),
+        CHECK_THROWS_AS(MockSystem<double>(0.0, 0.0, -10.0, 1.0, 0.5),
                         std::invalid_argument);
 
         // r1<0
-        CHECK_THROWS_AS(System<double>(0.0, 0.0, 10.0, -1.0, 0.5),
+        CHECK_THROWS_AS(MockSystem<double>(0.0, 0.0, 10.0, -1.0, 0.5),
                         std::invalid_argument);
 
         // r2<0
-        CHECK_THROWS_AS(System<double>(0.0, 0.0, 10.0, 1.0, -0.5),
+        CHECK_THROWS_AS(MockSystem<double>(0.0, 0.0, 10.0, 1.0, -0.5),
                         std::invalid_argument);
 
         // theta out of range
-        CHECK_THROWS_AS(System<double>(M_PI, 0.0, 10.0, 1.0, 0.5),
+        CHECK_THROWS_AS(MockSystem<double>(M_PI, 0.0, 10.0, 1.0, 0.5),
                         std::invalid_argument);
 
         // y out of range
-        CHECK_THROWS_AS(System<double>(10.0, -1.0, 10.0, 1.0, 0.5),
+        CHECK_THROWS_AS(MockSystem<double>(10.0, -1.0, 10.0, 1.0, 0.5),
                         std::invalid_argument);
 
         // l=0
-        CHECK_THROWS_AS(System<double>(0.0, 0.0, 0.0, 1.0, 0.5),
+        CHECK_THROWS_AS(MockSystem<double>(0.0, 0.0, 0.0, 1.0, 0.5),
                         std::invalid_argument);
 
         // correct one
-        CHECK_NOTHROW(System<double>(0.5, 0.0, 10.0, 1.0, 0.5));
+        CHECK_NOTHROW(MockSystem<double>(0.5, 0.0, 10.0, 1.0, 0.5));
     }
 
     SUBCASE("System computeNextCollision tests") {
-        System<double> system;
+        MockSystem<double> system;
 
         system.updateParams(M_PI / 4, 0, 10.0, 1.0, 0.5);
 
@@ -51,7 +51,7 @@ TEST_CASE("System class tests") {
     }
 
     SUBCASE("System updateParams tests") {
-        System<double> system(0.0, 0.0, 10.0, 1.0, 0.5);
+        MockSystem<double> system(0.0, 0.0, 10.0, 1.0, 0.5);
         system.updateParams(M_PI / 4, 0.5, 10.0, 1.0, 0.5);
         CHECK(system.getBall().getPos()[0] == doctest::Approx(0.0));
         CHECK(system.getBall().getPos()[1] == doctest::Approx(0.5));
@@ -81,7 +81,7 @@ TEST_CASE("System class tests") {
     }
 
     SUBCASE("System::computeOutputY() tests") {
-        System<double> system(0.0, 0.0, 10.0, 1.0, 0.5);
+        MockSystem<double> system(0.0, 0.0, 10.0, 1.0, 0.5);
         system.updateParams(M_PI / 4, 0.5, 10.0, 1.0, 0.5);
 
         CHECK(system.computeOutputY() == doctest::Approx(10.5));
@@ -101,7 +101,7 @@ TEST_CASE("System class tests") {
     }
 
     SUBCASE("System::throwTheBall() tests") {
-        System<double> system;
+        MockSystem<double> system;
 
         std::cout << "Too high skewness";
         system.updateParams(-M_PI / 20, 1E3 - 1, 10.0, 1E3, 1.0);
@@ -145,7 +145,7 @@ TEST_CASE("System class tests") {
     }
 
     SUBCASE("System::simulate() tests") {
-        System<double> system;
+        MockSystem<double> system;
         system.updateParams(M_PI / 6, 0, 10.0, 1.0, 0.5);
 
         system.simulate();
@@ -161,7 +161,7 @@ TEST_CASE("System class tests") {
     }
 
     SUBCASE("System::reset() tests") {
-        System<double> system;
+        MockSystem<double> system;
         system.updateParams(M_PI / 6, 0.5, 10.0, 1.0, 0.5);
 
         system.simulate();

@@ -26,12 +26,12 @@ template <typename T> class System {
     void computeNextCollision();
     T computeOutputY();
     void throwTheBall();
-    void simulate();
+    virtual void simulate();
     void updateParams(T p_theta, T p_y, T p_l, T p_r1, T p_r2);
     void updateParams(std::array<T, 2> inputCoordinates);
     void reset();
 
-  private:
+  protected:
     Ball<T> ball;
     Pool<T> pool;
     std::vector<Collision<T>> collisions;

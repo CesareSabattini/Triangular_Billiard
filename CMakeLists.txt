@@ -49,6 +49,7 @@ add_executable(tests
     tests/analysis_tests.cpp
     tests/simulation_tests.cpp
     tests/graphics_tests.cpp
+    tests/mock/mockSystem.cpp
 )
 target_link_libraries(tests core_lib) 
 add_test(NAME Triangular_Pool_Testing COMMAND tests)
