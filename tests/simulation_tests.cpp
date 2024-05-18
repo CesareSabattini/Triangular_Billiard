@@ -104,7 +104,7 @@ TEST_CASE("System class tests") {
         System<double> system;
 
         std::cout << "Too high skewness";
-        system.updateParams(-M_PI / 6, 1.5, 10.0, 1E3, 1.0);
+        system.updateParams(-M_PI / 20, 1E3 - 1, 10.0, 1E3, 1.0);
         double alpha =
             std::atan((system.getPool().getR1() - system.getPool().getR2()) /
                       system.getPool().getL());
@@ -122,7 +122,7 @@ TEST_CASE("System class tests") {
 
         CHECK_THROWS_AS(system.throwTheBall(), std::invalid_argument);
 
-        system.updateParams(-M_PI / 40, 1.5, 10.0, 5.0, 1.0);
+        system.updateParams(-M_PI / 40, 4.9, 10.0, 5.0, 1.0);
         alpha =
             std::atan((system.getPool().getR1() - system.getPool().getR2()) /
                       system.getPool().getL());
@@ -146,7 +146,7 @@ TEST_CASE("System class tests") {
 
     SUBCASE("System::simulate() tests") {
         System<double> system;
-        system.updateParams(M_PI / 6, 0.5, 10.0, 1.0, 0.5);
+        system.updateParams(M_PI / 6, 0, 10.0, 1.0, 0.5);
 
         system.simulate();
 

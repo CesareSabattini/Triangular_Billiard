@@ -3,27 +3,30 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <memory>
 
 class Button {
   public:
-    Button(sf::Vector2f p_position, sf::Vector2f p_size, sf::Color p_color,
-           sf::Color p_hoverColor, sf::Color p_clickColor,
-           sf::Color p_textColor, std::string p_text, unsigned int p_textSize);
+    Button(const sf::Vector2f &p_position, const sf::Vector2f &p_size,
+           const sf::Color &p_color, const sf::Color &p_hoverColor,
+           const sf::Color &p_clickColor, const sf::Color &p_textColor,
+           const std::string &p_text, const unsigned int p_textSize,
+           std::shared_ptr<sf::Font> font);
 
     Button() = default;
-    void draw(sf::RenderWindow &window);
-    void update(sf::RenderWindow &window);
+    void draw(sf::RenderWindow &window) const;
+    void update(const sf::RenderWindow &window);
     bool isClicked();
-    void setText(std::string p_text);
+    void setText(const std::string p_text);
 
     void setPosition(const sf::Vector2f &position);
 
     void setSize(const sf::Vector2f &size);
 
-    sf::FloatRect getGlobalBounds();
+    sf::FloatRect getGlobalBounds() const;
 
   private:
-    sf::Font font;
+    std::shared_ptr<sf::Font> font;
     sf::RectangleShape button;
     sf::Color color;
     sf::Color hoverColor;

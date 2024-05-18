@@ -2,40 +2,42 @@
 
 AnalysisWindow::AnalysisWindow(std::shared_ptr<sf::RenderWindow> p_window,
                                std::shared_ptr<System<float>> p_system,
-                               Scene &p_selectedScene)
-    : system(p_system), window(p_window), selectedScene(p_selectedScene),
+                               Scene &p_selectedScene,
+                               std::shared_ptr<sf::Font> p_font)
+    : font(p_font), system(p_system), window(p_window),
+      selectedScene(p_selectedScene),
       menuButton(sf::Vector2f(0, 0), sf::Vector2f(0, 0),
                  AppStyle::Colors::cream, AppStyle::Colors::cream.Blue,
                  AppStyle::Colors::cream.Black, AppStyle::Colors::bgCyan,
-                 "Menu", 20),
+                 "Menu", 20, p_font),
       analyzeButton(sf::Vector2f(0, 0), sf::Vector2f(0, 0),
                     AppStyle::Colors::cream, AppStyle::Colors::cream.Blue,
                     AppStyle::Colors::cream.Black, AppStyle::Colors::bgCyan,
-                    "Analyze", 30),
+                    "Analyze", 30, p_font),
       resultsPanel({LegendItem<float>("Mean Y", 0.00, "m"),
                     LegendItem<float>("Std Y", 0.00, "m"),
                     LegendItem<float>("Mean Theta", 0.00, "rad"),
                     LegendItem<float>("Std Theta", 0.00, "rad")},
-                   sf::Vector2f(20, 20), AppStyle::Colors::opaqueBlack,
+                   sf::Vector2f(20, 20), AppStyle::Colors::opaqueBlack, p_font,
                    sf::Color::White),
-      textInputs({TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
-                            AppStyle::Colors::cream, AppStyle::Colors::bgCyan,
-                            "Pool length", "1000"),
-                  TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
-                            AppStyle::Colors::cream, AppStyle::Colors::bgCyan,
-                            "Start Radius", "200"),
-                  TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
-                            AppStyle::Colors::cream, AppStyle::Colors::bgCyan,
-                            "End radius", "100"),
-                  TextInput(sf::Vector2f(100, 500), sf::Vector2f(200, 50), 24,
-                            AppStyle::Colors::cream, AppStyle::Colors::bgCyan,
-                            "Num Simulations", "100")}) {
-    font.loadFromFile("../resources/theme_font.ttf");
+      textInputs(
+          {TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
+                     AppStyle::Colors::cream, p_font, AppStyle::Colors::bgCyan,
+                     "Pool length", "1000"),
+           TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
+                     AppStyle::Colors::cream, p_font, AppStyle::Colors::bgCyan,
+                     "Start Radius", "200"),
+           TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
+                     AppStyle::Colors::cream, p_font, AppStyle::Colors::bgCyan,
+                     "End radius", "100"),
+           TextInput(sf::Vector2f(100, 500), sf::Vector2f(200, 50), 24,
+                     AppStyle::Colors::cream, p_font, AppStyle::Colors::bgCyan,
+                     "Num Simulations", "100")}) {
     initializeComponents();
 }
 
 void AnalysisWindow::initializeComponents() {
-    title.setFont(font);
+    title.setFont(*font);
     title.setString("Simulation Analysis");
     title.setCharacterSize(window->getSize().x / 20);
     title.setFillColor(AppStyle::Colors::bgCyan);
@@ -90,7 +92,7 @@ void AnalysisWindow::initializeComponents() {
     backgroundTexture.loadFromFile("../resources/pool_cover.jpg");
     bg.setTexture(backgroundTexture);
 
-    resultsText.setFont(font);
+    resultsText.setFont(*font);
     resultsText.setString("Results: ");
     resultsText.setCharacterSize(30);
     resultsText.setFillColor(AppStyle::Colors::bgCyan);

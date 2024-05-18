@@ -1,20 +1,19 @@
 #include "menu.hpp"
 
 Menu::Menu(std::shared_ptr<sf::RenderWindow> p_window,
-           std::shared_ptr<System<float>> p_system, Scene &p_selectedScene)
-    : system(p_system), window(p_window), selectedScene(p_selectedScene),
+           std::shared_ptr<System<float>> p_system, Scene &p_selectedScene,
+           std::shared_ptr<sf::Font> p_font)
+    : font(p_font), system(p_system), window(p_window),
+      selectedScene(p_selectedScene),
       configButton(sf::Vector2f(0, 0), sf::Vector2f(0, 0),
                    AppStyle::Colors::cream, AppStyle::Colors::cream.Blue,
                    AppStyle::Colors::cream.Black, AppStyle::Colors::bgCyan,
-                   "Simulation", 30),
+                   "Simulation", 30, p_font),
       analysisButton(sf::Vector2f(0, 0), sf::Vector2f(0, 0),
                      AppStyle::Colors::cream, AppStyle::Colors::cream.Blue,
                      AppStyle::Colors::cream.Black, AppStyle::Colors::bgCyan,
-                     "Data Analysis", 30) {
+                     "Data Analysis", 30, p_font) {
 
-    if (!font.loadFromFile("../resources/theme_font.ttf")) {
-        std::cerr << "Error loading font" << std::endl;
-    }
     initializeComponents();
 
     if (!backgroundTexture.loadFromFile("../resources/pool.jpeg")) {
@@ -34,7 +33,7 @@ Menu::Menu(std::shared_ptr<sf::RenderWindow> p_window,
                        bg.getGlobalBounds().height / 2.f);
 }
 void Menu::initializeComponents() {
-    title.setFont(font);
+    title.setFont(*font);
     title.setString("Triangular Pool Simulation");
     title.setCharacterSize(static_cast<unsigned int>(
         static_cast<float>(window->getSize().x) / 20.f));

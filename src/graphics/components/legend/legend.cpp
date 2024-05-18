@@ -2,20 +2,16 @@
 
 template <typename T>
 Legend<T>::Legend(std::vector<LegendItem<T>> p_items, sf::Vector2f p_size,
-                  sf::Color p_color, sf::Color p_textColor)
-    : items(p_items), textColor(p_textColor) {
+                  sf::Color p_color, std::shared_ptr<sf::Font> p_font,
+                  sf::Color p_textColor)
+    : font(p_font), items(p_items), textColor(p_textColor) {
 
     background.setSize(p_size);
     background.setFillColor(p_color);
 
-    if (!font.loadFromFile("../resources/theme_font.ttf")) {
-
-        std::cerr << "Error loading font" << std::endl;
-    }
-
     for (const auto &item : items) {
         sf::Text text;
-        text.setFont(font);
+        text.setFont(*font);
         text.setString(item.getName() + ": " + std::to_string(item.getValue()) +
                        " " + item.getUnit());
         text.setCharacterSize(20);
@@ -69,7 +65,7 @@ template <typename T> void Legend<T>::setSize(const sf::Vector2f &size) {
 
 template <typename T> void Legend<T>::addItem(const LegendItem<T> &item) {
     sf::Text text;
-    text.setFont(font);
+    text.setFont(*font);
     text.setString(item.getName() + ": " + std::to_string(item.getValue()) +
                    " " + item.getUnit());
     text.setCharacterSize(20);

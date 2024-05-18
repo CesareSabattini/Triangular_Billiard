@@ -3,42 +3,40 @@
 ConfigSimulation::ConfigSimulation(std::shared_ptr<sf::RenderWindow> p_window,
                                    std::shared_ptr<System<float>> p_system,
                                    Scene &p_selectedScene,
-                                   SimulationWindow &p_simulationWindow)
-    : system(p_system), window(p_window), selectedScene(p_selectedScene),
-      simulationWindow(p_simulationWindow),
+                                   SimulationWindow &p_simulationWindow,
+                                   std::shared_ptr<sf::Font> p_font)
+    : font(p_font), system(p_system), window(p_window),
+      selectedScene(p_selectedScene), simulationWindow(p_simulationWindow),
       startButton(sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f),
                   AppStyle::Colors::darkGreen, AppStyle::Colors::darkGreen.Blue,
                   AppStyle::Colors::darkGreen.Black, AppStyle::Colors::cream,
-                  "Start Simulation", 20),
+                  "Start Simulation", 20, p_font),
       menuButton(sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f),
                  AppStyle::Colors::cream, AppStyle::Colors::cream.Blue,
                  AppStyle::Colors::cream.Black, AppStyle::Colors::bgCyan,
-                 "Menu", 20),
+                 "Menu", 20, p_font),
 
       textInputs(
           {TextInput(sf::Vector2f(100.f, 100.f), sf::Vector2f(200.f, 50.f), 24,
-                     AppStyle::Colors::cream, AppStyle::Colors::bgCyan,
+                     AppStyle::Colors::cream, p_font, AppStyle::Colors::bgCyan,
                      "Ball start Angle (radians)", "1"),
            TextInput(sf::Vector2f(100.f, 100.f), sf::Vector2f(200.f, 50.f), 24,
-                     AppStyle::Colors::cream, AppStyle::Colors::bgCyan,
+                     AppStyle::Colors::cream, p_font, AppStyle::Colors::bgCyan,
                      "Ball start y", "0"),
            TextInput(sf::Vector2f(100.f, 100.f), sf::Vector2f(200.f, 50.f), 24,
-                     AppStyle::Colors::cream, AppStyle::Colors::bgCyan,
+                     AppStyle::Colors::cream, p_font, AppStyle::Colors::bgCyan,
                      "Pool length", "1000"),
            TextInput(sf::Vector2f(100.f, 100.f), sf::Vector2f(200.f, 50.f), 24,
-                     AppStyle::Colors::cream, AppStyle::Colors::bgCyan,
+                     AppStyle::Colors::cream, p_font, AppStyle::Colors::bgCyan,
                      "Start Radius", "200"),
            TextInput(sf::Vector2f(100.f, 100.f), sf::Vector2f(200.f, 50.f), 24,
-                     AppStyle::Colors::cream, AppStyle::Colors::bgCyan,
+                     AppStyle::Colors::cream, p_font, AppStyle::Colors::bgCyan,
                      "End radius", "100")}) {
 
-    if (!font.loadFromFile("../resources/theme_font.ttf")) {
-        std::cerr << "Error loading font" << std::endl;
-    }
     initializeComponents();
 }
 void ConfigSimulation::initializeComponents() {
-    title.setFont(font);
+    title.setFont(*font);
     title.setString("Configure Simulation");
     title.setCharacterSize(window->getSize().x / 20);
     title.setFillColor(AppStyle::Colors::bgCyan);

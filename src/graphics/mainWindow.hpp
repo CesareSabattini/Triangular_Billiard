@@ -3,6 +3,7 @@
 
 #include "../simulation/system.hpp"
 #include "analysisWindow.hpp"
+#include "appStyle.hpp"
 #include "configSimulation.hpp"
 #include "menu.hpp"
 #include "scene.hpp"
@@ -17,6 +18,7 @@ class MainWindow {
     Scene selectedScene;
 
   private:
+    AppStyle::AppStyle appStyle;
     std::shared_ptr<System<float>> system;
     std::shared_ptr<sf::RenderWindow> window;
     Menu menu;

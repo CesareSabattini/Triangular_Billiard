@@ -2,16 +2,16 @@
 
 TextInput::TextInput(sf::Vector2f position, sf::Vector2f size,
                      unsigned int fontSize, const sf::Color p_backgroundColor,
+                     std::shared_ptr<sf::Font> p_font,
                      const sf::Color &p_textColor,
+
                      const std::string &p_propName,
                      const std::string &p_defaultText)
-    : isFocused(false), backgroundColor(p_backgroundColor),
-      textColor(p_textColor), propName(p_propName), defaultText(p_defaultText) {
+    : font(p_font), font2(p_font), isFocused(false),
+      backgroundColor(p_backgroundColor), textColor(p_textColor),
+      propName(p_propName), defaultText(p_defaultText) {
 
-    font.loadFromFile("../resources/theme_font.ttf");
-    font2.loadFromFile("../resources/theme_font.ttf");
-
-    propText.setFont(font2);
+    propText.setFont(*font2);
     propText.setCharacterSize(fontSize);
     propText.setFillColor(textColor);
     propText.setPosition(position);
@@ -19,7 +19,7 @@ TextInput::TextInput(sf::Vector2f position, sf::Vector2f size,
 
     float verticalOffset = propText.getGlobalBounds().height + 5;
 
-    displayText.setFont(font);
+    displayText.setFont(*font);
     displayText.setCharacterSize(fontSize);
     displayText.setFillColor(textColor);
 

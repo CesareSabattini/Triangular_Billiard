@@ -3,23 +3,21 @@
 
 SimulationWindow::SimulationWindow(std::shared_ptr<sf::RenderWindow> p_window,
                                    std::shared_ptr<System<float>> p_system,
-                                   Scene &scene)
-    : system(p_system), window(p_window), selectedScene(scene),
+                                   Scene &scene,
+                                   std::shared_ptr<sf::Font> p_font)
+    : font(p_font), system(p_system), window(p_window), selectedScene(scene),
       menuButton(sf::Vector2f(0, 0), sf::Vector2f(0, 0),
                  AppStyle::Colors::opaqueBlack,
                  AppStyle::Colors::opaqueBlack.Blue,
                  AppStyle::Colors::opaqueBlack.Black, AppStyle::Colors::cream,
-                 "Menu", 20),
+                 "Menu", 20, p_font),
       legend(std::vector<LegendItem<float>>{},
              sf::Vector2f(static_cast<float>(window->getSize().x) / 6.f,
                           static_cast<float>(window->getSize().y) / 4.f),
-             AppStyle::Colors::opaqueBlack, sf::Color::White)
+             AppStyle::Colors::opaqueBlack, p_font, sf::Color::White)
 
 {
 
-    if (!font.loadFromFile("../resources/theme_font.ttf")) {
-        std::cerr << "Error loading font" << std::endl;
-    }
     if (!backgroundTexture.loadFromFile("../resources/pool_cover.jpg")) {
         throw std::runtime_error("Cannot load background texture");
     } else {

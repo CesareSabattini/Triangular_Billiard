@@ -15,11 +15,13 @@
 class AnalysisWindow {
   public:
     AnalysisWindow(std::shared_ptr<sf::RenderWindow> window,
-                   std::shared_ptr<System<float>> system, Scene &selectedScene);
+                   std::shared_ptr<System<float>> system, Scene &selectedScene,
+                   std::shared_ptr<sf::Font> font);
     void draw();
     void processEvents();
 
   private:
+    std::shared_ptr<sf::Font> font;
     std::shared_ptr<System<float>> system;
     std::shared_ptr<sf::RenderWindow> window;
     Scene &selectedScene;
@@ -28,7 +30,6 @@ class AnalysisWindow {
     Legend<float> resultsPanel;
     std::array<TextInput, 4> textInputs;
 
-    sf::Font font;
     sf::Text title;
     sf::RectangleShape titleBox;
 

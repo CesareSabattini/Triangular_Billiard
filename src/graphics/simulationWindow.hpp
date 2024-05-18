@@ -13,7 +13,7 @@ class SimulationWindow {
   public:
     SimulationWindow(std::shared_ptr<sf::RenderWindow> window,
                      std::shared_ptr<System<float>> system,
-                     Scene &selectedScene);
+                     Scene &selectedScene, std::shared_ptr<sf::Font> font);
 
     void draw();
     void processEvents();
@@ -21,6 +21,7 @@ class SimulationWindow {
     Legend<float> &getLegend() { return legend; }
 
   private:
+    std::shared_ptr<sf::Font> font;
     std::shared_ptr<System<float>> system;
     std::shared_ptr<sf::RenderWindow> window;
     Scene &selectedScene;
@@ -31,8 +32,6 @@ class SimulationWindow {
 
     sf::Texture backgroundTexture;
     sf::Sprite bg;
-
-    sf::Font font;
 
     void initializeComponents();
 };

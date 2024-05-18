@@ -6,10 +6,11 @@ MainWindow::MainWindow()
           sf::VideoMode(sf::VideoMode::getFullscreenModes()[0]),
           "Triangular Pool Simulation")),
 
-      menu(window, system, selectedScene),
-      configSimulation(window, system, selectedScene, simulationWindow),
-      simulationWindow(window, system, selectedScene),
-      analysisWindow(window, system, selectedScene) {
+      menu(window, system, selectedScene, (appStyle.getFont())),
+      configSimulation(window, system, selectedScene, simulationWindow,
+                       appStyle.getFont()),
+      simulationWindow(window, system, selectedScene, appStyle.getFont()),
+      analysisWindow(window, system, selectedScene, appStyle.getFont()) {
     window->setPosition(sf::Vector2i(0, 0));
 }
 

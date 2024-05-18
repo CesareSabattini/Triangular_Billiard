@@ -14,18 +14,19 @@ class ConfigSimulation {
   public:
     ConfigSimulation(std::shared_ptr<sf::RenderWindow> window,
                      std::shared_ptr<System<float>> system,
-                     Scene &selectedScene, SimulationWindow &simulationWindow);
+                     Scene &selectedScene, SimulationWindow &simulationWindow,
+                     std::shared_ptr<sf::Font> font);
     void draw();
     void processEvents();
 
   private:
+    std::shared_ptr<sf::Font> font;
     std::shared_ptr<System<float>> system;
     std::shared_ptr<sf::RenderWindow> window;
     Scene &selectedScene;
     SimulationWindow &simulationWindow;
     Button startButton;
     Button menuButton;
-    sf::Font font;
     sf::Text title;
     sf::RectangleShape titleBox;
     sf::RectangleShape inputBox;
