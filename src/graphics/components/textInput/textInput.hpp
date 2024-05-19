@@ -6,8 +6,9 @@
 
 class TextInput {
   public:
-    TextInput(sf::Vector2f position, sf::Vector2f size, unsigned int fontSize,
-              const sf::Color backgroundColor, std::shared_ptr<sf::Font> p_font,
+    TextInput(const sf::Vector2f &position, const sf::Vector2f &size,
+              const unsigned int fontSize, const sf::Color &backgroundColor,
+              const std::shared_ptr<sf::Font> p_font,
               const sf::Color &textColor = sf::Color::Black,
               const std::string &propName = "",
               const std::string &defaultText = "");
@@ -16,9 +17,9 @@ class TextInput {
     void draw(sf::RenderWindow &window);
     const std::string getText() const;
     void setText(const std::string &text);
-    void setPosition(sf::Vector2f position);
-    void setSize(sf::Vector2f size);
-    void setFocus(bool hasFocus);
+    void setPosition(const sf::Vector2f &position);
+    void setSize(const sf::Vector2f &size);
+    void setFocus(const bool hasFocus);
 
     sf::RectangleShape inputBox;
     bool isFocused;

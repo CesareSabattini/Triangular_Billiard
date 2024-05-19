@@ -15,7 +15,7 @@ class ConfigSimulation {
     ConfigSimulation(std::shared_ptr<sf::RenderWindow> window,
                      std::shared_ptr<System<float>> system,
                      Scene &selectedScene, SimulationWindow &simulationWindow,
-                     std::shared_ptr<sf::Font> font);
+                     const std::shared_ptr<sf::Font> font);
     void draw();
     void processEvents();
 

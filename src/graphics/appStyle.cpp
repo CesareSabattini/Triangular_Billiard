@@ -15,6 +15,6 @@ AppStyle::AppStyle() : font(std::make_shared<sf::Font>()) {
 
 AppStyle::~AppStyle() {}
 
-std::shared_ptr<sf::Font> AppStyle::getFont() const { return font; }
+const std::shared_ptr<sf::Font> AppStyle::getFont() const { return font; }
 
 } // namespace AppStyle

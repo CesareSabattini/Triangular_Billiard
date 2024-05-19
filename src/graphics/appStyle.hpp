@@ -18,7 +18,7 @@ class AppStyle {
   public:
     AppStyle();
     ~AppStyle();
-    std::shared_ptr<sf::Font> getFont() const;
+    const std::shared_ptr<sf::Font> getFont() const;
 
   private:
     std::shared_ptr<sf::Font> font;

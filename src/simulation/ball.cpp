@@ -4,7 +4,8 @@
 template <typename T> Ball<T>::Ball() {}
 
 template <typename T>
-Ball<T>::Ball(T p_x, T p_y, T p_theta) : pos({p_x, p_y}), theta(p_theta) {
+Ball<T>::Ball(const T p_x, const T p_y, const T p_theta)
+    : pos({p_x, p_y}), theta(p_theta) {
     if (p_x < 0) {
         throw std::invalid_argument(
             "Ball: x must be greater than or equal to 0");
@@ -41,11 +42,11 @@ template <typename T> Ball<T> &Ball<T>::operator=(const Ball &p_ball) {
 }
 
 template <typename T>
-Ball<T>::Ball(Ball &&p_ball) : pos(p_ball.pos), theta(p_ball.theta) {
+Ball<T>::Ball(const Ball &&p_ball) : pos(p_ball.pos), theta(p_ball.theta) {
     std::cout << "Ball moved." << std::endl;
 }
 
-template <typename T> Ball<T> &Ball<T>::operator=(Ball &&p_ball) {
+template <typename T> Ball<T> &Ball<T>::operator=(const Ball &&p_ball) {
     pos = p_ball.pos;
     theta = p_ball.theta;
     std::cout << "Ball moved." << std::endl;
@@ -54,7 +55,9 @@ template <typename T> Ball<T> &Ball<T>::operator=(Ball &&p_ball) {
 
 template <typename T> Ball<T>::~Ball() {}
 
-template <typename T> std::array<T, 2> &Ball<T>::getPos() { return pos; }
+template <typename T> const std::array<T, 2> &Ball<T>::getPos() const {
+    return pos;
+}
 
 template <typename T> void Ball<T>::setPos(const std::array<T, 2> &p_pos) {
     if (p_pos[0] >= 0) {
@@ -65,7 +68,7 @@ template <typename T> void Ball<T>::setPos(const std::array<T, 2> &p_pos) {
     }
 }
 
-template <typename T> void Ball<T>::setTheta(T p_theta) {
+template <typename T> void Ball<T>::setTheta(const T p_theta) {
     if (p_theta >= -M_PI / 2 && p_theta <= M_PI / 2) {
         theta = p_theta;
     } else {
@@ -74,7 +77,7 @@ template <typename T> void Ball<T>::setTheta(T p_theta) {
     }
 }
 
-template <typename T> T Ball<T>::getTheta() const { return theta; }
+template <typename T> const T &Ball<T>::getTheta() const { return theta; }
 
 template class Ball<int>;
 template class Ball<float>;

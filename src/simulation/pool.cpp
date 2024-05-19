@@ -2,7 +2,8 @@
 
 template <typename T> Pool<T>::Pool() : l(0), r1(0), r2(0) {}
 template <typename T>
-Pool<T>::Pool(T p_l, T p_r1, T p_r2) : l(p_l), r1(p_r1), r2(p_r2) {
+Pool<T>::Pool(const T p_l, const T p_r1, const T p_r2)
+    : l(p_l), r1(p_r1), r2(p_r2) {
     if (l <= 0) {
         throw std::invalid_argument("l must be greater than 0");
     }

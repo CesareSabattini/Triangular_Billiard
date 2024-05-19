@@ -1,9 +1,10 @@
 #include "legend.hpp"
 
 template <typename T>
-Legend<T>::Legend(std::vector<LegendItem<T>> p_items, sf::Vector2f p_size,
-                  sf::Color p_color, std::shared_ptr<sf::Font> p_font,
-                  sf::Color p_textColor)
+Legend<T>::Legend(const std::vector<LegendItem<T>> &p_items,
+                  const sf::Vector2f &p_size, const sf::Color &p_color,
+                  const std::shared_ptr<sf::Font> p_font,
+                  const sf::Color &p_textColor)
     : font(p_font), items(p_items), textColor(p_textColor) {
 
     background.setSize(p_size);

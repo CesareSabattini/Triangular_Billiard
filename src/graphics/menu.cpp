@@ -2,7 +2,7 @@
 
 Menu::Menu(std::shared_ptr<sf::RenderWindow> p_window,
            std::shared_ptr<System<float>> p_system, Scene &p_selectedScene,
-           std::shared_ptr<sf::Font> p_font)
+           const std::shared_ptr<sf::Font> p_font)
     : font(p_font), system(p_system), window(p_window),
       selectedScene(p_selectedScene),
       configButton(sf::Vector2f(0, 0), sf::Vector2f(0, 0),

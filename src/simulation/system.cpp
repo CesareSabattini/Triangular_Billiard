@@ -4,7 +4,8 @@
 template <typename T> System<T>::System() : ball(), pool() {}
 
 template <typename T>
-System<T>::System(T p_theta, T p_y, T p_l, T p_r1, T p_r2)
+System<T>::System(const T p_theta, const T p_y, const T p_l, const T p_r1,
+                  const T p_r2)
     : ball(0, p_y, p_theta), pool(p_l, p_r1, p_r2) {
     if (p_y < -p_r1 || p_y > p_r1)
         throw std::invalid_argument("y must be between -R1 and R1");
@@ -234,7 +235,8 @@ template <typename T> void System<T>::simulate() {
 }
 
 template <typename T>
-void System<T>::updateParams(T p_theta, T p_y, T p_l, T p_r1, T p_r2) {
+void System<T>::updateParams(const T p_theta, const T p_y, const T p_l,
+                             const T p_r1, const T p_r2) {
     reset();
     ball.setPos(std::array<T, 2>({0, p_y}));
     ball.setTheta(p_theta);
@@ -244,7 +246,8 @@ void System<T>::updateParams(T p_theta, T p_y, T p_l, T p_r1, T p_r2) {
     collisions.push_back(Collision<T>(0, p_y, p_theta));
 }
 
-template <typename T> void System<T>::updateParams(std::array<T, 2> inputY_T) {
+template <typename T>
+void System<T>::updateParams(const std::array<T, 2> &inputY_T) {
     reset();
     ball.setPos({0, inputY_T[0]});
     ball.setTheta(inputY_T[1]);

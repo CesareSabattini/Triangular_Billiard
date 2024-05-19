@@ -12,9 +12,9 @@ template <typename T> class MockSystem : public System<T> {
     using System<T>::ball;
     using System<T>::pool;
 
-    MockSystem() : System<T>() {}
-    MockSystem(T p_theta, T p_y, T p_l, T p_r1, T p_r2)
-        : System<T>(p_theta, p_y, p_l, p_r1, p_r2) {}
+    MockSystem();
+    MockSystem(const T p_theta, const T p_y, const T p_l, const T p_r1,
+               const T p_r2);
 
     void simulate() override;
 };

@@ -1,8 +1,9 @@
 #include "textInput.hpp"
 
-TextInput::TextInput(sf::Vector2f position, sf::Vector2f size,
-                     unsigned int fontSize, const sf::Color p_backgroundColor,
-                     std::shared_ptr<sf::Font> p_font,
+TextInput::TextInput(const sf::Vector2f &position, const sf::Vector2f &size,
+                     const unsigned int fontSize,
+                     const sf::Color &p_backgroundColor,
+                     const std::shared_ptr<sf::Font> p_font,
                      const sf::Color &p_textColor,
                      const std::string &p_propName,
                      const std::string &p_defaultText)
@@ -60,7 +61,7 @@ void TextInput::setText(const std::string &newText) {
     displayText.setString(text);
 }
 
-void TextInput::setPosition(sf::Vector2f position) {
+void TextInput::setPosition(const sf::Vector2f &position) {
     propText.setPosition(position);
     float verticalOffset = propText.getGlobalBounds().height + 5;
     inputBox.setPosition(position.x, position.y + verticalOffset);
@@ -69,7 +70,7 @@ void TextInput::setPosition(sf::Vector2f position) {
                         displayText.getGlobalBounds().height / 2);
 }
 
-void TextInput::setSize(sf::Vector2f size) {
+void TextInput::setSize(const sf::Vector2f &size) {
     displayText.setCharacterSize(static_cast<unsigned int>(size.y / 4));
     sf::Vector2f inputBoxSize(size.x,
                               size.y - propText.getGlobalBounds().height - 5);
@@ -80,7 +81,7 @@ void TextInput::setSize(sf::Vector2f size) {
                                 displayText.getGlobalBounds().height / 2);
 }
 
-void TextInput::setFocus(bool hasFocus) {
+void TextInput::setFocus(const bool hasFocus) {
     this->isFocused = hasFocus;
     inputBox.setFillColor(hasFocus ? sf::Color(backgroundColor.Cyan)
                                    : sf::Color(backgroundColor));

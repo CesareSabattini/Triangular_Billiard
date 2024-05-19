@@ -13,7 +13,8 @@ class SimulationWindow {
   public:
     SimulationWindow(std::shared_ptr<sf::RenderWindow> window,
                      std::shared_ptr<System<float>> system,
-                     Scene &selectedScene, std::shared_ptr<sf::Font> font);
+                     Scene &selectedScene,
+                     const std::shared_ptr<sf::Font> font);
 
     void draw();
     void processEvents();
