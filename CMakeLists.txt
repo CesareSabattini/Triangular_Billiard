@@ -30,6 +30,7 @@ add_library(core_lib
     src/graphics/configSimulation.cpp
     src/graphics/simulationWindow.cpp
     src/graphics/analysisWindow.cpp
+    src/graphics/errorPopup.cpp
     src/graphics/components/textInput/textInput.cpp
     src/graphics/components/legend/legend.cpp
     src/graphics/components/legend/legendItem.cpp
@@ -37,6 +38,7 @@ add_library(core_lib
     src/analysis/results.hpp
     src/analysis/analysis.hpp
     src/graphics/appStyle.cpp
+
 )
 
 add_executable(${PROJECT_NAME} src/main.cpp)

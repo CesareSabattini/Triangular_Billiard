@@ -131,12 +131,25 @@ void ConfigSimulation::processEvents() {
             if (startButton.getGlobalBounds().contains(
                     static_cast<float>(mousePosition.x),
                     static_cast<float>(mousePosition.y))) {
-                system->updateParams(std::stof(textInputs[0].getText()),
-                                     std::stof(textInputs[1].getText()),
-                                     std::stof(textInputs[2].getText()),
-                                     std::stof(textInputs[3].getText()),
-                                     std::stof(textInputs[4].getText()));
-
+                try {
+                    system->updateParams(std::stof(textInputs[0].getText()),
+                                         std::stof(textInputs[1].getText()),
+                                         std::stof(textInputs[2].getText()),
+                                         std::stof(textInputs[3].getText()),
+                                         std::stof(textInputs[4].getText()));
+                } catch (std::invalid_argument &e) {
+                    ErrorPopup errorPopup(window, font, e.what(),
+                                          selectedScene);
+                    selectedScene = Scene::ERROR;
+                    while (selectedScene == Scene::ERROR) {
+                        errorPopup.processEvents();
+                        window->clear(); // Pulisce lo schermo (necessario se ci
+                                         // sono altri disegni precedenti)
+                        errorPopup.draw();
+                        window->display();
+                    }
+                    return;
+                }
                 system->simulate();
 
                 simulationWindow.getLegend().clearItems();

@@ -139,7 +139,8 @@ void SimulationWindow::draw() {
             sf::Vector2f position(
                 majorBase.getPosition().x + wallThickness +
                     static_cast<float>(collision.getPos()[0]) * unity,
-                majorBase.getPosition().y + majorBase.getSize().y / 2 +
+                majorBase.getPosition().y +
+                    (majorBase.getSize().y + wallThickness) / 2 -
                     static_cast<float>(collision.getPos()[1]) * unity);
 
             lines.append(sf::Vertex(position, sf::Color::White));

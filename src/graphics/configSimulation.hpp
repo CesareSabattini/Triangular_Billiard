@@ -6,6 +6,7 @@
 #include "appStyle.hpp"
 #include "components/button/button.hpp"
 #include "components/textInput/textInput.hpp"
+#include "errorPopup.hpp"
 #include "scene.hpp"
 #include <SFML/Graphics.hpp>
 #include <memory>
