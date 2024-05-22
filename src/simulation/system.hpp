@@ -8,22 +8,24 @@
 #include <type_traits>
 #include <vector>
 
+namespace simulation {
 template <typename T> class System {
   public:
     static_assert(std::is_arithmetic<T>::value, "T must be an arithmetic type");
     System();
     System(const T p_theta, const T p_y, const T p_l, const T p_r1,
            const T p_r2);
-    System(const Ball<T> &p_ball, const Pool<T> &p_pool);
+    System(const components::Ball<T> &p_ball,
+           const components::Pool<T> &p_pool);
     System(const System &p_system);
     System &operator=(const System &p_system);
     System(System &&p_system);
     System &operator=(System &&p_system);
     ~System();
 
-    Ball<T> &getBall();
-    Pool<T> &getPool();
-    std::vector<Collision<T>> &getCollisions();
+    components::Ball<T> &getBall();
+    components::Pool<T> &getPool();
+    std::vector<components::Collision<T>> &getCollisions();
     void computeNextCollision();
     T computeOutputY();
     void throwTheBall();
@@ -34,9 +36,10 @@ template <typename T> class System {
     void reset();
 
   protected:
-    Ball<T> ball;
-    Pool<T> pool;
-    std::vector<Collision<T>> collisions;
+    components::Ball<T> ball;
+    components::Pool<T> pool;
+    std::vector<components::Collision<T>> collisions;
 };
 
+} // namespace simulation
 #endif // SYSTEM_HPP

@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 
+namespace graphics::components {
 template <typename T> class Legend : public sf::Drawable {
   public:
     Legend(const std::vector<LegendItem<T>> &p_items,
@@ -41,5 +42,7 @@ template <typename T> class Legend : public sf::Drawable {
     std::vector<LegendItem<T>> items;
     sf::Color textColor;
 };
+
+} // namespace graphics::components
 
 #endif

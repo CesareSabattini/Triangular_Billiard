@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 
-namespace AppStyle {
+namespace appStyle {
 
 struct Colors {
 
@@ -24,6 +24,6 @@ class AppStyle {
     std::shared_ptr<sf::Font> font;
 };
 
-} // namespace AppStyle
+} // namespace appStyle
 
 #endif // APP_STYLE_HPP

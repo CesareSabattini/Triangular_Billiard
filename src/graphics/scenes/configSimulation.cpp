@@ -1,52 +1,57 @@
 #include "configSimulation.hpp"
 
-ConfigSimulation::ConfigSimulation(std::shared_ptr<sf::RenderWindow> p_window,
-                                   std::shared_ptr<System<float>> p_system,
-                                   Scene &p_selectedScene,
-                                   SimulationWindow &p_simulationWindow,
-                                   const std::shared_ptr<sf::Font> p_font)
+graphics::scenes::ConfigSimulation::ConfigSimulation(
+    std::shared_ptr<sf::RenderWindow> p_window,
+    std::shared_ptr<simulation::System<float>> p_system, Scene &p_selectedScene,
+    SimulationWindow &p_simulationWindow,
+    const std::shared_ptr<sf::Font> p_font)
     : font(p_font), system(p_system), window(p_window),
       selectedScene(p_selectedScene), simulationWindow(p_simulationWindow),
       startButton(sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f),
-                  AppStyle::Colors::darkGreen, AppStyle::Colors::darkGreen.Blue,
-                  AppStyle::Colors::darkGreen.Black, AppStyle::Colors::cream,
+                  appStyle::Colors::darkGreen, appStyle::Colors::darkGreen.Blue,
+                  appStyle::Colors::darkGreen.Black, appStyle::Colors::cream,
                   "Start Simulation", 20, p_font),
       menuButton(sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f),
-                 AppStyle::Colors::cream, AppStyle::Colors::cream.Blue,
-                 AppStyle::Colors::cream.Black, AppStyle::Colors::bgCyan,
+                 appStyle::Colors::cream, appStyle::Colors::cream.Blue,
+                 appStyle::Colors::cream.Black, appStyle::Colors::bgCyan,
                  "Menu", 20, p_font),
 
-      textInputs(
-          {TextInput(sf::Vector2f(100.f, 100.f), sf::Vector2f(200.f, 50.f), 24,
-                     AppStyle::Colors::cream, p_font, AppStyle::Colors::bgCyan,
-                     "Ball start Angle (radians)", "1"),
-           TextInput(sf::Vector2f(100.f, 100.f), sf::Vector2f(200.f, 50.f), 24,
-                     AppStyle::Colors::cream, p_font, AppStyle::Colors::bgCyan,
-                     "Ball start y", "0"),
-           TextInput(sf::Vector2f(100.f, 100.f), sf::Vector2f(200.f, 50.f), 24,
-                     AppStyle::Colors::cream, p_font, AppStyle::Colors::bgCyan,
-                     "Pool length", "1000"),
-           TextInput(sf::Vector2f(100.f, 100.f), sf::Vector2f(200.f, 50.f), 24,
-                     AppStyle::Colors::cream, p_font, AppStyle::Colors::bgCyan,
-                     "Start Radius", "200"),
-           TextInput(sf::Vector2f(100.f, 100.f), sf::Vector2f(200.f, 50.f), 24,
-                     AppStyle::Colors::cream, p_font, AppStyle::Colors::bgCyan,
-                     "End radius", "100")}) {
+      textInputs({graphics::components::TextInput(
+                      sf::Vector2f(100.f, 100.f), sf::Vector2f(200.f, 50.f), 24,
+                      appStyle::Colors::cream, p_font, appStyle::Colors::bgCyan,
+                      "Ball start Angle (radians)", "1"),
+                  graphics::components::TextInput(
+                      sf::Vector2f(100.f, 100.f), sf::Vector2f(200.f, 50.f), 24,
+                      appStyle::Colors::cream, p_font, appStyle::Colors::bgCyan,
+                      "Ball start y", "0"),
+                  graphics::components::TextInput(
+                      sf::Vector2f(100.f, 100.f), sf::Vector2f(200.f, 50.f), 24,
+                      appStyle::Colors::cream, p_font, appStyle::Colors::bgCyan,
+                      "Pool length", "1000"),
+                  graphics::components::TextInput(
+                      sf::Vector2f(100.f, 100.f), sf::Vector2f(200.f, 50.f), 24,
+                      appStyle::Colors::cream, p_font, appStyle::Colors::bgCyan,
+                      "Start Radius", "200"),
+                  graphics::components::TextInput(
+                      sf::Vector2f(100.f, 100.f), sf::Vector2f(200.f, 50.f), 24,
+                      appStyle::Colors::cream, p_font, appStyle::Colors::bgCyan,
+                      "End radius", "100")}) {
 
     initializeComponents();
 }
-void ConfigSimulation::initializeComponents() {
+void graphics::scenes::ConfigSimulation::ConfigSimulation::
+    initializeComponents() {
     title.setFont(*font);
     title.setString("Configure Simulation");
     title.setCharacterSize(window->getSize().x / 20);
-    title.setFillColor(AppStyle::Colors::bgCyan);
+    title.setFillColor(appStyle::Colors::bgCyan);
     title.setPosition(static_cast<float>(window->getSize().x) / 2.f -
                           title.getGlobalBounds().width / 2.f,
                       50.f);
 
     titleBox.setSize(sf::Vector2f(title.getGlobalBounds().width + 50.f,
                                   title.getGlobalBounds().height + 50.f));
-    titleBox.setFillColor(AppStyle::Colors::cream);
+    titleBox.setFillColor(appStyle::Colors::cream);
     titleBox.setPosition(static_cast<float>(window->getSize().x) / 2.f -
                              titleBox.getGlobalBounds().width / 2.f,
                          title.getPosition().y);
@@ -58,7 +63,7 @@ void ConfigSimulation::initializeComponents() {
     float inputBoxY = static_cast<float>(window->getSize().y) / 5.f;
 
     inputBox.setSize(sf::Vector2f(inputBoxWidth, inputBoxHeight));
-    inputBox.setFillColor(AppStyle::Colors::opaqueBlack);
+    inputBox.setFillColor(appStyle::Colors::opaqueBlack);
     inputBox.setPosition(inputBoxX, inputBoxY);
 
     float startButtonWidth = inputBoxWidth / 2.f;
@@ -75,8 +80,8 @@ void ConfigSimulation::initializeComponents() {
         {50.f, 50.f + title.getGlobalBounds().height / 2.f -
                    menuButton.getGlobalBounds().height / 2.f});
 
-    for (std::array<TextInput, 5>::size_type i = 0; i < textInputs.size();
-         i++) {
+    for (std::array<graphics::components::TextInput, 5>::size_type i = 0;
+         i < textInputs.size(); i++) {
         textInputs[i].setPosition(
             sf::Vector2f(inputBoxX + 10.f,
                          inputBoxY + 10.f + static_cast<float>(i) * 120.f));
@@ -85,8 +90,8 @@ void ConfigSimulation::initializeComponents() {
     }
 }
 
-void ConfigSimulation::draw() {
-    window->clear(AppStyle::Colors::bgCyan);
+void graphics::scenes::ConfigSimulation::ConfigSimulation::draw() {
+    window->clear(appStyle::Colors::bgCyan);
     window->draw(titleBox);
     window->draw(title);
     window->draw(inputBox);
@@ -98,7 +103,7 @@ void ConfigSimulation::draw() {
     window->display();
 }
 
-void ConfigSimulation::processEvents() {
+void graphics::scenes::ConfigSimulation::ConfigSimulation::processEvents() {
     sf::Event event;
     while (window->pollEvent(event)) {
 
@@ -142,13 +147,13 @@ void ConfigSimulation::processEvents() {
 
                 simulationWindow.getLegend().clearItems();
                 simulationWindow.getLegend().addItems(
-                    {LegendItem<float>(
+                    {graphics::components::LegendItem<float>(
                          std::string("End X"),
                          system->getCollisions().back().getPos()[0], "m"),
-                     LegendItem<float>(
+                     graphics::components::LegendItem<float>(
                          std::string("End Y"),
                          system->getCollisions().back().getPos()[1], "m"),
-                     LegendItem<float>(
+                     graphics::components::LegendItem<float>(
                          "End Theta", system->getCollisions().back().getTheta(),
                          "rad")});
 

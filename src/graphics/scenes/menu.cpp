@@ -1,17 +1,18 @@
 #include "menu.hpp"
 
-Menu::Menu(std::shared_ptr<sf::RenderWindow> p_window,
-           std::shared_ptr<System<float>> p_system, Scene &p_selectedScene,
-           const std::shared_ptr<sf::Font> p_font)
+graphics::scenes::Menu::Menu(
+    std::shared_ptr<sf::RenderWindow> p_window,
+    std::shared_ptr<simulation::System<float>> p_system, Scene &p_selectedScene,
+    const std::shared_ptr<sf::Font> p_font)
     : font(p_font), system(p_system), window(p_window),
       selectedScene(p_selectedScene),
       configButton(sf::Vector2f(0, 0), sf::Vector2f(0, 0),
-                   AppStyle::Colors::cream, AppStyle::Colors::cream.Blue,
-                   AppStyle::Colors::cream.Black, AppStyle::Colors::bgCyan,
+                   appStyle::Colors::cream, appStyle::Colors::cream.Blue,
+                   appStyle::Colors::cream.Black, appStyle::Colors::bgCyan,
                    "Simulation", 30, p_font),
       analysisButton(sf::Vector2f(0, 0), sf::Vector2f(0, 0),
-                     AppStyle::Colors::cream, AppStyle::Colors::cream.Blue,
-                     AppStyle::Colors::cream.Black, AppStyle::Colors::bgCyan,
+                     appStyle::Colors::cream, appStyle::Colors::cream.Blue,
+                     appStyle::Colors::cream.Black, appStyle::Colors::bgCyan,
                      "Data Analysis", 30, p_font) {
 
     initializeComponents();
@@ -32,19 +33,19 @@ Menu::Menu(std::shared_ptr<sf::RenderWindow> p_window,
                    static_cast<float>(window->getSize().y) / 2.0f -
                        bg.getGlobalBounds().height / 2.f);
 }
-void Menu::initializeComponents() {
+void graphics::scenes::Menu::initializeComponents() {
     title.setFont(*font);
     title.setString("Triangular Pool Simulation");
     title.setCharacterSize(static_cast<unsigned int>(
         static_cast<float>(window->getSize().x) / 20.f));
-    title.setFillColor(AppStyle::Colors::bgCyan);
+    title.setFillColor(appStyle::Colors::bgCyan);
     title.setPosition(static_cast<float>(window->getSize().x) / 2.f -
                           title.getGlobalBounds().width / 2.f,
                       50.f);
 
     titleBox.setSize(sf::Vector2f(title.getGlobalBounds().width + 50,
                                   title.getGlobalBounds().height + 50));
-    titleBox.setFillColor(AppStyle::Colors::cream);
+    titleBox.setFillColor(appStyle::Colors::cream);
     titleBox.setPosition(static_cast<float>(window->getSize().x) / 2.f -
                              titleBox.getGlobalBounds().width / 2.f,
                          title.getPosition().y);
@@ -69,8 +70,8 @@ void Menu::initializeComponents() {
     analysisButton.setPosition({analysisButtonX, analysisButtonY});
 }
 
-void Menu::draw() {
-    window->clear(AppStyle::Colors::bgCyan);
+void graphics::scenes::Menu::draw() {
+    window->clear(appStyle::Colors::bgCyan);
     window->draw(bg);
     window->draw(titleBox);
     window->draw(title);
@@ -80,7 +81,7 @@ void Menu::draw() {
     window->display();
 }
 
-void Menu::processEvents() {
+void graphics::scenes::Menu::processEvents() {
     sf::Event event;
     while (window->pollEvent(event)) {
 

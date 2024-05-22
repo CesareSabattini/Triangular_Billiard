@@ -5,6 +5,8 @@
 #include <stdexcept>
 #include <type_traits>
 
+namespace simulation::components {
+
 template <typename T>
 
 class Pool {
@@ -32,5 +34,7 @@ class Pool {
     T r1;
     T r2;
 };
+
+} // namespace simulation::components
 
 #endif // POOL_HPP

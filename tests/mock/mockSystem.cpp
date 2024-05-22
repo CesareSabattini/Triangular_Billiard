@@ -1,13 +1,14 @@
 #include "mockSystem.hpp"
 
-template <typename T> MockSystem<T>::MockSystem() : System<T>() {}
+template <typename T>
+mock::MockSystem<T>::MockSystem() : simulation::System<T>() {}
 
 template <typename T>
-MockSystem<T>::MockSystem(const T p_theta, const T p_y, const T p_l,
-                          const T p_r1, const T p_r2)
-    : System<T>(p_theta, p_y, p_l, p_r1, p_r2) {}
+mock::MockSystem<T>::MockSystem(const T p_theta, const T p_y, const T p_l,
+                                const T p_r1, const T p_r2)
+    : simulation::System<T>(p_theta, p_y, p_l, p_r1, p_r2) {}
 
-template <typename T> void MockSystem<T>::simulate() {
+template <typename T> void mock::MockSystem<T>::simulate() {
 
     try {
         throwTheBall();
@@ -45,6 +46,6 @@ template <typename T> void MockSystem<T>::simulate() {
     }
 }
 
-template class MockSystem<double>;
-template class MockSystem<float>;
-template class MockSystem<int>;
+template class mock::MockSystem<double>;
+template class mock::MockSystem<float>;
+template class mock::MockSystem<int>;

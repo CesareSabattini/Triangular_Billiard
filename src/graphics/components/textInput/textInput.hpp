@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 
+namespace graphics::components {
 class TextInput {
   public:
     TextInput(const sf::Vector2f &position, const sf::Vector2f &size,
@@ -35,5 +36,6 @@ class TextInput {
     std::string propName;
     std::string defaultText;
 };
+} // namespace graphics::components
 
 #endif

@@ -1,20 +1,20 @@
 
 #include "simulationWindow.hpp"
 
-SimulationWindow::SimulationWindow(std::shared_ptr<sf::RenderWindow> p_window,
-                                   std::shared_ptr<System<float>> p_system,
-                                   Scene &scene,
-                                   const std::shared_ptr<sf::Font> p_font)
+graphics::scenes::SimulationWindow::SimulationWindow(
+    std::shared_ptr<sf::RenderWindow> p_window,
+    std::shared_ptr<simulation::System<float>> p_system, Scene &scene,
+    const std::shared_ptr<sf::Font> p_font)
     : font(p_font), system(p_system), window(p_window), selectedScene(scene),
       menuButton(sf::Vector2f(0, 0), sf::Vector2f(0, 0),
-                 AppStyle::Colors::opaqueBlack,
-                 AppStyle::Colors::opaqueBlack.Blue,
-                 AppStyle::Colors::opaqueBlack.Black, AppStyle::Colors::cream,
+                 appStyle::Colors::opaqueBlack,
+                 appStyle::Colors::opaqueBlack.Blue,
+                 appStyle::Colors::opaqueBlack.Black, appStyle::Colors::cream,
                  "Menu", 20, p_font),
-      legend(std::vector<LegendItem<float>>{},
+      legend(std::vector<graphics::components::LegendItem<float>>{},
              sf::Vector2f(static_cast<float>(window->getSize().x) / 6.f,
                           static_cast<float>(window->getSize().y) / 4.f),
-             AppStyle::Colors::opaqueBlack, p_font, sf::Color::White)
+             appStyle::Colors::opaqueBlack, p_font, sf::Color::White)
 
 {
 
@@ -27,7 +27,7 @@ SimulationWindow::SimulationWindow(std::shared_ptr<sf::RenderWindow> p_window,
     initializeComponents();
 }
 
-void SimulationWindow::initializeComponents() {
+void graphics::scenes::SimulationWindow::initializeComponents() {
     // Image by
     // https://www.freepik.com/free-vector/flat-design-poker-table-background_88532182.htm#query=pool%20table%20texture&position=3&from_view=keyword&track=ais&uuid=d397caa0-f20e-4ea8-a4cc-3ff86f785fbd
 
@@ -42,7 +42,7 @@ void SimulationWindow::initializeComponents() {
     menuButton.setPosition({20, 20});
 }
 
-void SimulationWindow::processEvents() {
+void graphics::scenes::SimulationWindow::processEvents() {
 
     sf::Event event;
     while (window->pollEvent(event)) {
@@ -62,7 +62,7 @@ void SimulationWindow::processEvents() {
     }
 }
 
-void SimulationWindow::draw() {
+void graphics::scenes::SimulationWindow::draw() {
     sf::CircleShape ball(5);
     ball.setFillColor(sf::Color::Red);
 

@@ -2,14 +2,16 @@
 #define MAINWINDOW_HPP
 
 #include "../simulation/system.hpp"
-#include "analysisWindow.hpp"
-#include "appStyle.hpp"
-#include "configSimulation.hpp"
-#include "menu.hpp"
-#include "scene.hpp"
-#include "simulationWindow.hpp"
+#include "scenes/analysisWindow.hpp"
+#include "scenes/configSimulation.hpp"
+#include "scenes/menu.hpp"
+#include "scenes/simulationWindow.hpp"
+#include "style/appStyle.hpp"
+#include "utils/scene.hpp"
 #include <SFML/Graphics.hpp>
 #include <memory>
+
+namespace graphics {
 
 class MainWindow {
   public:
@@ -18,15 +20,16 @@ class MainWindow {
     Scene selectedScene;
 
   private:
-    AppStyle::AppStyle appStyle;
-    std::shared_ptr<System<float>> system;
+    appStyle::AppStyle appStyle;
+    std::shared_ptr<simulation::System<float>> system;
     std::shared_ptr<sf::RenderWindow> window;
-    Menu menu;
-    ConfigSimulation configSimulation;
-    SimulationWindow simulationWindow;
-    AnalysisWindow analysisWindow;
+    graphics::scenes::Menu menu;
+    graphics::scenes::ConfigSimulation configSimulation;
+    graphics::scenes::SimulationWindow simulationWindow;
+    graphics::scenes::AnalysisWindow analysisWindow;
 
     void switchToConfig();
 };
+} // namespace graphics
 
 #endif

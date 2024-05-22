@@ -26,19 +26,20 @@ add_library(core_lib
     src/simulation/collision.cpp
     src/simulation/system.cpp
     src/graphics/mainWindow.cpp
-    src/graphics/menu.cpp
-    src/graphics/configSimulation.cpp
-    src/graphics/simulationWindow.cpp
-    src/graphics/analysisWindow.cpp
-    src/graphics/errorPopup.cpp
+    src/graphics/scenes/menu.cpp
+    src/graphics/scenes/configSimulation.cpp
+    src/graphics/scenes/simulationWindow.cpp
+    src/graphics/scenes/analysisWindow.cpp
+    src/graphics/components/errorPopup/errorPopup.cpp
     src/graphics/components/textInput/textInput.cpp
     src/graphics/components/legend/legend.cpp
     src/graphics/components/legend/legendItem.cpp
     src/graphics/components/button/button.cpp
-    src/analysis/parameters.hpp
-    src/analysis/results.hpp
-    src/analysis/analysis.hpp
-    src/graphics/appStyle.cpp
+    src/graphics/style/appStyle.cpp
+    src/analysis/parameters.cpp
+    src/analysis/results.cpp
+    src/analysis/analysis.cpp
+    
 
 )
 

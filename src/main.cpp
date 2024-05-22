@@ -1,7 +1,7 @@
 #include "graphics/mainWindow.hpp"
 
 int main() {
-    MainWindow mainWindow;
+    graphics::MainWindow mainWindow;
 
     mainWindow.run();
 

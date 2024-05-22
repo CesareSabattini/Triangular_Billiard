@@ -5,6 +5,7 @@
 #include <iostream>
 #include <memory>
 
+namespace graphics::components {
 class Button {
   public:
     Button(const sf::Vector2f &p_position, const sf::Vector2f &p_size,
@@ -35,5 +36,7 @@ class Button {
     bool isHover;
     bool isClick;
 };
+
+} // namespace graphics::components
 
 #endif

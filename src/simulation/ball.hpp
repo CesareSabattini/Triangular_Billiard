@@ -8,6 +8,8 @@
 #include <stdexcept>
 #include <type_traits>
 
+namespace simulation::components {
+
 template <typename T> class Ball {
 
     static_assert(std::is_arithmetic<T>::value, "T must be an arithmetic type");
@@ -32,5 +34,6 @@ template <typename T> class Ball {
     std::array<T, 2> pos;
     T theta;
 };
+} // namespace simulation::components
 
 #endif // BALL_HPP

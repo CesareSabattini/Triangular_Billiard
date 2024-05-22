@@ -1,7 +1,8 @@
 #include "mainWindow.hpp"
 
-MainWindow::MainWindow()
-    : selectedScene(Scene::MENU), system(std::make_shared<System<float>>()),
+graphics::MainWindow::MainWindow()
+    : selectedScene(Scene::MENU),
+      system(std::make_shared<simulation::System<float>>()),
       window(std::make_shared<sf::RenderWindow>(
           sf::VideoMode(sf::VideoMode::getFullscreenModes()[0]),
           "Triangular Pool Simulation")),
@@ -14,7 +15,7 @@ MainWindow::MainWindow()
     window->setPosition(sf::Vector2i(0, 0));
 }
 
-void MainWindow::run() {
+void graphics::MainWindow::run() {
     while (window->isOpen()) {
         window->clear();
         try {
@@ -35,8 +36,8 @@ void MainWindow::run() {
                 analysisWindow.draw();
             }
         } catch (std::invalid_argument &e) {
-            ErrorPopup errorPopup(window, appStyle.getFont(), e.what(),
-                                  selectedScene);
+            graphics::components::ErrorPopup errorPopup(
+                window, appStyle.getFont(), e.what(), selectedScene);
             selectedScene = Scene::ERROR;
             while (selectedScene == Scene::ERROR) {
                 errorPopup.processEvents();
@@ -48,7 +49,7 @@ void MainWindow::run() {
     }
 }
 
-void MainWindow::switchToConfig() {
+void graphics::MainWindow::switchToConfig() {
     configSimulation.processEvents();
     configSimulation.draw();
 }

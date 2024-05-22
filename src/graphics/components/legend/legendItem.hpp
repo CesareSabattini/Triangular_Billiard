@@ -3,6 +3,8 @@
 
 #include <string>
 
+namespace graphics::components {
+
 template <typename T> class LegendItem {
   public:
     LegendItem(std::string p_name, T p_value, std::string p_unit);
@@ -21,5 +23,7 @@ template <typename T> class LegendItem {
     T value;
     std::string unit;
 };
+
+} // namespace graphics::components
 
 #endif

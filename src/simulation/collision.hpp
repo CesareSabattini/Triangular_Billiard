@@ -7,6 +7,8 @@
 #include <stdexcept>
 #include <type_traits>
 
+namespace simulation::components {
+
 template <typename T> class Collision {
   public:
     static_assert(std::is_arithmetic<T>::value, "T must be an arithmetic type");
@@ -21,5 +23,7 @@ template <typename T> class Collision {
     std::array<T, 2> pos = {0, 0};
     T theta;
 };
+
+} // namespace simulation::components
 
 #endif // COLLISION_HPP

@@ -1,11 +1,13 @@
 #ifndef ERRORPOPUP_HPP
 #define ERRORPOPUP_HPP
 
-#include "appStyle.hpp"
-#include "components/button/button.hpp"
-#include "scene.hpp"
+#include "../../style/appStyle.hpp"
+#include "../../utils/scene.hpp"
+#include "../button/button.hpp"
 
 #include <SFML/Graphics.hpp>
+
+namespace graphics::components {
 
 class ErrorPopup {
   public:
@@ -26,5 +28,7 @@ class ErrorPopup {
 
     void initializeComponents();
 };
+
+} // namespace graphics::components
 
 #endif // ERRORPOPUP_HPP

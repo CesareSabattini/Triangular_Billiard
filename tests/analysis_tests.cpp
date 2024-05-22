@@ -2,10 +2,10 @@
 #include "doctest.h"
 
 TEST_CASE("Testing meanY and meanTheta functions") {
-    std::shared_ptr<System<double>> system =
-        std::make_shared<System<double>>(0.5, 0.0, 10.0, 1E3, 10);
+    std::shared_ptr<simulation::System<double>> system =
+        std::make_shared<simulation::System<double>>(0.5, 0.0, 10.0, 1E3, 10);
 
-    Parameters<double> parameters(1E3, 0.0, 0.1, 0.0, 0.1);
+    Analysis::Parameters<double> parameters(1E3, 0.0, 0.1, 0.0, 0.1);
 
     Analysis::Analyzer<double> analyzer(system, parameters);
 
@@ -79,11 +79,12 @@ TEST_CASE("Testing meanY and meanTheta functions") {
 
 TEST_CASE("Testing standardDeviationY and standardDeviationTheta functions") {
 
-    std::shared_ptr<System<double>> system = std::make_shared<System<double>>();
+    std::shared_ptr<simulation::System<double>> system =
+        std::make_shared<simulation::System<double>>();
     system->getPool().setL(10.0);
     system->getPool().setRs(1E3, 0.5);
 
-    Parameters<double> parameters(1E3, 0.0, 0.1, 0.0, 0.1);
+    Analysis::Parameters<double> parameters(1E3, 0.0, 0.1, 0.0, 0.1);
 
     Analysis::Analyzer<double> analyzer(system, parameters);
 
@@ -163,11 +164,12 @@ TEST_CASE("Testing standardDeviationY and standardDeviationTheta functions") {
 }
 
 TEST_CASE("Test skewnessY and skewnessTheta") {
-    std::shared_ptr<System<double>> system = std::make_shared<System<double>>();
+    std::shared_ptr<simulation::System<double>> system =
+        std::make_shared<simulation::System<double>>();
     system->getPool().setL(10.0);
     system->getPool().setRs(1E3, 0.5);
 
-    Parameters<double> parameters(1E3, 0.0, 0.1, 0.0, 0.1);
+    Analysis::Parameters<double> parameters(1E3, 0.0, 0.1, 0.0, 0.1);
 
     Analysis::Analyzer<double> analyzer(system, parameters);
 
@@ -245,11 +247,12 @@ TEST_CASE("Test skewnessY and skewnessTheta") {
 }
 
 TEST_CASE("Test kurtosisY and kurtosisTheta") {
-    std::shared_ptr<System<double>> system = std::make_shared<System<double>>();
+    std::shared_ptr<simulation::System<double>> system =
+        std::make_shared<simulation::System<double>>();
     system->getPool().setL(10.0);
     system->getPool().setRs(1E3, 0.5);
 
-    Parameters<double> parameters(1E3, 0.0, 0.1, 0.0, 0.1);
+    Analysis::Parameters<double> parameters(1E3, 0.0, 0.1, 0.0, 0.1);
 
     Analysis::Analyzer<double> analyzer(system, parameters);
 

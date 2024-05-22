@@ -1,55 +1,68 @@
 
 #include "system.hpp"
 
-template <typename T> System<T>::System() : ball(), pool() {}
+template <typename T> simulation::System<T>::System() : ball(), pool() {}
 
 template <typename T>
-System<T>::System(const T p_theta, const T p_y, const T p_l, const T p_r1,
-                  const T p_r2)
+simulation::System<T>::System(const T p_theta, const T p_y, const T p_l,
+                              const T p_r1, const T p_r2)
     : ball(0, p_y, p_theta), pool(p_l, p_r1, p_r2) {
     if (p_y < -p_r1 || p_y > p_r1)
         throw std::invalid_argument("y must be between -R1 and R1");
     else {
 
-        collisions.push_back(Collision<T>(0, p_y, p_theta));
+        collisions.push_back(
+            simulation::components::Collision<T>(0, p_y, p_theta));
     }
 }
 
 template <typename T>
-System<T>::System(const Ball<T> &p_ball, const Pool<T> &p_pool)
+simulation::System<T>::System(const simulation::components::Ball<T> &p_ball,
+                              const simulation::components::Pool<T> &p_pool)
     : ball(p_ball), pool(p_pool) {}
 
 template <typename T>
-System<T>::System(const System &p_system)
+simulation::System<T>::System(const System &p_system)
     : ball(p_system.ball), pool(p_system.pool) {}
 
-template <typename T> System<T> &System<T>::operator=(const System &p_system) {
+template <typename T>
+simulation::System<T> &
+simulation::System<T>::operator=(const System &p_system) {
     ball = p_system.ball;
     pool = p_system.pool;
     return *this;
 }
 
 template <typename T>
-System<T>::System(System &&p_system)
+simulation::System<T>::System(System &&p_system)
     : ball(p_system.ball), pool(p_system.pool) {}
 
-template <typename T> System<T> &System<T>::operator=(System &&p_system) {
+template <typename T>
+simulation::System<T> &simulation::System<T>::operator=(System &&p_system) {
     ball = p_system.ball;
     pool = p_system.pool;
     return *this;
 }
 
-template <typename T> System<T>::~System() {}
+template <typename T> simulation::System<T>::~System() {}
 
-template <typename T> Ball<T> &System<T>::getBall() { return ball; }
+template <typename T>
+simulation::components::Ball<T> &simulation::System<T>::getBall() {
+    return ball;
+}
 
-template <typename T> Pool<T> &System<T>::getPool() { return pool; }
+template <typename T>
+simulation::components::Pool<T> &simulation::System<T>::getPool() {
+    return pool;
+}
 
-template <typename T> std::vector<Collision<T>> &System<T>::getCollisions() {
+template <typename T>
+std::vector<simulation::components::Collision<T>> &
+simulation::System<T>::getCollisions() {
     return collisions;
 }
 
-template <typename T> void System<T>::throwTheBall() {
+template <typename T> void simulation::System<T>::throwTheBall() {
 
     const T alpha =
         static_cast<T>(std::atan((pool.getR1() - pool.getR2()) / pool.getL()));
@@ -72,7 +85,8 @@ template <typename T> void System<T>::throwTheBall() {
             throw std::invalid_argument(
                 "the ball can't escape due to skewness!");
         else {
-            collisions.push_back(Collision<T>(newX, newY, newTheta));
+            collisions.push_back(
+                simulation::components::Collision<T>(newX, newY, newTheta));
             ball.setPos({newX, newY});
         }
 
@@ -96,13 +110,14 @@ template <typename T> void System<T>::throwTheBall() {
             throw std::invalid_argument(
                 "the ball can't escape due to skewness!");
         else {
-            collisions.push_back(Collision<T>(newX, newY, newTheta));
+            collisions.push_back(
+                simulation::components::Collision<T>(newX, newY, newTheta));
             ball.setPos({newX, newY});
         }
     }
 }
 
-template <typename T> void System<T>::computeNextCollision() {
+template <typename T> void simulation::System<T>::computeNextCollision() {
 
     if (collisions[collisions.size() - 1].getTheta() >= 0) {
         T newTheta = -static_cast<T>(
@@ -124,12 +139,13 @@ template <typename T> void System<T>::computeNextCollision() {
             ball.setPos({pool.getL(), computeOutputY()});
             std::cout << "Simulation ended, with output Y of: "
                       << computeOutputY() << std::endl;
-            collisions.push_back(
-                Collision<T>(pool.getL(), computeOutputY(),
-                             collisions[collisions.size() - 1].getTheta()));
+            collisions.push_back(simulation::components::Collision<T>(
+                pool.getL(), computeOutputY(),
+                collisions[collisions.size() - 1].getTheta()));
 
         } else {
-            collisions.push_back(Collision<T>(newX, newY, newTheta));
+            collisions.push_back(
+                simulation::components::Collision<T>(newX, newY, newTheta));
             ball.setPos({newX, newY});
         }
     } else if (collisions[collisions.size() - 1].getTheta() < 0) {
@@ -151,21 +167,22 @@ template <typename T> void System<T>::computeNextCollision() {
 
         if (newX >= pool.getL()) {
             ball.setPos({pool.getL(), computeOutputY()});
-            collisions.push_back(
-                Collision<T>(pool.getL(), computeOutputY(),
-                             collisions[collisions.size() - 1].getTheta()));
+            collisions.push_back(simulation::components::Collision<T>(
+                pool.getL(), computeOutputY(),
+                collisions[collisions.size() - 1].getTheta()));
 
             std::cout << "Simulation ended, with output Y of: "
                       << computeOutputY() << std::endl;
 
         } else {
-            collisions.push_back(Collision<T>(newX, newY, newTheta));
+            collisions.push_back(
+                simulation::components::Collision<T>(newX, newY, newTheta));
             ball.setPos({newX, newY});
         }
     }
 }
 
-template <typename T> T System<T>::computeOutputY() {
+template <typename T> T simulation::System<T>::computeOutputY() {
     T y = static_cast<T>(
         collisions[collisions.size() - 1].getPos()[1] +
         std::tan(collisions[collisions.size() - 1].getTheta()) *
@@ -173,7 +190,7 @@ template <typename T> T System<T>::computeOutputY() {
     return y;
 }
 
-template <typename T> void System<T>::simulate() {
+template <typename T> void simulation::System<T>::simulate() {
     std::cout << "--------------------------------" << std::endl;
     std::cout << "SIMULATION STARTED" << std::endl;
     std::cout << "--------------------------------" << std::endl;
@@ -234,33 +251,35 @@ template <typename T> void System<T>::simulate() {
 }
 
 template <typename T>
-void System<T>::updateParams(const T p_theta, const T p_y, const T p_l,
-                             const T p_r1, const T p_r2) {
+void simulation::System<T>::updateParams(const T p_theta, const T p_y,
+                                         const T p_l, const T p_r1,
+                                         const T p_r2) {
     reset();
     ball.setPos(std::array<T, 2>({0, p_y}));
     ball.setTheta(p_theta);
     pool.setL(p_l);
     pool.setRs(p_r1, p_r2);
     collisions.clear();
-    collisions.push_back(Collision<T>(0, p_y, p_theta));
+    collisions.push_back(simulation::components::Collision<T>(0, p_y, p_theta));
 }
 
 template <typename T>
-void System<T>::updateParams(const std::array<T, 2> &inputY_T) {
+void simulation::System<T>::updateParams(const std::array<T, 2> &inputY_T) {
     reset();
     ball.setPos({0, inputY_T[0]});
     ball.setTheta(inputY_T[1]);
     collisions.clear();
-    collisions.push_back(Collision<T>(0, inputY_T[0], ball.getTheta()));
+    collisions.push_back(
+        simulation::components::Collision<T>(0, inputY_T[0], ball.getTheta()));
 }
 
-template <typename T> void System<T>::reset() {
+template <typename T> void simulation::System<T>::reset() {
     ball.setPos({0, 0});
     ball.setTheta(0);
     collisions.clear();
-    collisions.push_back(Collision<T>(0, 0, 0));
+    collisions.push_back(simulation::components::Collision<T>(0, 0, 0));
 }
 
-template class System<int>;
-template class System<float>;
-template class System<double>;
+template class simulation::System<int>;
+template class simulation::System<float>;
+template class simulation::System<double>;
