@@ -3,6 +3,7 @@
 
 #include "../simulation/system.hpp"
 #include "./results.hpp"
+#include "parameters.hpp"
 #include <array>
 #include <cmath>
 #include <concepts>
@@ -21,12 +22,32 @@ requires DoubleOrFloat<T>
 class Analyzer {
 
   public:
-    Analyzer(std::shared_ptr<System<T>> p_system, int n)
-        : system(p_system), numSimulations(n) {
+    Analyzer(std::shared_ptr<System<T>> p_system, Parameters<T> p_parameters)
+        : system(p_system), parameters(p_parameters) {
 
-        if (numSimulations <= 0) {
+        if (p_parameters.numSimulations <= 0) {
             throw std::invalid_argument(
                 "Number of simulations must be greater than 0.");
+        }
+
+        if (p_parameters.meanY < -system->getPool().getR1() ||
+            p_parameters.meanY > system->getPool().getR1()) {
+            throw std::invalid_argument("Mean Y must be in [-r1, r1].");
+        }
+
+        if (p_parameters.stdY <= 0) {
+            throw std::invalid_argument(
+                "Standard deviation of Y must be greater than 0.");
+        }
+
+        if (p_parameters.meanTheta < -M_PI / 2 ||
+            p_parameters.meanTheta > M_PI / 2) {
+            throw std::invalid_argument("Mean Theta must be in [-pi/2, pi/2].");
+        }
+
+        if (p_parameters.stdTheta <= 0) {
+            throw std::invalid_argument(
+                "Standard deviation of Theta must be greater than 0.");
         }
     }
 
@@ -38,10 +59,10 @@ class Analyzer {
 
         T lower_boundY = -system->getPool().getR1();
         T upper_boundY = system->getPool().getR1();
-        T sigma1 = system->getPool().getR2() / 2;
 
-        for (int i = 0; i < numSimulations; i++) {
-            std::normal_distribution<T> distribution1(0, sigma1);
+        for (int i = 0; i < parameters.numSimulations; i++) {
+            std::normal_distribution<T> distribution1(parameters.meanY,
+                                                      parameters.stdY);
             T value;
             do {
                 value = distribution1(generator);
@@ -51,13 +72,13 @@ class Analyzer {
 
         T lower_boundT = -static_cast<T>(M_PI / 2);
         T upper_boundT = static_cast<T>(M_PI / 2);
-        T sigma2 = static_cast<T>(M_PI / 6);
 
         for (std::allocator<std::array<double, 2>>::size_type i = 0;
              i < static_cast<std::allocator<std::array<double, 2>>::size_type>(
-                     numSimulations);
+                     parameters.numSimulations);
              i++) {
-            std::normal_distribution<T> distribution2(0, sigma2);
+            std::normal_distribution<T> distribution2(parameters.meanTheta,
+                                                      parameters.stdTheta);
             T value;
             do {
                 value = distribution2(generator);
@@ -67,7 +88,7 @@ class Analyzer {
     }
 
     void simulate() {
-        for (int i = 0; i < numSimulations; i++) {
+        for (int i = 0; i < parameters.numSimulations; i++) {
             system->updateParams(inputs[static_cast<
                 std::allocator<std::array<double, 2>>::size_type>(i)]);
             system->simulate();
@@ -89,6 +110,10 @@ class Analyzer {
         results.meanTheta = meanTheta();
         results.stdY = standardDeviationY();
         results.stdTheta = standardDeviationTheta();
+        results.skewnessY = skewnessY();
+        results.skewnessTheta = skewnessTheta();
+        results.kurtosisY = kurtosisY();
+        results.kurtosisTheta = kurtosisTheta();
     }
     void printResults() {
         std::cout << "Results: " << std::endl;
@@ -97,6 +122,10 @@ class Analyzer {
         std::cout << "Standard Deviation Y: " << results.stdY << std::endl;
         std::cout << "Standard Deviation Theta: " << results.stdTheta
                   << std::endl;
+        std::cout << "Skewness Y: " << results.skewnessY << std::endl;
+        std::cout << "Skewness Theta: " << results.skewnessTheta << std::endl;
+        std::cout << "Kurtosis Y: " << results.kurtosisY << std::endl;
+        std::cout << "Kurtosis Theta: " << results.kurtosisTheta << std::endl;
     }
 
     T meanY() {
@@ -210,6 +239,138 @@ class Analyzer {
         }
     }
 
+    T skewnessY() {
+
+        auto it =
+            std::find_if(outputs.begin(), outputs.end(),
+                         [this](const std::array<T, 2> &elem) {
+                             return elem[0] < -system->getPool().getR1() ||
+                                    elem[0] > system->getPool().getR1();
+                         });
+
+        if (it != outputs.end())
+            throw std::invalid_argument("Y outputs must be in [-r1, r1].");
+
+        else {
+            if (outputs.empty())
+                throw std::invalid_argument("Empty vector.");
+
+            T mean = meanY();
+            T std_dev = standardDeviationY();
+            T n = static_cast<T>(outputs.size());
+
+            T skewness =
+                std::accumulate(outputs.begin(), outputs.end(), T(0),
+                                [mean, std_dev](const T &acc,
+                                                const std::array<T, 2> &elem) {
+                                    T z = (elem[0] - mean) / std_dev;
+                                    return acc + z * z * z;
+                                }) /
+                n;
+
+            return skewness * (std::sqrt(n * (n - 1)) / (n - 2));
+        }
+    }
+
+    T skewnessTheta() {
+
+        auto it =
+            std::find_if(outputs.begin(), outputs.end(),
+                         [this](const std::array<T, 2> &elem) {
+                             return elem[1] < -M_PI / 2 || elem[1] > M_PI / 2;
+                         });
+
+        if (it != outputs.end())
+            throw std::invalid_argument(
+                "Theta outputs must be in [-pi/2, pi/2].");
+
+        else {
+            if (outputs.empty())
+                throw std::invalid_argument("Empty vector.");
+
+            T mean = meanTheta();
+            T std_dev = standardDeviationTheta();
+            T n = static_cast<T>(outputs.size());
+
+            T skewness =
+                std::accumulate(outputs.begin(), outputs.end(), T(0),
+                                [mean, std_dev](const T &acc,
+                                                const std::array<T, 2> &elem) {
+                                    T z = (elem[1] - mean) / std_dev;
+                                    return acc + z * z * z;
+                                }) /
+                n;
+
+            return skewness * (std::sqrt(n * (n - 1)) / (n - 2));
+        }
+    }
+
+    T kurtosisY() {
+
+        auto it =
+            std::find_if(outputs.begin(), outputs.end(),
+                         [this](const std::array<T, 2> &elem) {
+                             return elem[0] < -system->getPool().getR1() ||
+                                    elem[0] > system->getPool().getR1();
+                         });
+
+        if (it != outputs.end())
+            throw std::invalid_argument("Y outputs must be in [-r1, r1].");
+
+        else {
+            if (outputs.empty())
+                throw std::invalid_argument("Empty vector.");
+
+            T mean = meanY();
+            T std_dev = standardDeviationY();
+            T n = static_cast<T>(outputs.size());
+
+            T kurtosis =
+                std::accumulate(outputs.begin(), outputs.end(), T(0),
+                                [mean, std_dev](const T &acc,
+                                                const std::array<T, 2> &elem) {
+                                    T z = (elem[0] - mean) / std_dev;
+                                    return acc + z * z * z * z;
+                                }) /
+                n;
+
+            return (kurtosis - 3);
+        }
+    }
+
+    T kurtosisTheta() {
+
+        auto it =
+            std::find_if(outputs.begin(), outputs.end(),
+                         [this](const std::array<T, 2> &elem) {
+                             return elem[1] < -M_PI / 2 || elem[1] > M_PI / 2;
+                         });
+
+        if (it != outputs.end())
+            throw std::invalid_argument(
+                "Theta outputs must be in [-pi/2, pi/2].");
+
+        else {
+            if (outputs.empty())
+                throw std::invalid_argument("Empty vector.");
+
+            T mean = meanTheta();
+            T std_dev = standardDeviationTheta();
+            T n = static_cast<T>(outputs.size());
+
+            T kurtosis =
+                std::accumulate(outputs.begin(), outputs.end(), T(0),
+                                [mean, std_dev](const T &acc,
+                                                const std::array<T, 2> &elem) {
+                                    T z = (elem[1] - mean) / std_dev;
+                                    return acc + z * z * z * z;
+                                }) /
+                n;
+
+            return (kurtosis - 3);
+        }
+    }
+
     Results<T> getResults() { return results; }
 
     // for testing purposes only
@@ -219,7 +380,7 @@ class Analyzer {
 
   private:
     std::shared_ptr<System<T>> system;
-    int numSimulations;
+    Parameters<T> parameters;
     std::vector<std::array<T, 2>> inputs;
     std::vector<std::array<T, 2>> outputs;
     Results<T> results;

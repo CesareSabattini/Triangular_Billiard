@@ -16,23 +16,34 @@ MainWindow::MainWindow()
 
 void MainWindow::run() {
     while (window->isOpen()) {
-
         window->clear();
-        if (selectedScene == Scene::MENU) {
-            menu.processEvents();
-            menu.draw();
-        }
-        if (selectedScene == Scene::CONFIG) {
-            switchToConfig();
-        }
-        if (selectedScene == Scene::SIMULATION) {
+        try {
+            if (selectedScene == Scene::MENU) {
+                menu.processEvents();
+                menu.draw();
+            }
+            if (selectedScene == Scene::CONFIG) {
+                switchToConfig();
+            }
+            if (selectedScene == Scene::SIMULATION) {
 
-            simulationWindow.processEvents();
-            simulationWindow.draw();
-        }
-        if (selectedScene == Scene::ANALYSIS) {
-            analysisWindow.processEvents();
-            analysisWindow.draw();
+                simulationWindow.processEvents();
+                simulationWindow.draw();
+            }
+            if (selectedScene == Scene::ANALYSIS) {
+                analysisWindow.processEvents();
+                analysisWindow.draw();
+            }
+        } catch (std::invalid_argument &e) {
+            ErrorPopup errorPopup(window, appStyle.getFont(), e.what(),
+                                  selectedScene);
+            selectedScene = Scene::ERROR;
+            while (selectedScene == Scene::ERROR) {
+                errorPopup.processEvents();
+                window->clear();
+                errorPopup.draw();
+                window->display();
+            }
         }
     }
 }

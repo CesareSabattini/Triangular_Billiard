@@ -17,7 +17,11 @@ AnalysisWindow::AnalysisWindow(std::shared_ptr<sf::RenderWindow> p_window,
       resultsPanel({LegendItem<float>("Mean Y", 0.00, "m"),
                     LegendItem<float>("Std Y", 0.00, "m"),
                     LegendItem<float>("Mean Theta", 0.00, "rad"),
-                    LegendItem<float>("Std Theta", 0.00, "rad")},
+                    LegendItem<float>("Std Theta", 0.00, "rad"),
+                    LegendItem<float>("Skewness Y", 0.00, ""),
+                    LegendItem<float>("Skewness Theta", 0.00, ""),
+                    LegendItem<float>("Kurtosis Y", 0.00, ""),
+                    LegendItem<float>("Kurtosis Theta", 0.00, "")},
                    sf::Vector2f(20, 20), AppStyle::Colors::opaqueBlack, p_font,
                    sf::Color::White),
       textInputs(
@@ -30,6 +34,18 @@ AnalysisWindow::AnalysisWindow(std::shared_ptr<sf::RenderWindow> p_window,
            TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
                      AppStyle::Colors::cream, p_font, AppStyle::Colors::bgCyan,
                      "End radius", "100"),
+           TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
+                     AppStyle::Colors::cream, p_font, AppStyle::Colors::bgCyan,
+                     "Mean Y", "0"),
+           TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
+                     AppStyle::Colors::cream, p_font, AppStyle::Colors::bgCyan,
+                     "Std Y", "0.1"),
+           TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
+                     AppStyle::Colors::cream, p_font, AppStyle::Colors::bgCyan,
+                     "Mean Theta", "0"),
+           TextInput(sf::Vector2f(100, 100), sf::Vector2f(200, 50), 24,
+                     AppStyle::Colors::cream, p_font, AppStyle::Colors::bgCyan,
+                     "Std Theta", "0.1"),
            TextInput(sf::Vector2f(100, 500), sf::Vector2f(200, 50), 24,
                      AppStyle::Colors::cream, p_font, AppStyle::Colors::bgCyan,
                      "Num Simulations", "100")}) {
@@ -64,17 +80,26 @@ void AnalysisWindow::initializeComponents() {
     inputBox.setFillColor(AppStyle::Colors::opaqueBlack);
     inputBox.setPosition(static_cast<float>(window->getSize().x) / 4.f -
                              inputBox.getGlobalBounds().width / 2,
-                         static_cast<float>(window->getSize().y) / 5.f);
+                         static_cast<float>(window->getSize().y) / 4.f);
 
-    float textInputWidth = inputBox.getGlobalBounds().width * 0.8f;
-    float textInputHeight = inputBox.getGlobalBounds().height /
-                            (static_cast<float>(textInputs.size()) + 3.f);
-    for (std::array<TextInput, 4>::size_type i = 0; i < textInputs.size();
-         i++) {
+    float textInputWidth = inputBox.getGlobalBounds().width * 0.4f;
+    float textInputHeight = inputBox.getGlobalBounds().height / 6.f;
+    for (std::array<TextInput, 8>::size_type i = 0; i < 5; i++) {
         textInputs[i].setSize(sf::Vector2f(textInputWidth, textInputHeight));
         textInputs[i].setPosition(sf::Vector2f(
-            inputBox.getPosition().x + inputBox.getGlobalBounds().width / 2.f -
+            inputBox.getPosition().x + inputBox.getGlobalBounds().width / 4.f -
                 textInputWidth / 2,
+            inputBox.getPosition().y +
+                static_cast<float>(i) * textInputHeight * 1.3f +
+                textInputHeight / 2));
+    }
+
+    for (std::array<TextInput, 8>::size_type i = 0; i < 4; i++) {
+        textInputs[i + 4].setSize(
+            sf::Vector2f(textInputWidth, textInputHeight));
+        textInputs[i + 4].setPosition(sf::Vector2f(
+            inputBox.getPosition().x +
+                inputBox.getGlobalBounds().width * 3 / 4.f - textInputWidth / 2,
             inputBox.getPosition().y +
                 static_cast<float>(i) * textInputHeight * 1.3f +
                 textInputHeight / 2));
@@ -103,7 +128,7 @@ void AnalysisWindow::initializeComponents() {
     resultsPanel.setPosition(
         {static_cast<float>(window->getSize().x) * 3.0f / 4.0f -
              static_cast<float>(window->getSize().x) / 6.0f,
-         static_cast<float>(window->getSize().y) / 5.0f});
+         static_cast<float>(window->getSize().y) / 4.0f});
 }
 
 void AnalysisWindow::draw() {
@@ -165,11 +190,17 @@ void AnalysisWindow::processEvents() {
         if (analyzeButton.getGlobalBounds().contains(
                 static_cast<float>(event.mouseButton.x),
                 static_cast<float>(event.mouseButton.y))) {
-            const int numSimulations = std::stoi(textInputs[3].getText());
             system->updateParams(0, 0, std::stof(textInputs[0].getText()),
                                  std::stof(textInputs[1].getText()),
                                  std::stof(textInputs[2].getText()));
-            Analysis::Analyzer<float> analyzer(system, numSimulations);
+
+            Parameters<float> params(std::stoi(textInputs[7].getText()),
+                                     std::stof(textInputs[3].getText()),
+                                     std::stof(textInputs[4].getText()),
+                                     std::stof(textInputs[5].getText()),
+                                     std::stof(textInputs[6].getText()));
+
+            Analysis::Analyzer<float> analyzer(system, params);
             analyzer.generate();
             analyzer.simulate();
             analyzer.analyze();
@@ -182,7 +213,17 @@ void AnalysisWindow::processEvents() {
                  LegendItem<float>("Mean Theta",
                                    analyzer.getResults().meanTheta, "rad"),
                  LegendItem<float>("Std Theta", analyzer.getResults().stdTheta,
-                                   "rad")});
+                                   "rad"),
+                 LegendItem<float>("Skewness Y",
+                                   analyzer.getResults().skewnessY, ""),
+                 LegendItem<float>("Skewness Theta",
+                                   analyzer.getResults().skewnessTheta, ""),
+                 LegendItem<float>("Kurtosis Y",
+                                   analyzer.getResults().kurtosisY, ""),
+                 LegendItem<float>("Kurtosis Theta",
+                                   analyzer.getResults().kurtosisTheta, "")
+
+                });
             resultsPanel.setPosition(currentPos);
         }
     }

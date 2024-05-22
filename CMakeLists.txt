@@ -35,6 +35,7 @@ add_library(core_lib
     src/graphics/components/legend/legend.cpp
     src/graphics/components/legend/legendItem.cpp
     src/graphics/components/button/button.cpp
+    src/analysis/parameters.hpp
     src/analysis/results.hpp
     src/analysis/analysis.hpp
     src/graphics/appStyle.cpp

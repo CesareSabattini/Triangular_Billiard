@@ -188,7 +188,6 @@ template <typename T> void System<T>::simulate() {
     try {
         throwTheBall();
     } catch (std::invalid_argument &e) {
-        // cas di grandi inclinazione delle pareti e traiettorie non radenti
         std::cout << "the ball can't escape due to skewness!" << std::endl;
         return;
     }

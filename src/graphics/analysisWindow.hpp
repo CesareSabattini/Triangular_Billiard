@@ -2,6 +2,7 @@
 #define ANALYSISWINDOW_HPP
 
 #include "../analysis/analysis.hpp"
+#include "../analysis/parameters.hpp"
 #include "../analysis/results.hpp"
 #include "../graphics/components/button/button.hpp"
 #include "../graphics/components/legend/legend.hpp"
@@ -28,7 +29,7 @@ class AnalysisWindow {
     Button menuButton;
     Button analyzeButton;
     Legend<float> resultsPanel;
-    std::array<TextInput, 4> textInputs;
+    std::array<TextInput, 8> textInputs;
 
     sf::Text title;
     sf::RectangleShape titleBox;

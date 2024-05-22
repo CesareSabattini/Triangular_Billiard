@@ -17,7 +17,7 @@ TextInput::TextInput(const sf::Vector2f &position, const sf::Vector2f &size,
     propText.setPosition(position);
     propText.setString(propName);
 
-    float verticalOffset = propText.getGlobalBounds().height + 5.f;
+    float verticalOffset = propText.getGlobalBounds().height + 10.f;
 
     displayText.setFont(*font);
     displayText.setCharacterSize(fontSize);
@@ -63,7 +63,7 @@ void TextInput::setText(const std::string &newText) {
 
 void TextInput::setPosition(const sf::Vector2f &position) {
     propText.setPosition(position);
-    float verticalOffset = propText.getGlobalBounds().height + 5;
+    float verticalOffset = propText.getGlobalBounds().height + 10;
     inputBox.setPosition(position.x, position.y + verticalOffset);
     displayText.setPosition(
         position.x, inputBox.getPosition().y + inputBox.getSize().y / 2 -
