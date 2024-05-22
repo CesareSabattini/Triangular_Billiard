@@ -30,6 +30,5 @@ void simulation::components::Collision<T>::setTheta(const T p_theta) {
     theta = p_theta;
 }
 
-template class simulation::components::Collision<int>;
 template class simulation::components::Collision<float>;
 template class simulation::components::Collision<double>;

@@ -2,6 +2,7 @@
 #define ANALYSIS_HPP
 
 #include "../simulation/system.hpp"
+#include "../utils/concept.hpp"
 #include "./results.hpp"
 #include "parameters.hpp"
 #include <array>
@@ -13,9 +14,6 @@
 #include <vector>
 
 namespace Analysis {
-
-template <typename T>
-concept DoubleOrFloat = std::is_same_v<T, double> || std::is_same_v<T, float>;
 
 template <typename T>
 requires DoubleOrFloat<T>
@@ -36,7 +34,9 @@ class Analyzer {
     T meanTheta();
 
     T standardDeviationY();
+    T stdMeanY();
     T standardDeviationTheta();
+    T stdMeanTheta();
     T skewnessY();
     T skewnessTheta();
     T kurtosisY();

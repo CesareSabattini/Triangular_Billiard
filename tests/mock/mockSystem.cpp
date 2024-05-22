@@ -48,4 +48,3 @@ template <typename T> void mock::MockSystem<T>::simulate() {
 
 template class mock::MockSystem<double>;
 template class mock::MockSystem<float>;
-template class mock::MockSystem<int>;

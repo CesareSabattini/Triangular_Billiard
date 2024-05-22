@@ -1,6 +1,7 @@
 #ifndef SYSTEM_HPP
 #define SYSTEM_HPP
 
+#include "../utils/concept.hpp"
 #include "ball.hpp"
 #include "collision.hpp"
 #include "pool.hpp"
@@ -9,7 +10,10 @@
 #include <vector>
 
 namespace simulation {
-template <typename T> class System {
+template <typename T>
+requires DoubleOrFloat<T>
+
+class System {
   public:
     static_assert(std::is_arithmetic<T>::value, "T must be an arithmetic type");
     System();

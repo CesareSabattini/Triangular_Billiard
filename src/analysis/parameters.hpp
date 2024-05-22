@@ -1,12 +1,13 @@
 #ifndef PARAMETERS_HPP
 #define PARAMETERS_HPP
 
+#include "../utils/concept.hpp"
 #include <type_traits>
 
 namespace Analysis {
-template <typename T> struct Parameters {
-
-    static_assert(std::is_arithmetic<T>::value, "T must be an arithmetic type");
+template <typename T>
+requires DoubleOrFloat<T>
+struct Parameters {
     int numSimulations;
     T meanY;
     T stdY;

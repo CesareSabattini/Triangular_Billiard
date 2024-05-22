@@ -1,6 +1,7 @@
 #ifndef POOL_HPP
 #define POOL_HPP
 
+#include "../utils/concept.hpp"
 #include <iostream>
 #include <stdexcept>
 #include <type_traits>
@@ -8,11 +9,11 @@
 namespace simulation::components {
 
 template <typename T>
+requires DoubleOrFloat<T>
 
 class Pool {
-  public:
-    static_assert(std::is_arithmetic<T>::value, "T must be an arithmetic type");
 
+  public:
     Pool();
     Pool(const T p_l, const T p_r1, const T p_r2);
 

@@ -92,6 +92,5 @@ const T &simulation::components::Ball<T>::getTheta() const {
     return theta;
 }
 
-template class simulation::components::Ball<int>;
 template class simulation::components::Ball<float>;
 template class simulation::components::Ball<double>;

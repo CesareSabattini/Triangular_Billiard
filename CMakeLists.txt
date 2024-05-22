@@ -39,6 +39,7 @@ add_library(core_lib
     src/analysis/parameters.cpp
     src/analysis/results.cpp
     src/analysis/analysis.cpp
+    src/utils/concept.hpp
     
 
 )

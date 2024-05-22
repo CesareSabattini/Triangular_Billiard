@@ -2,6 +2,7 @@
 #ifndef BALL_HPP
 #define BALL_HPP
 
+#include "../utils/concept.hpp"
 #include <array>
 #include <cmath>
 #include <iostream>
@@ -10,9 +11,10 @@
 
 namespace simulation::components {
 
-template <typename T> class Ball {
+template <typename T>
+requires DoubleOrFloat<T>
 
-    static_assert(std::is_arithmetic<T>::value, "T must be an arithmetic type");
+class Ball {
 
   public:
     Ball();

@@ -1,6 +1,7 @@
 #ifndef COLLISION_HPP
 #define COLLISION_HPP
 
+#include "../utils/concept.hpp"
 #include <array>
 #include <cmath>
 #include <iostream>
@@ -9,9 +10,10 @@
 
 namespace simulation::components {
 
-template <typename T> class Collision {
+template <typename T>
+requires DoubleOrFloat<T>
+class Collision {
   public:
-    static_assert(std::is_arithmetic<T>::value, "T must be an arithmetic type");
     Collision() = default;
     Collision(const T p_x, const T p_y, const T p_theta);
     ~Collision();

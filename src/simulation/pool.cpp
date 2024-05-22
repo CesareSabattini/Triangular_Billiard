@@ -81,6 +81,5 @@ void simulation::components::Pool<T>::setRs(const T &p_r1, const T &p_r2) {
     r2 = p_r2;
 }
 
-template class simulation::components::Pool<int>;
 template class simulation::components::Pool<float>;
 template class simulation::components::Pool<double>;

@@ -90,8 +90,8 @@ template <typename T> void Analyzer<T>::simulate() {
 template <typename T> void Analyzer<T>::analyze() {
     results.meanY = meanY();
     results.meanTheta = meanTheta();
-    results.stdY = standardDeviationY();
-    results.stdTheta = standardDeviationTheta();
+    results.stdY = stdMeanY();
+    results.stdTheta = stdMeanTheta();
     results.skewnessY = skewnessY();
     results.skewnessTheta = skewnessTheta();
     results.kurtosisY = kurtosisY();
@@ -174,6 +174,10 @@ template <typename T> T Analyzer<T>::standardDeviationY() {
     }
 }
 
+template <typename T> T Analyzer<T>::stdMeanY() {
+    T stdDevY = standardDeviationY();
+    return stdDevY / std::sqrt(static_cast<T>(outputs.size()));
+}
 template <typename T> T Analyzer<T>::standardDeviationTheta() {
 
     auto it = std::find_if(outputs.begin(), outputs.end(),
@@ -197,6 +201,11 @@ template <typename T> T Analyzer<T>::standardDeviationTheta() {
 
         return std::sqrt(sum_squares / static_cast<T>(outputs.size()));
     }
+}
+
+template <typename T> T Analyzer<T>::stdMeanTheta() {
+    T stdDevTheta = standardDeviationTheta();
+    return stdDevTheta / std::sqrt(static_cast<T>(outputs.size()));
 }
 
 template <typename T> T Analyzer<T>::skewnessY() {

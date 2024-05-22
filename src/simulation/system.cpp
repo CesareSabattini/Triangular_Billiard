@@ -280,6 +280,5 @@ template <typename T> void simulation::System<T>::reset() {
     collisions.push_back(simulation::components::Collision<T>(0, 0, 0));
 }
 
-template class simulation::System<int>;
 template class simulation::System<float>;
 template class simulation::System<double>;

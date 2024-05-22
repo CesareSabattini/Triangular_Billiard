@@ -1,11 +1,16 @@
 #ifndef RESULTS_HPP
 #define RESULTS_HPP
 
+#include "../utils/concept.hpp"
 #include <type_traits>
 
 namespace Analysis {
 
-template <typename T> struct Results {
+template <typename T>
+
+requires DoubleOrFloat<T>
+
+struct Results {
     static_assert(std::is_arithmetic<T>::value, "T must be an arithmetic type");
     T meanY;
     T meanTheta;
