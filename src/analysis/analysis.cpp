@@ -32,6 +32,8 @@ Analyzer<T>::Analyzer(std::shared_ptr<simulation::System<T>> p_system,
     }
 }
 
+template <typename T> Analyzer<T>::~Analyzer() {}
+
 template <typename T> void Analyzer<T>::generate() {
     inputs.clear();
     outputs.clear();

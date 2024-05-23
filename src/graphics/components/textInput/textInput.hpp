@@ -13,6 +13,7 @@ class TextInput {
               const sf::Color &textColor = sf::Color::Black,
               const std::string &propName = "",
               const std::string &defaultText = "");
+    ~TextInput();
 
     void handleEvent(const sf::Event &event);
     void draw(sf::RenderWindow &window);

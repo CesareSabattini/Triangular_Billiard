@@ -46,6 +46,8 @@ void graphics::components::TextInput::handleEvent(const sf::Event &event) {
     }
 }
 
+graphics::components::TextInput::~TextInput() {}
+
 void graphics::components::TextInput::draw(sf::RenderWindow &window) {
     window.draw(inputBox);
     window.draw(propText);

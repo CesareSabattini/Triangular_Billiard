@@ -23,6 +23,8 @@ class Analyzer {
     Analyzer(std::shared_ptr<simulation::System<T>> p_system,
              Parameters<T> p_parameters);
 
+    ~Analyzer();
+
     void generate();
 
     void simulate();
