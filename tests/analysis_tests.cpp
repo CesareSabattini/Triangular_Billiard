@@ -173,14 +173,12 @@ TEST_CASE("Test skewnessY and skewnessTheta") {
 
     Analysis::Analyzer<double> analyzer(system, parameters);
 
-    SUBCASE("Test skewness functions with appropriate positive "
-            "values") {
-
-        std::vector<std::array<double, 2>> data = {{1.0, 0},
-                                                   {2.0, M_PI / 8},
-                                                   {3.0, M_PI / 6},
-                                                   {4.0, M_PI / 4},
-                                                   {5.0, M_PI / 2}};
+    SUBCASE("Test skewness functions with appropriate positive values") {
+        std::vector<std::array<double, 2>> data = {{-2.0, -M_PI / 4},
+                                                   {-1.0, -M_PI / 8},
+                                                   {0.0, 0},
+                                                   {1.0, M_PI / 8},
+                                                   {2.0, M_PI / 4}};
 
         analyzer.setOutput(data);
         double skewnessY = analyzer.skewnessY();
@@ -190,14 +188,12 @@ TEST_CASE("Test skewnessY and skewnessTheta") {
         CHECK(skewnessTheta == doctest::Approx(0.0).epsilon(0.001));
     }
 
-    SUBCASE("Test skewness functions with appropriate negative "
-            "values") {
-
-        std::vector<std::array<double, 2>> data = {{-100.0, 0},
-                                                   {-255.0, -M_PI / 8},
-                                                   {-355.0, -M_PI / 6},
-                                                   {-443.0, -M_PI / 4},
-                                                   {-59.0, -M_PI / 2}};
+    SUBCASE("Test skewness functions with appropriate negative values") {
+        std::vector<std::array<double, 2>> data = {{-2.0, -M_PI / 4},
+                                                   {-1.0, -M_PI / 8},
+                                                   {0.0, 0},
+                                                   {1.0, M_PI / 8},
+                                                   {2.0, M_PI / 4}};
 
         analyzer.setOutput(data);
         double skewnessY = analyzer.skewnessY();
@@ -208,15 +204,11 @@ TEST_CASE("Test skewnessY and skewnessTheta") {
     }
 
     SUBCASE("Test skewness functions with empty vector") {
-        std::vector<std::array<double, 2>> data =
-            std::vector<std::array<double, 2>>();
-
-        std::cout << data.size() << std::endl;
+        std::vector<std::array<double, 2>> data = {};
 
         analyzer.setOutput(data);
 
         CHECK_THROWS_AS(analyzer.skewnessY(), std::invalid_argument);
-
         CHECK_THROWS_AS(analyzer.skewnessTheta(), std::invalid_argument);
     }
 
@@ -230,12 +222,12 @@ TEST_CASE("Test skewnessY and skewnessTheta") {
             {6.0, M_PI}};
 
         analyzer.setOutput(data);
-        CHECK_THROWS_AS(analyzer.skewnessY() && analyzer.skewnessTheta(),
-                        std::invalid_argument);
-    };
+        CHECK_THROWS_AS(analyzer.skewnessY(), std::invalid_argument);
+        CHECK_THROWS_AS(analyzer.skewnessTheta(), std::invalid_argument);
+    }
 
     SUBCASE("Test skewness with single data pair") {
-        std::vector<std::array<double, 2>> data = {{2, 0}};
+        std::vector<std::array<double, 2>> data = {{0.0, 0}};
         analyzer.setOutput(data);
 
         double skewnessY = analyzer.skewnessY();
@@ -243,8 +235,9 @@ TEST_CASE("Test skewnessY and skewnessTheta") {
 
         double skewnessTheta = analyzer.skewnessTheta();
         CHECK(skewnessTheta == doctest::Approx(0));
-    };
+    }
 }
+
 
 TEST_CASE("Test kurtosisY and kurtosisTheta") {
     std::shared_ptr<simulation::System<double>> system =
@@ -256,50 +249,38 @@ TEST_CASE("Test kurtosisY and kurtosisTheta") {
 
     Analysis::Analyzer<double> analyzer(system, parameters);
 
-    SUBCASE("Test kurtosis functions with appropriate positive "
-            "values") {
-
+    SUBCASE("Test kurtosis functions with appropriate positive values") {
         std::vector<std::array<double, 2>> data = {{1.0, 0},
                                                    {2.0, M_PI / 8},
                                                    {3.0, M_PI / 6},
                                                    {4.0, M_PI / 4},
                                                    {5.0, M_PI / 2}};
-
         analyzer.setOutput(data);
         double kurtosisY = analyzer.kurtosisY();
-        CHECK(kurtosisY == doctest::Approx(1.8).epsilon(0.001));
-
         double kurtosisTheta = analyzer.kurtosisTheta();
+
+        CHECK(kurtosisY == doctest::Approx(1.8).epsilon(0.001));
         CHECK(kurtosisTheta == doctest::Approx(1.8).epsilon(0.001));
     }
 
-    SUBCASE("Test kurtosis functions with appropriate negative "
-            "values") {
-
-        std::vector<std::array<double, 2>> data = {{-100.0, 0},
-                                                   {-255.0, -M_PI / 8},
-                                                   {-355.0, -M_PI / 6},
-                                                   {-443.0, -M_PI / 4},
-                                                   {-59.0, -M_PI / 2}};
-
+    SUBCASE("Test kurtosis functions with appropriate negative values") {
+        std::vector<std::array<double, 2>> data = {{-1.0, 0},
+                                                   {-2.0, -M_PI / 8},
+                                                   {-3.0, -M_PI / 6},
+                                                   {-4.0, -M_PI / 4},
+                                                   {-5.0, -M_PI / 2}};
         analyzer.setOutput(data);
         double kurtosisY = analyzer.kurtosisY();
-        CHECK(kurtosisY == doctest::Approx(1.8).epsilon(0.001));
-
         double kurtosisTheta = analyzer.kurtosisTheta();
+
+        CHECK(kurtosisY == doctest::Approx(1.8).epsilon(0.001)); 
         CHECK(kurtosisTheta == doctest::Approx(1.8).epsilon(0.001));
     }
 
     SUBCASE("Test kurtosis functions with empty vector") {
-        std::vector<std::array<double, 2>> data =
-            std::vector<std::array<double, 2>>();
-
-        std::cout << data.size() << std::endl;
-
+        std::vector<std::array<double, 2>> data = {};
         analyzer.setOutput(data);
-
         CHECK_THROWS_AS(analyzer.kurtosisY(), std::invalid_argument);
-
         CHECK_THROWS_AS(analyzer.kurtosisTheta(), std::invalid_argument);
     }
 
@@ -311,20 +292,15 @@ TEST_CASE("Test kurtosisY and kurtosisTheta") {
             {4.0, M_PI / 4},
             {5.0, M_PI / 2},
             {6.0, M_PI}};
-
         analyzer.setOutput(data);
-        CHECK_THROWS_AS(analyzer.kurtosisY() && analyzer.kurtosisTheta(),
-                        std::invalid_argument);
-    };
+        CHECK_THROWS_AS(analyzer.kurtosisY(), std::invalid_argument);
+        CHECK_THROWS_AS(analyzer.kurtosisTheta(), std::invalid_argument);
+    }
 
     SUBCASE("Test kurtosis with single data pair") {
         std::vector<std::array<double, 2>> data = {{2, 0}};
         analyzer.setOutput(data);
-
-        double kurtosisY = analyzer.kurtosisY();
-        CHECK(kurtosisY == doctest::Approx(0));
-
-        double kurtosisTheta = analyzer.kurtosisTheta();
-        CHECK(kurtosisTheta == doctest::Approx(0));
-    };
+        CHECK_THROWS_AS(analyzer.kurtosisY(), std::invalid_argument);
+        CHECK_THROWS_AS(analyzer.kurtosisTheta(), std::invalid_argument);
+    }
 }

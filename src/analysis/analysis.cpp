@@ -211,7 +211,6 @@ template <typename T> T Analyzer<T>::stdMeanTheta() {
 }
 
 template <typename T> T Analyzer<T>::skewnessY() {
-
     auto it = std::find_if(outputs.begin(), outputs.end(),
                            [this](const std::array<T, 2> &elem) {
                                return elem[0] < -system->getPool().getR1() ||
@@ -221,29 +220,30 @@ template <typename T> T Analyzer<T>::skewnessY() {
     if (it != outputs.end())
         throw std::invalid_argument("Y outputs must be in [-r1, r1].");
 
-    else {
-        if (outputs.empty())
-            throw std::invalid_argument("Empty vector.");
+    if (outputs.empty())
+        throw std::invalid_argument("Empty vector.");
 
-        T mean = meanY();
-        T std_dev = standardDeviationY();
-        T n = static_cast<T>(outputs.size());
+    T mean = meanY();
+    T std_dev = standardDeviationY();
+    T n = static_cast<T>(outputs.size());
 
-        T skewness =
-            std::accumulate(
-                outputs.begin(), outputs.end(), T(0),
-                [mean, std_dev](const T &acc, const std::array<T, 2> &elem) {
-                    T z = (elem[0] - mean) / std_dev;
-                    return acc + z * z * z;
-                }) /
-            n;
-
-        return skewness * (std::sqrt(n * (n - 1)) / (n - 2));
+    if (n < 3 || std_dev == T(0)) {
+        return T(0);  
     }
+
+    T skewness =
+        std::accumulate(
+            outputs.begin(), outputs.end(), T(0),
+            [mean, std_dev](const T &acc, const std::array<T, 2> &elem) {
+                T z = (elem[0] - mean) / std_dev;
+                return acc + z * z * z;
+            }) /
+        n;
+
+    return skewness * (std::sqrt(n * (n - 1)) / (n - 2));
 }
 
 template <typename T> T Analyzer<T>::skewnessTheta() {
-
     auto it = std::find_if(outputs.begin(), outputs.end(),
                            [this](const std::array<T, 2> &elem) {
                                return elem[1] < -M_PI / 2 || elem[1] > M_PI / 2;
@@ -252,28 +252,34 @@ template <typename T> T Analyzer<T>::skewnessTheta() {
     if (it != outputs.end())
         throw std::invalid_argument("Theta outputs must be in [-pi/2, pi/2].");
 
-    else {
-        if (outputs.empty())
-            throw std::invalid_argument("Empty vector.");
+    if (outputs.empty())
+        throw std::invalid_argument("Empty vector.");
 
-        T mean = meanTheta();
-        T std_dev = standardDeviationTheta();
-        T n = static_cast<T>(outputs.size());
+    T mean = meanTheta();
+    T std_dev = standardDeviationTheta();
+    T n = static_cast<T>(outputs.size());
 
-        T skewness =
-            std::accumulate(
-                outputs.begin(), outputs.end(), T(0),
-                [mean, std_dev](const T &acc, const std::array<T, 2> &elem) {
-                    T z = (elem[1] - mean) / std_dev;
-                    return acc + z * z * z;
-                }) /
-            n;
-
-        return skewness * (std::sqrt(n * (n - 1)) / (n - 2));
+    if (n < 3 || std_dev == T(0)) {
+        return T(0);  
     }
+
+    T skewness =
+        std::accumulate(
+            outputs.begin(), outputs.end(), T(0),
+            [mean, std_dev](const T &acc, const std::array<T, 2> &elem) {
+                T z = (elem[1] - mean) / std_dev;
+                return acc + z * z * z;
+            }) /
+        n;
+
+    return skewness * (std::sqrt(n * (n - 1)) / (n - 2));
 }
 
+
+
 template <typename T> T Analyzer<T>::kurtosisY() {
+    if (outputs.size() < 2)
+        throw std::invalid_argument("Need at least two data points.");
 
     auto it = std::find_if(outputs.begin(), outputs.end(),
                            [this](const std::array<T, 2> &elem) {
@@ -284,28 +290,23 @@ template <typename T> T Analyzer<T>::kurtosisY() {
     if (it != outputs.end())
         throw std::invalid_argument("Y outputs must be in [-r1, r1].");
 
-    else {
-        if (outputs.empty())
-            throw std::invalid_argument("Empty vector.");
+    T mean = meanY();
+    T std_dev = standardDeviationY();
+    T n = static_cast<T>(outputs.size());
 
-        T mean = meanY();
-        T std_dev = standardDeviationY();
-        T n = static_cast<T>(outputs.size());
+    T kurtosis = std::accumulate(
+        outputs.begin(), outputs.end(), T(0),
+        [mean, std_dev](const T &acc, const std::array<T, 2> &elem) {
+            T z = (elem[0] - mean) / std_dev;
+            return acc + z * z * z * z;
+        }) / n;
 
-        T kurtosis =
-            std::accumulate(
-                outputs.begin(), outputs.end(), T(0),
-                [mean, std_dev](const T &acc, const std::array<T, 2> &elem) {
-                    T z = (elem[0] - mean) / std_dev;
-                    return acc + z * z * z * z;
-                }) /
-            n;
-
-        return (kurtosis - 3);
-    }
+    return (kurtosis - 3);
 }
 
 template <typename T> T Analyzer<T>::kurtosisTheta() {
+    if (outputs.size() < 2)
+        throw std::invalid_argument("At least two data points need.");
 
     auto it = std::find_if(outputs.begin(), outputs.end(),
                            [this](const std::array<T, 2> &elem) {
@@ -315,26 +316,22 @@ template <typename T> T Analyzer<T>::kurtosisTheta() {
     if (it != outputs.end())
         throw std::invalid_argument("Theta outputs must be in [-pi/2, pi/2].");
 
-    else {
-        if (outputs.empty())
-            throw std::invalid_argument("Empty vector.");
+    T mean = meanTheta();
+    T std_dev = standardDeviationTheta();
+    T n = static_cast<T>(outputs.size());
 
-        T mean = meanTheta();
-        T std_dev = standardDeviationTheta();
-        T n = static_cast<T>(outputs.size());
+    T kurtosis = std::accumulate(
+        outputs.begin(), outputs.end(), T(0),
+        [mean, std_dev](const T &acc, const std::array<T, 2> &elem) {
+            T z = (elem[1] - mean) / std_dev;
+            return acc + z * z * z * z;
+        }) / n;
 
-        T kurtosis =
-            std::accumulate(
-                outputs.begin(), outputs.end(), T(0),
-                [mean, std_dev](const T &acc, const std::array<T, 2> &elem) {
-                    T z = (elem[1] - mean) / std_dev;
-                    return acc + z * z * z * z;
-                }) /
-            n;
-
-        return (kurtosis - 3);
-    }
+    return (kurtosis - 3);
 }
+
+
+
 
 template <typename T> void Analyzer<T>::printResults() {
     std::cout << "Results: " << std::endl;
