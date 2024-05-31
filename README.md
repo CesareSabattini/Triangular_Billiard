@@ -26,19 +26,40 @@ Per la configurazione dell'applicazione su LinuxOS e WSL, si consigliano i segue
     cmake ..
     ```
 
-4. Compilare la soluzione:
+4. Per compilare l'eseguibile "Triangular_Pool" in modalità Debug con Address Sanitizer:
 
     ```bash
-    cmake --build .
+    cmake -B build/debug -DCMAKE_BUILD_TYPE=Debug -DENABLE_SANITIZERS=ON
+    cmake --build build/debug --target Triangular_Pool
+    ```
+5. Per compilare l'eseguibile "tests" in modalità Debug con Address Sanitizer::
+
+    ```bash
+    cmake -B build/debug -DCMAKE_BUILD_TYPE=Debug -DENABLE_SANITIZERS=ON
+    cmake --build build/debug --target tests
     ```
 
-5. Per avviare l'eseguibile dalla directory build:
+6.  Per compilare l'eseguibile "Triangular_Pool" in modalità Release:
+
+    ```bash
+    cmake -B build/release -DCMAKE_BUILD_TYPE=Release -DENABLE_SANITIZERS=OFF
+    cmake --build build/release --target Triangular_Pool
+    ```
+
+    7.  Per compilare l'eseguibile "tests" in modalità Release:
+
+    ```bash
+    cmake -B build/release -DCMAKE_BUILD_TYPE=Release -DENABLE_SANITIZERS=OFF
+    cmake --build build/release --target tests
+    ```
+  
+8. Per avviare l'eseguibile dalla opportuna directory:
    
     ```bash
     ./Triangular_Pool
     ```
 
-6. Per eseguire il testing:
+9. Per eseguire il testing dalla opportuna directory:
 
     ```bash
     ./tests
