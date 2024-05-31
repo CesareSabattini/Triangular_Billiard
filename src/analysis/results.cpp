@@ -25,16 +25,16 @@ Results<T>::Results(const Results<T> &p_results)
       kurtosisTheta(p_results.kurtosisTheta) {}
 template <typename T>
 Results<T> &Results<T>::operator=(const Results<T> &p_results) {
-    outputSize = p_results.outputSize;
-    meanY = p_results.meanY;
-    meanTheta = p_results.meanTheta;
-    stdY = p_results.stdY;
-    stdTheta = p_results.stdTheta;
-    skewnessY = p_results.skewnessY;
-    skewnessTheta = p_results.skewnessTheta;
-    kurtosisY = p_results.kurtosisY;
-    kurtosisTheta = p_results.kurtosisTheta;
-    return *this;
+  outputSize = p_results.outputSize;
+  meanY = p_results.meanY;
+  meanTheta = p_results.meanTheta;
+  stdY = p_results.stdY;
+  stdTheta = p_results.stdTheta;
+  skewnessY = p_results.skewnessY;
+  skewnessTheta = p_results.skewnessTheta;
+  kurtosisY = p_results.kurtosisY;
+  kurtosisTheta = p_results.kurtosisTheta;
+  return *this;
 }
 template <typename T>
 Results<T>::Results(Results<T> &&p_results)
@@ -44,16 +44,16 @@ Results<T>::Results(Results<T> &&p_results)
       skewnessTheta(p_results.skewnessTheta), kurtosisY(p_results.kurtosisY),
       kurtosisTheta(p_results.kurtosisTheta) {}
 template <typename T> Results<T> &Results<T>::operator=(Results &&p_results) {
-    outputSize = p_results.outputSize;
-    meanY = p_results.meanY;
-    meanTheta = p_results.meanTheta;
-    stdY = p_results.stdY;
-    stdTheta = p_results.stdTheta;
-    skewnessY = p_results.skewnessY;
-    skewnessTheta = p_results.skewnessTheta;
-    kurtosisY = p_results.kurtosisY;
-    kurtosisTheta = p_results.kurtosisTheta;
-    return *this;
+  outputSize = p_results.outputSize;
+  meanY = p_results.meanY;
+  meanTheta = p_results.meanTheta;
+  stdY = p_results.stdY;
+  stdTheta = p_results.stdTheta;
+  skewnessY = p_results.skewnessY;
+  skewnessTheta = p_results.skewnessTheta;
+  kurtosisY = p_results.kurtosisY;
+  kurtosisTheta = p_results.kurtosisTheta;
+  return *this;
 }
 template <typename T> Results<T>::~Results() {}
 
