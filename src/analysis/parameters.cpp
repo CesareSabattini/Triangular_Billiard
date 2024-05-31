@@ -21,12 +21,12 @@ Parameters<T>::Parameters(const Parameters<T> &p_parameters)
 
 template <typename T>
 Parameters<T> &Parameters<T>::operator=(const Parameters &p_parameters) {
-    numSimulations = p_parameters.numSimulations;
-    meanY = p_parameters.meanY;
-    stdY = p_parameters.stdY;
-    meanTheta = p_parameters.meanTheta;
-    stdTheta = p_parameters.stdTheta;
-    return *this;
+  numSimulations = p_parameters.numSimulations;
+  meanY = p_parameters.meanY;
+  stdY = p_parameters.stdY;
+  meanTheta = p_parameters.meanTheta;
+  stdTheta = p_parameters.stdTheta;
+  return *this;
 }
 
 template <typename T>
@@ -37,12 +37,12 @@ Parameters<T>::Parameters(Parameters<T> &&p_parameters)
 
 template <typename T>
 Parameters<T> &Parameters<T>::operator=(Parameters &&p_parameters) {
-    numSimulations = p_parameters.numSimulations;
-    meanY = p_parameters.meanY;
-    stdY = p_parameters.stdY;
-    meanTheta = p_parameters.meanTheta;
-    stdTheta = p_parameters.stdTheta;
-    return *this;
+  numSimulations = p_parameters.numSimulations;
+  meanY = p_parameters.meanY;
+  stdY = p_parameters.stdY;
+  meanTheta = p_parameters.meanTheta;
+  stdTheta = p_parameters.stdTheta;
+  return *this;
 }
 
 template struct Parameters<float>;

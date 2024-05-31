@@ -2,179 +2,170 @@
 #include "doctest.h"
 
 TEST_CASE("System class tests") {
-    SUBCASE("System constructor") {
-        // r1<r2
-        CHECK_THROWS_AS(mock::MockSystem<double>(-1.0, 0.0, 10.0, 1.0, 5),
-                        std::invalid_argument);
-        // l<0
-        CHECK_THROWS_AS(mock::MockSystem<double>(0.0, 0.0, -10.0, 1.0, 0.5),
-                        std::invalid_argument);
+  SUBCASE("System constructor") {
+    // r1<r2
+    CHECK_THROWS_AS(mock::MockSystem<double>(-1.0, 0.0, 10.0, 1.0, 5),
+                    std::invalid_argument);
+    // l<0
+    CHECK_THROWS_AS(mock::MockSystem<double>(0.0, 0.0, -10.0, 1.0, 0.5),
+                    std::invalid_argument);
 
-        // r1<0
-        CHECK_THROWS_AS(mock::MockSystem<double>(0.0, 0.0, 10.0, -1.0, 0.5),
-                        std::invalid_argument);
+    // r1<0
+    CHECK_THROWS_AS(mock::MockSystem<double>(0.0, 0.0, 10.0, -1.0, 0.5),
+                    std::invalid_argument);
 
-        // r2<0
-        CHECK_THROWS_AS(mock::MockSystem<double>(0.0, 0.0, 10.0, 1.0, -0.5),
-                        std::invalid_argument);
+    // r2<0
+    CHECK_THROWS_AS(mock::MockSystem<double>(0.0, 0.0, 10.0, 1.0, -0.5),
+                    std::invalid_argument);
 
-        // theta out of range
-        CHECK_THROWS_AS(mock::MockSystem<double>(M_PI, 0.0, 10.0, 1.0, 0.5),
-                        std::invalid_argument);
+    // theta out of range
+    CHECK_THROWS_AS(mock::MockSystem<double>(M_PI, 0.0, 10.0, 1.0, 0.5),
+                    std::invalid_argument);
 
-        // y out of range
-        CHECK_THROWS_AS(mock::MockSystem<double>(10.0, -1.0, 10.0, 1.0, 0.5),
-                        std::invalid_argument);
+    // y out of range
+    CHECK_THROWS_AS(mock::MockSystem<double>(10.0, -1.0, 10.0, 1.0, 0.5),
+                    std::invalid_argument);
 
-        // l=0
-        CHECK_THROWS_AS(mock::MockSystem<double>(0.0, 0.0, 0.0, 1.0, 0.5),
-                        std::invalid_argument);
+    // l=0
+    CHECK_THROWS_AS(mock::MockSystem<double>(0.0, 0.0, 0.0, 1.0, 0.5),
+                    std::invalid_argument);
 
-        // correct one
-        CHECK_NOTHROW(mock::MockSystem<double>(0.5, 0.0, 10.0, 1.0, 0.5));
-    }
+    // correct one
+    CHECK_NOTHROW(mock::MockSystem<double>(0.5, 0.0, 10.0, 1.0, 0.5));
+  }
 
-    SUBCASE("System computeNextCollision tests") {
-        mock::MockSystem<double> system;
+  SUBCASE("System computeNextCollision tests") {
+    mock::MockSystem<double> system;
 
-        system.updateParams(M_PI / 4, 0, 10.0, 1.0, 0.5);
+    system.updateParams(M_PI / 4, 0, 10.0, 1.0, 0.5);
 
-        CHECK(system.getCollisions().size() == 1);
-        system.computeNextCollision();
+    CHECK(system.getCollisions().size() == 1);
+    system.computeNextCollision();
 
-        CHECK(system.getCollisions().size() == 2);
-        simulation::components::Collision<double> &newCollision =
-            system.getCollisions().back();
-        CHECK(newCollision.getTheta() ==
-              doctest::Approx(-0.885).epsilon(0.001));
-        CHECK(newCollision.getPos()[0] == doctest::Approx(0.95).epsilon(0.01));
-        CHECK(newCollision.getPos()[1] == doctest::Approx(0.95).epsilon(0.01));
-    }
+    CHECK(system.getCollisions().size() == 2);
+    simulation::components::Collision<double> &newCollision =
+        system.getCollisions().back();
+    CHECK(newCollision.getTheta() == doctest::Approx(-0.885).epsilon(0.001));
+    CHECK(newCollision.getPos()[0] == doctest::Approx(0.95).epsilon(0.01));
+    CHECK(newCollision.getPos()[1] == doctest::Approx(0.95).epsilon(0.01));
+  }
 
-    SUBCASE("System updateParams tests") {
-        mock::MockSystem<double> system(0.0, 0.0, 10.0, 1.0, 0.5);
-        system.updateParams(M_PI / 4, 0.5, 10.0, 1.0, 0.5);
-        CHECK(system.getBall().getPos()[0] == doctest::Approx(0.0));
-        CHECK(system.getBall().getPos()[1] == doctest::Approx(0.5));
-        CHECK(system.getBall().getTheta() == doctest::Approx(M_PI / 4));
-        CHECK(system.getPool().getL() == doctest::Approx(10.0));
-        CHECK(system.getPool().getR1() == doctest::Approx(1.0));
-        CHECK(system.getPool().getR2() == doctest::Approx(0.5));
-        CHECK(system.getCollisions().size() == 1);
-        CHECK(system.getCollisions().back().getPos()[0] ==
-              doctest::Approx(0.0));
-        CHECK(system.getCollisions().back().getPos()[1] ==
-              doctest::Approx(0.5));
-        CHECK(system.getCollisions().back().getTheta() ==
-              doctest::Approx(M_PI / 4));
+  SUBCASE("System updateParams tests") {
+    mock::MockSystem<double> system(0.0, 0.0, 10.0, 1.0, 0.5);
+    system.updateParams(M_PI / 4, 0.5, 10.0, 1.0, 0.5);
+    CHECK(system.getBall().getPos()[0] == doctest::Approx(0.0));
+    CHECK(system.getBall().getPos()[1] == doctest::Approx(0.5));
+    CHECK(system.getBall().getTheta() == doctest::Approx(M_PI / 4));
+    CHECK(system.getPool().getL() == doctest::Approx(10.0));
+    CHECK(system.getPool().getR1() == doctest::Approx(1.0));
+    CHECK(system.getPool().getR2() == doctest::Approx(0.5));
+    CHECK(system.getCollisions().size() == 1);
+    CHECK(system.getCollisions().back().getPos()[0] == doctest::Approx(0.0));
+    CHECK(system.getCollisions().back().getPos()[1] == doctest::Approx(0.5));
+    CHECK(system.getCollisions().back().getTheta() ==
+          doctest::Approx(M_PI / 4));
 
-        system.updateParams({0.5, M_PI / 4});
-        CHECK(system.getBall().getPos()[0] == doctest::Approx(0.0));
-        CHECK(system.getBall().getPos()[1] == doctest::Approx(0.5));
-        CHECK(system.getBall().getTheta() == doctest::Approx(M_PI / 4));
-        CHECK(system.getCollisions().size() == 1);
-        CHECK(system.getCollisions().back().getPos()[0] ==
-              doctest::Approx(0.0));
-        CHECK(system.getCollisions().back().getPos()[1] ==
-              doctest::Approx(0.5));
-        CHECK(system.getCollisions().back().getTheta() ==
-              doctest::Approx(M_PI / 4));
-    }
+    system.updateParams({0.5, M_PI / 4});
+    CHECK(system.getBall().getPos()[0] == doctest::Approx(0.0));
+    CHECK(system.getBall().getPos()[1] == doctest::Approx(0.5));
+    CHECK(system.getBall().getTheta() == doctest::Approx(M_PI / 4));
+    CHECK(system.getCollisions().size() == 1);
+    CHECK(system.getCollisions().back().getPos()[0] == doctest::Approx(0.0));
+    CHECK(system.getCollisions().back().getPos()[1] == doctest::Approx(0.5));
+    CHECK(system.getCollisions().back().getTheta() ==
+          doctest::Approx(M_PI / 4));
+  }
 
-    SUBCASE("System::computeOutputY() tests") {
-        mock::MockSystem<double> system(0.0, 0.0, 10.0, 1.0, 0.5);
-        system.updateParams(M_PI / 4, 0.5, 10.0, 1.0, 0.5);
+  SUBCASE("System::computeOutputY() tests") {
+    mock::MockSystem<double> system(0.0, 0.0, 10.0, 1.0, 0.5);
+    system.updateParams(M_PI / 4, 0.5, 10.0, 1.0, 0.5);
 
-        CHECK(system.computeOutputY() == doctest::Approx(10.5));
+    CHECK(system.computeOutputY() == doctest::Approx(10.5));
 
-        system.updateParams(-M_PI / 4, -0.5, 10.0, 1.0, 0.5);
-        CHECK(system.computeOutputY() == doctest::Approx(-10.5));
+    system.updateParams(-M_PI / 4, -0.5, 10.0, 1.0, 0.5);
+    CHECK(system.computeOutputY() == doctest::Approx(-10.5));
 
-        system.updateParams(0, 0.0, 10.0, 1.0, 0.5);
-        CHECK(system.computeOutputY() == doctest::Approx(0.0));
+    system.updateParams(0, 0.0, 10.0, 1.0, 0.5);
+    CHECK(system.computeOutputY() == doctest::Approx(0.0));
 
-        system.updateParams(0, 0.5, 10.0, 1.0, 0.5);
-        CHECK(system.computeOutputY() == doctest::Approx(0.5));
+    system.updateParams(0, 0.5, 10.0, 1.0, 0.5);
+    CHECK(system.computeOutputY() == doctest::Approx(0.5));
 
-        system.updateParams(0, -0.5, 10.0, 1.0, 0.5);
-        system.computeNextCollision();
-        CHECK(system.computeOutputY() == doctest::Approx(-0.5));
-    }
+    system.updateParams(0, -0.5, 10.0, 1.0, 0.5);
+    system.computeNextCollision();
+    CHECK(system.computeOutputY() == doctest::Approx(-0.5));
+  }
 
-    SUBCASE("System::throwTheBall() tests") {
-        mock::MockSystem<double> system;
-        system.updateParams(-M_PI / 20, 1E3 - 1, 10.0, 1E3, 1.0);
-        double alpha =
-            std::atan((system.getPool().getR1() - system.getPool().getR2()) /
+  SUBCASE("System::throwTheBall() tests") {
+    mock::MockSystem<double> system;
+    system.updateParams(-M_PI / 20, 1E3 - 1, 10.0, 1E3, 1.0);
+    double alpha =
+        std::atan((system.getPool().getR1() - system.getPool().getR2()) /
+                  system.getPool().getL());
+    double expectedTheta = system.getBall().getTheta() + 2 * alpha;
+    double expectedX =
+        (-system.getBall().getPos()[1] + system.getPool().getR1()) /
+        (std::tan(system.getBall().getTheta()) +
+         (system.getPool().getR1() - system.getPool().getR2()) /
+             system.getPool().getL());
+    double expectedY = system.getPool().getR1() -
+                       ((system.getPool().getR1() - system.getPool().getR2()) /
+                        system.getPool().getL()) *
+                           expectedX;
+
+    CHECK_THROWS_AS(system.throwTheBall(), std::invalid_argument);
+
+    system.updateParams(-M_PI / 40, 4.9, 10.0, 5.0, 1.0);
+    alpha = std::atan((system.getPool().getR1() - system.getPool().getR2()) /
                       system.getPool().getL());
-        double expectedTheta = system.getBall().getTheta() + 2 * alpha;
-        double expectedX =
-            (-system.getBall().getPos()[1] + system.getPool().getR1()) /
-            (std::tan(system.getBall().getTheta()) +
-             (system.getPool().getR1() - system.getPool().getR2()) /
-                 system.getPool().getL());
-        double expectedY =
-            system.getPool().getR1() -
-            ((system.getPool().getR1() - system.getPool().getR2()) /
-             system.getPool().getL()) *
-                expectedX;
+    expectedTheta = system.getBall().getTheta() + 2 * alpha;
+    expectedX = (-system.getBall().getPos()[1] + system.getPool().getR1()) /
+                (std::tan(system.getBall().getTheta()) +
+                 (system.getPool().getR1() - system.getPool().getR2()) /
+                     system.getPool().getL());
+    expectedY = system.getPool().getR1() -
+                ((system.getPool().getR1() - system.getPool().getR2()) /
+                 system.getPool().getL()) *
+                    expectedX;
+    system.throwTheBall();
 
-        CHECK_THROWS_AS(system.throwTheBall(), std::invalid_argument);
+    simulation::components::Collision<double> &lastCollision =
+        system.getCollisions().back();
 
-        system.updateParams(-M_PI / 40, 4.9, 10.0, 5.0, 1.0);
-        alpha =
-            std::atan((system.getPool().getR1() - system.getPool().getR2()) /
-                      system.getPool().getL());
-        expectedTheta = system.getBall().getTheta() + 2 * alpha;
-        expectedX = (-system.getBall().getPos()[1] + system.getPool().getR1()) /
-                    (std::tan(system.getBall().getTheta()) +
-                     (system.getPool().getR1() - system.getPool().getR2()) /
-                         system.getPool().getL());
-        expectedY = system.getPool().getR1() -
-                    ((system.getPool().getR1() - system.getPool().getR2()) /
-                     system.getPool().getL()) *
-                        expectedX;
-        system.throwTheBall();
+    CHECK(lastCollision.getTheta() == doctest::Approx(expectedTheta));
+    CHECK(lastCollision.getPos()[0] == doctest::Approx(expectedX));
+    CHECK(lastCollision.getPos()[1] == doctest::Approx(expectedY));
+  }
 
-        simulation::components::Collision<double> &lastCollision =
-            system.getCollisions().back();
+  SUBCASE("System::simulate() tests") {
+    mock::MockSystem<double> system;
+    system.updateParams(M_PI / 6, 0, 10.0, 1.0, 0.5);
 
-        CHECK(lastCollision.getTheta() == doctest::Approx(expectedTheta));
-        CHECK(lastCollision.getPos()[0] == doctest::Approx(expectedX));
-        CHECK(lastCollision.getPos()[1] == doctest::Approx(expectedY));
-    }
+    system.simulate();
 
-    SUBCASE("System::simulate() tests") {
-        mock::MockSystem<double> system;
-        system.updateParams(M_PI / 6, 0, 10.0, 1.0, 0.5);
+    auto &collisions = system.getCollisions();
+    REQUIRE(collisions.size() > 0);
 
-        system.simulate();
+    auto finalPos = system.getBall().getPos();
+    CHECK(finalPos[0] == doctest::Approx(10.0));
 
-        auto &collisions = system.getCollisions();
-        REQUIRE(collisions.size() > 0);
+    double outputY = system.computeOutputY();
+    CHECK(outputY == doctest::Approx(collisions.back().getPos()[1]));
+  }
 
-        auto finalPos = system.getBall().getPos();
-        CHECK(finalPos[0] == doctest::Approx(10.0));
+  SUBCASE("System::reset() tests") {
+    mock::MockSystem<double> system;
+    system.updateParams(M_PI / 6, 0.5, 10.0, 1.0, 0.5);
 
-        double outputY = system.computeOutputY();
-        CHECK(outputY == doctest::Approx(collisions.back().getPos()[1]));
-    }
+    system.simulate();
+    system.reset();
 
-    SUBCASE("System::reset() tests") {
-        mock::MockSystem<double> system;
-        system.updateParams(M_PI / 6, 0.5, 10.0, 1.0, 0.5);
-
-        system.simulate();
-        system.reset();
-
-        CHECK(system.getBall().getPos()[0] == doctest::Approx(0.0));
-        CHECK(system.getBall().getPos()[1] == doctest::Approx(0.0));
-        CHECK(system.getBall().getTheta() == doctest::Approx(0.0));
-        CHECK(system.getCollisions().size() == 1);
-        CHECK(system.getCollisions().back().getPos()[0] ==
-              doctest::Approx(0.0));
-        CHECK(system.getCollisions().back().getPos()[1] ==
-              doctest::Approx(0.0));
-        CHECK(system.getCollisions().back().getTheta() == doctest::Approx(0.0));
-    }
+    CHECK(system.getBall().getPos()[0] == doctest::Approx(0.0));
+    CHECK(system.getBall().getPos()[1] == doctest::Approx(0.0));
+    CHECK(system.getBall().getTheta() == doctest::Approx(0.0));
+    CHECK(system.getCollisions().size() == 1);
+    CHECK(system.getCollisions().back().getPos()[0] == doctest::Approx(0.0));
+    CHECK(system.getCollisions().back().getPos()[1] == doctest::Approx(0.0));
+    CHECK(system.getCollisions().back().getTheta() == doctest::Approx(0.0));
+  }
 }

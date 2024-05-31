@@ -8,69 +8,68 @@ graphics::components::Button::Button(
     std::shared_ptr<sf::Font> p_font)
     : font(p_font), color(p_color), hoverColor(p_hoverColor),
       clickColor(p_clickColor), isHover(false), isClick(false) {
-    button.setPosition(p_position);
-    button.setSize(p_size);
-    button.setFillColor(color);
+  button.setPosition(p_position);
+  button.setSize(p_size);
+  button.setFillColor(color);
 
-    text.setFont(*font.get());
-    text.setString(p_text);
-    text.setCharacterSize(p_textSize);
-    text.setFillColor(p_textColor);
-    text.setPosition(
-        p_position.x + p_size.x / 2 - text.getGlobalBounds().width / 2,
-        p_position.y + p_size.y / 2 - text.getGlobalBounds().height / 2);
+  text.setFont(*font.get());
+  text.setString(p_text);
+  text.setCharacterSize(p_textSize);
+  text.setFillColor(p_textColor);
+  text.setPosition(
+      p_position.x + p_size.x / 2 - text.getGlobalBounds().width / 2,
+      p_position.y + p_size.y / 2 - text.getGlobalBounds().height / 2);
 }
 
 void graphics::components::Button::draw(sf::RenderWindow &window) const {
-    window.draw(button);
-    window.draw(text);
+  window.draw(button);
+  window.draw(text);
 }
 
 void graphics::components::Button::update(const sf::RenderWindow &window) {
-    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-    if (button.getGlobalBounds().contains(static_cast<float>(mousePos.x),
-                                          static_cast<float>(mousePos.y))) {
-        button.setFillColor(hoverColor);
-        isHover = true;
-    } else {
-        button.setFillColor(color);
-        isHover = false;
-    }
+  sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+  if (button.getGlobalBounds().contains(static_cast<float>(mousePos.x),
+                                        static_cast<float>(mousePos.y))) {
+    button.setFillColor(hoverColor);
+    isHover = true;
+  } else {
+    button.setFillColor(color);
+    isHover = false;
+  }
 }
 
 bool graphics::components::Button::isClicked() {
-    if (isHover && sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-        isClick = true;
-    } else {
-        isClick = false;
-    }
-    return isClick;
+  if (isHover && sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+    isClick = true;
+  } else {
+    isClick = false;
+  }
+  return isClick;
 }
 
 void graphics::components::Button::setText(const std::string p_text) {
-    text.setString(p_text);
-    text.setPosition(button.getPosition().x + button.getSize().x / 2 -
-                         text.getGlobalBounds().width / 2,
-                     button.getPosition().y + button.getSize().y / 2 -
-                         text.getGlobalBounds().height / 2);
+  text.setString(p_text);
+  text.setPosition(button.getPosition().x + button.getSize().x / 2 -
+                       text.getGlobalBounds().width / 2,
+                   button.getPosition().y + button.getSize().y / 2 -
+                       text.getGlobalBounds().height / 2);
 }
 
 void graphics::components::Button::setPosition(const sf::Vector2f &position) {
-    button.setPosition(position);
-    text.setPosition(position.x + button.getSize().x / 2 -
-                         text.getGlobalBounds().width / 2,
-                     position.y + button.getSize().y / 2 -
-                         text.getGlobalBounds().height / 2);
+  button.setPosition(position);
+  text.setPosition(
+      position.x + button.getSize().x / 2 - text.getGlobalBounds().width / 2,
+      position.y + button.getSize().y / 2 - text.getGlobalBounds().height / 2);
 }
 
 void graphics::components::Button::setSize(const sf::Vector2f &size) {
-    button.setSize(size);
-    text.setPosition(button.getPosition().x + button.getSize().x / 2 -
-                         text.getGlobalBounds().width / 2,
-                     button.getPosition().y + button.getSize().y / 2 -
-                         text.getGlobalBounds().height / 2);
+  button.setSize(size);
+  text.setPosition(button.getPosition().x + button.getSize().x / 2 -
+                       text.getGlobalBounds().width / 2,
+                   button.getPosition().y + button.getSize().y / 2 -
+                       text.getGlobalBounds().height / 2);
 }
 
 sf::FloatRect graphics::components::Button::getGlobalBounds() const {
-    return button.getGlobalBounds();
+  return button.getGlobalBounds();
 }

@@ -14,28 +14,28 @@
 namespace graphics::scenes {
 
 class ConfigSimulation {
-  public:
-    ConfigSimulation(std::shared_ptr<sf::RenderWindow> window,
-                     std::shared_ptr<simulation::System<float>> system,
-                     Scene &selectedScene, SimulationWindow &simulationWindow,
-                     const std::shared_ptr<sf::Font> font);
-    void draw();
-    void processEvents();
+public:
+  ConfigSimulation(std::shared_ptr<sf::RenderWindow> window,
+                   std::shared_ptr<simulation::System<float>> system,
+                   Scene &selectedScene, SimulationWindow &simulationWindow,
+                   const std::shared_ptr<sf::Font> font);
+  void draw();
+  void processEvents();
 
-  private:
-    std::shared_ptr<sf::Font> font;
-    std::shared_ptr<simulation::System<float>> system;
-    std::shared_ptr<sf::RenderWindow> window;
-    Scene &selectedScene;
-    SimulationWindow &simulationWindow;
-    graphics::components::Button startButton;
-    graphics::components::Button menuButton;
-    sf::Text title;
-    sf::RectangleShape titleBox;
-    sf::RectangleShape inputBox;
-    std::array<graphics::components::TextInput, 5> textInputs;
+private:
+  std::shared_ptr<sf::Font> font;
+  std::shared_ptr<simulation::System<float>> system;
+  std::shared_ptr<sf::RenderWindow> window;
+  Scene &selectedScene;
+  SimulationWindow &simulationWindow;
+  graphics::components::Button startButton;
+  graphics::components::Button menuButton;
+  sf::Text title;
+  sf::RectangleShape titleBox;
+  sf::RectangleShape inputBox;
+  std::array<graphics::components::TextInput, 5> textInputs;
 
-    void initializeComponents();
+  void initializeComponents();
 };
 
 } // namespace graphics::scenes

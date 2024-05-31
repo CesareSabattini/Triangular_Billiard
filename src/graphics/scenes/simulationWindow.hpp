@@ -11,31 +11,30 @@
 
 namespace graphics::scenes {
 class SimulationWindow {
-  public:
-    SimulationWindow(std::shared_ptr<sf::RenderWindow> window,
-                     std::shared_ptr<simulation::System<float>> system,
-                     Scene &selectedScene,
-                     const std::shared_ptr<sf::Font> font);
+public:
+  SimulationWindow(std::shared_ptr<sf::RenderWindow> window,
+                   std::shared_ptr<simulation::System<float>> system,
+                   Scene &selectedScene, const std::shared_ptr<sf::Font> font);
 
-    void draw();
-    void processEvents();
+  void draw();
+  void processEvents();
 
-    graphics::components::Legend<float> &getLegend() { return legend; }
+  graphics::components::Legend<float> &getLegend() { return legend; }
 
-  private:
-    std::shared_ptr<sf::Font> font;
-    std::shared_ptr<simulation::System<float>> system;
-    std::shared_ptr<sf::RenderWindow> window;
-    Scene &selectedScene;
+private:
+  std::shared_ptr<sf::Font> font;
+  std::shared_ptr<simulation::System<float>> system;
+  std::shared_ptr<sf::RenderWindow> window;
+  Scene &selectedScene;
 
-    graphics::components::Button menuButton;
+  graphics::components::Button menuButton;
 
-    graphics::components::Legend<float> legend;
+  graphics::components::Legend<float> legend;
 
-    sf::Texture backgroundTexture;
-    sf::Sprite bg;
+  sf::Texture backgroundTexture;
+  sf::Sprite bg;
 
-    void initializeComponents();
+  void initializeComponents();
 };
 } // namespace graphics::scenes
 

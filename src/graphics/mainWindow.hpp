@@ -14,19 +14,19 @@
 namespace graphics {
 
 class MainWindow {
-  public:
-    MainWindow();
-    void run();
-    Scene selectedScene;
+public:
+  MainWindow();
+  void run();
+  Scene selectedScene;
 
-  private:
-    appStyle::AppStyle appStyle;
-    std::shared_ptr<simulation::System<float>> system;
-    std::shared_ptr<sf::RenderWindow> window;
-    graphics::scenes::Menu menu;
-    graphics::scenes::ConfigSimulation configSimulation;
-    graphics::scenes::SimulationWindow simulationWindow;
-    graphics::scenes::AnalysisWindow analysisWindow;
+private:
+  appStyle::AppStyle appStyle;
+  std::shared_ptr<simulation::System<float>> system;
+  std::shared_ptr<sf::RenderWindow> window;
+  graphics::scenes::Menu menu;
+  graphics::scenes::ConfigSimulation configSimulation;
+  graphics::scenes::SimulationWindow simulationWindow;
+  graphics::scenes::AnalysisWindow analysisWindow;
 };
 } // namespace graphics
 

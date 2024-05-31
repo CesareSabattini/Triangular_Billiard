@@ -8,20 +8,20 @@ namespace appStyle {
 
 struct Colors {
 
-    static sf::Color bgCyan;
-    static sf::Color cream;
-    static sf::Color darkGreen;
-    static sf::Color opaqueBlack;
+  static sf::Color bgCyan;
+  static sf::Color cream;
+  static sf::Color darkGreen;
+  static sf::Color opaqueBlack;
 };
 
 class AppStyle {
-  public:
-    AppStyle();
-    ~AppStyle();
-    const std::shared_ptr<sf::Font> getFont() const;
+public:
+  AppStyle();
+  ~AppStyle();
+  const std::shared_ptr<sf::Font> getFont() const;
 
-  private:
-    std::shared_ptr<sf::Font> font;
+private:
+  std::shared_ptr<sf::Font> font;
 };
 
 } // namespace appStyle

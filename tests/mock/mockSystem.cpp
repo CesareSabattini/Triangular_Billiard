@@ -10,40 +10,40 @@ mock::MockSystem<T>::MockSystem(const T p_theta, const T p_y, const T p_l,
 
 template <typename T> void mock::MockSystem<T>::simulate() {
 
-    try {
-        throwTheBall();
-    } catch (std::invalid_argument &e) {
-        return;
+  try {
+    throwTheBall();
+  } catch (std::invalid_argument &e) {
+    return;
+  }
+  if (ball.getPos()[0] >= pool.getL()) {
+
+    return;
+  }
+  if (ball.getPos()[0] < pool.getL()) {
+
+    while (ball.getPos()[0] < pool.getL()) {
+
+      try {
+
+        computeNextCollision();
+      } catch (std::invalid_argument &e) {
+
+        break;
+      } catch (std::exception &e) {
+
+        break;
+      }
+
+      if (collisions[collisions.size() - 1].getPos()[0] >= pool.getL()) {
+
+        break;
+      }
     }
-    if (ball.getPos()[0] >= pool.getL()) {
 
-        return;
-    }
-    if (ball.getPos()[0] < pool.getL()) {
+  } else {
 
-        while (ball.getPos()[0] < pool.getL()) {
-
-            try {
-
-                computeNextCollision();
-            } catch (std::invalid_argument &e) {
-
-                break;
-            } catch (std::exception &e) {
-
-                break;
-            }
-
-            if (collisions[collisions.size() - 1].getPos()[0] >= pool.getL()) {
-
-                break;
-            }
-        }
-
-    } else {
-
-        return;
-    }
+    return;
+  }
 }
 
 template class mock::MockSystem<double>;

@@ -1,9 +1,9 @@
 #include "graphics/mainWindow.hpp"
 
 int main() {
-    graphics::MainWindow mainWindow;
+  graphics::MainWindow mainWindow;
 
-    mainWindow.run();
+  mainWindow.run();
 
-    return 0;
+  return 0;
 }
