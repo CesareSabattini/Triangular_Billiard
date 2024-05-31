@@ -103,8 +103,6 @@ TEST_CASE("System class tests") {
 
     SUBCASE("System::throwTheBall() tests") {
         mock::MockSystem<double> system;
-
-        std::cout << "Too high skewness";
         system.updateParams(-M_PI / 20, 1E3 - 1, 10.0, 1E3, 1.0);
         double alpha =
             std::atan((system.getPool().getR1() - system.getPool().getR2()) /

@@ -7,7 +7,6 @@
 #include <cmath>
 #include <iostream>
 #include <stdexcept>
-#include <type_traits>
 
 namespace simulation::components {
 

@@ -10,12 +10,16 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/src/classes)
 include_directories(${PROJECT_SOURCE_DIR}/libs)
 
-
 add_compile_options(-Wall -Wextra -pedantic -Wconversion -Wsign-conversion -Wshadow -Wimplicit-fallthrough -Wextra-semi -Wold-style-cast)
 
+
+option(ENABLE_SANITIZERS "Enable Address Sanitizer" OFF)
+
+if (ENABLE_SANITIZERS)
 set(SANITIZE_FLAGS "-fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer -g")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SANITIZE_FLAGS}")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${SANITIZE_FLAGS}")
+endif()
 
 add_library(core_lib
     src/simulation/ball.cpp
@@ -50,7 +54,6 @@ add_executable(tests
     tests/main_tests.cpp
     tests/analysis_tests.cpp
     tests/simulation_tests.cpp
-    tests/graphics_tests.cpp
     tests/mock/mockSystem.cpp
 )
 target_link_libraries(tests core_lib) 

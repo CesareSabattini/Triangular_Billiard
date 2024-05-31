@@ -27,8 +27,6 @@ class MainWindow {
     graphics::scenes::ConfigSimulation configSimulation;
     graphics::scenes::SimulationWindow simulationWindow;
     graphics::scenes::AnalysisWindow analysisWindow;
-
-    void switchToConfig();
 };
 } // namespace graphics
 

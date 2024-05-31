@@ -137,8 +137,7 @@ template <typename T> void simulation::System<T>::computeNextCollision() {
 
         if (newX >= pool.getL()) {
             ball.setPos({pool.getL(), computeOutputY()});
-            std::cout << "Simulation ended, with output Y of: "
-                      << computeOutputY() << std::endl;
+
             collisions.push_back(simulation::components::Collision<T>(
                 pool.getL(), computeOutputY(),
                 collisions[collisions.size() - 1].getTheta()));
@@ -170,9 +169,6 @@ template <typename T> void simulation::System<T>::computeNextCollision() {
             collisions.push_back(simulation::components::Collision<T>(
                 pool.getL(), computeOutputY(),
                 collisions[collisions.size() - 1].getTheta()));
-
-            std::cout << "Simulation ended, with output Y of: "
-                      << computeOutputY() << std::endl;
 
         } else {
             collisions.push_back(
@@ -208,22 +204,20 @@ template <typename T> void simulation::System<T>::simulate() {
         std::cout << "the ball can't escape due to skewness!" << std::endl;
         return;
     }
+
     if (ball.getPos()[0] >= pool.getL()) {
         std::cout << "Simulation ended, with output Y of: " << ball.getPos()[1]
                   << std::endl;
         return;
     }
+
     if (ball.getPos()[0] < pool.getL()) {
 
         while (ball.getPos()[0] < pool.getL()) {
 
             try {
-
                 computeNextCollision();
             } catch (std::invalid_argument &e) {
-                std::cout << "the ball can't escape!" << std::endl;
-                break;
-            } catch (std::exception &e) {
                 std::cout << "the ball can't escape!" << std::endl;
                 break;
             }

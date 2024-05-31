@@ -15,7 +15,6 @@ requires DoubleOrFloat<T>
 
 class System {
   public:
-    static_assert(std::is_arithmetic<T>::value, "T must be an arithmetic type");
     System();
     System(const T p_theta, const T p_y, const T p_l, const T p_r1,
            const T p_r2);

@@ -39,7 +39,7 @@ void graphics::scenes::SimulationWindow::initializeComponents() {
 
     menuButton.setSize(
         sf::Vector2f(static_cast<float>(window->getSize().x) / 10.f, 60.f));
-    menuButton.setPosition({20, 20});
+    menuButton.setPosition({20.f, 20.f});
 }
 
 void graphics::scenes::SimulationWindow::processEvents() {

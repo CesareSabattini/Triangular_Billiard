@@ -19,22 +19,32 @@ void graphics::MainWindow::run() {
     while (window->isOpen()) {
         window->clear();
         try {
-            if (selectedScene == Scene::MENU) {
+
+            switch (selectedScene) {
+            case Scene::MENU:
                 menu.processEvents();
                 menu.draw();
-            }
-            if (selectedScene == Scene::CONFIG) {
-                switchToConfig();
-            }
-            if (selectedScene == Scene::SIMULATION) {
+                break;
 
+            case Scene::CONFIG:
+                configSimulation.processEvents();
+                configSimulation.draw();
+                break;
+
+            case Scene::SIMULATION:
                 simulationWindow.processEvents();
                 simulationWindow.draw();
-            }
-            if (selectedScene == Scene::ANALYSIS) {
+                break;
+
+            case Scene::ANALYSIS:
                 analysisWindow.processEvents();
                 analysisWindow.draw();
+                break;
+
+            default:
+                break;
             }
+
         } catch (std::invalid_argument &e) {
             graphics::components::ErrorPopup errorPopup(
                 window, appStyle.getFont(), e.what(), selectedScene);
@@ -47,9 +57,4 @@ void graphics::MainWindow::run() {
             }
         }
     }
-}
-
-void graphics::MainWindow::switchToConfig() {
-    configSimulation.processEvents();
-    configSimulation.draw();
 }

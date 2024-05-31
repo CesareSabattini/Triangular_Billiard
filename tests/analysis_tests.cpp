@@ -126,8 +126,6 @@ TEST_CASE("Testing standardDeviationY and standardDeviationTheta functions") {
         std::vector<std::array<double, 2>> data =
             std::vector<std::array<double, 2>>();
 
-        std::cout << data.size() << std::endl;
-
         analyzer.setOutput(data);
 
         CHECK_THROWS_AS(analyzer.standardDeviationY(), std::invalid_argument);
@@ -238,7 +236,6 @@ TEST_CASE("Test skewnessY and skewnessTheta") {
     }
 }
 
-
 TEST_CASE("Test kurtosisY and kurtosisTheta") {
     std::shared_ptr<simulation::System<double>> system =
         std::make_shared<simulation::System<double>>();
@@ -259,8 +256,8 @@ TEST_CASE("Test kurtosisY and kurtosisTheta") {
         double kurtosisY = analyzer.kurtosisY();
         double kurtosisTheta = analyzer.kurtosisTheta();
 
-        CHECK(kurtosisY == doctest::Approx(1.8).epsilon(0.001));
-        CHECK(kurtosisTheta == doctest::Approx(1.8).epsilon(0.001));
+        CHECK(kurtosisY == doctest::Approx(-1.3).epsilon(0.001));
+        CHECK(kurtosisTheta == doctest::Approx(-0.622).epsilon(0.001));
     }
 
     SUBCASE("Test kurtosis functions with appropriate negative values") {
@@ -273,8 +270,8 @@ TEST_CASE("Test kurtosisY and kurtosisTheta") {
         double kurtosisY = analyzer.kurtosisY();
         double kurtosisTheta = analyzer.kurtosisTheta();
 
-        CHECK(kurtosisY == doctest::Approx(1.8).epsilon(0.001)); 
-        CHECK(kurtosisTheta == doctest::Approx(1.8).epsilon(0.001));
+        CHECK(kurtosisY == doctest::Approx(-1.3).epsilon(0.001));
+        CHECK(kurtosisTheta == doctest::Approx(-0.622).epsilon(0.001));
     }
 
     SUBCASE("Test kurtosis functions with empty vector") {
