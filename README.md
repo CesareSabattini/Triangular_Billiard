@@ -13,54 +13,38 @@ Per la configurazione dell'applicazione su LinuxOS e WSL, si consigliano i segue
     sudo apt install build-essential cmake libsfml-dev
     ```
 
-2. Creare una directory di build:
-
-    ```bash
-    mkdir build
-    cd build
-    ```
-
-3. Configurare la soluzione con CMake:
-   
-    ```bash
-    cmake ..
-    ```
-
-4. Per compilare l'eseguibile "Triangular_Pool" in modalità Debug con Address Sanitizer:
-
+2. Per compilare l'eseguibile "Triangular_Pool" in modalità Debug con Address Sanitizer:
     ```bash
     cmake -B build/debug -DCMAKE_BUILD_TYPE=Debug -DENABLE_SANITIZERS=ON
     cmake --build build/debug --target Triangular_Pool
     ```
-5. Per compilare l'eseguibile "tests" in modalità Debug con Address Sanitizer::
+3. Per compilare l'eseguibile "tests" in modalità Debug con Address Sanitizer::
 
     ```bash
     cmake -B build/debug -DCMAKE_BUILD_TYPE=Debug -DENABLE_SANITIZERS=ON
     cmake --build build/debug --target tests
     ```
 
-6.  Per compilare l'eseguibile "Triangular_Pool" in modalità Release:
+4. Per compilare l'eseguibile "Triangular_Pool" in modalità Release:
 
     ```bash
     cmake -B build/release -DCMAKE_BUILD_TYPE=Release -DENABLE_SANITIZERS=OFF
     cmake --build build/release --target Triangular_Pool
     ```
 
-    7.  Per compilare l'eseguibile "tests" in modalità Release:
+5. Per compilare l'eseguibile "tests" in modalità Release:
 
     ```bash
     cmake -B build/release -DCMAKE_BUILD_TYPE=Release -DENABLE_SANITIZERS=OFF
     cmake --build build/release --target tests
     ```
   
-8. Per avviare l'eseguibile dalla opportuna directory:
-   
+6. Per avviare l'eseguibile dalla opportuna directory:
     ```bash
     ./Triangular_Pool
     ```
 
-9. Per eseguire il testing dalla opportuna directory:
-
+7. Per eseguire il testing dalla opportuna directory:
     ```bash
     ./tests
     ```
