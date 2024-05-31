@@ -241,17 +241,6 @@ sudo apt update
 sudo apt install build-essential cmake libsfml-dev
 \end{lstlisting}
 
-\item Creare una directory di build:
-    \begin{lstlisting}[style=wsl]
-mkdir build
-cd build
-\end{lstlisting}
-
-\item Configurare la soluzione con CMake:
-    \begin{lstlisting}[style=wsl]
-cmake ..
-\end{lstlisting}
-
 \item Per compilare l'eseguibile $Triangular\_Pool$ in modalità Debug con Address Sanitizer:
     \begin{lstlisting}[style=wsl]
 cmake -B build/debug -DCMAKE_BUILD_TYPE=Debug -DENABLE_SANITIZERS=ON
