@@ -3,34 +3,27 @@
 
 TEST_CASE("System class tests") {
   SUBCASE("System constructor") {
-    // r1<r2
     CHECK_THROWS_AS(mock::MockSystem<double>(-1.0, 0.0, 10.0, 1.0, 5),
                     std::invalid_argument);
-    // l<0
+
     CHECK_THROWS_AS(mock::MockSystem<double>(0.0, 0.0, -10.0, 1.0, 0.5),
                     std::invalid_argument);
 
-    // r1<0
     CHECK_THROWS_AS(mock::MockSystem<double>(0.0, 0.0, 10.0, -1.0, 0.5),
                     std::invalid_argument);
 
-    // r2<0
     CHECK_THROWS_AS(mock::MockSystem<double>(0.0, 0.0, 10.0, 1.0, -0.5),
                     std::invalid_argument);
 
-    // theta out of range
     CHECK_THROWS_AS(mock::MockSystem<double>(M_PI, 0.0, 10.0, 1.0, 0.5),
                     std::invalid_argument);
 
-    // y out of range
     CHECK_THROWS_AS(mock::MockSystem<double>(10.0, -1.0, 10.0, 1.0, 0.5),
                     std::invalid_argument);
 
-    // l=0
     CHECK_THROWS_AS(mock::MockSystem<double>(0.0, 0.0, 0.0, 1.0, 0.5),
                     std::invalid_argument);
 
-    // correct one
     CHECK_NOTHROW(mock::MockSystem<double>(0.5, 0.0, 10.0, 1.0, 0.5));
   }
 

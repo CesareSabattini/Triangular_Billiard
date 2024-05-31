@@ -13,29 +13,29 @@
 namespace graphics::scenes {
 
 class Menu {
-  public:
-    Menu(std::shared_ptr<sf::RenderWindow> window,
-         std::shared_ptr<simulation::System<float>> system,
-         Scene &selectedScene, const std::shared_ptr<sf::Font> font);
-    void draw();
-    void processEvents();
+public:
+  Menu(std::shared_ptr<sf::RenderWindow> window,
+       std::shared_ptr<simulation::System<float>> system, Scene &selectedScene,
+       const std::shared_ptr<sf::Font> font);
+  void draw();
+  void processEvents();
 
-  private:
-    std::shared_ptr<sf::Font> font;
-    std::shared_ptr<simulation::System<float>> system;
-    std::shared_ptr<sf::RenderWindow> window;
-    Scene &selectedScene;
-    sf::Text title;
-    sf::RectangleShape titleBox;
+private:
+  std::shared_ptr<sf::Font> font;
+  std::shared_ptr<simulation::System<float>> system;
+  std::shared_ptr<sf::RenderWindow> window;
+  Scene &selectedScene;
+  sf::Text title;
+  sf::RectangleShape titleBox;
 
-    graphics::components::Button configButton;
+  graphics::components::Button configButton;
 
-    graphics::components::Button analysisButton;
+  graphics::components::Button analysisButton;
 
-    sf::Texture backgroundTexture;
-    sf::Sprite bg;
+  sf::Texture backgroundTexture;
+  sf::Sprite bg;
 
-    void initializeComponents();
+  void initializeComponents();
 };
 
 } // namespace graphics::scenes

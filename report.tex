@@ -157,6 +157,8 @@ Delle distribuzioni esito si computano:
    \gamma_2 =  \frac{1}{N}\sum_{i=1}^N \left(\frac{x_i - \bar{x}}{s}\right)^4 - 3
 \end{equation}
 \end{itemize}
+Al variare della lunghezza del biliardo, si riscontra una stabilità del coefficiente di asimmetria intorno a 0, fedelmente con la distribuzione gaussiana attesa.\\
+Il coefficiente di appiattimento, che rispecchia la probabilità di osservare eventi distanti dal valore medio, e deviazione standard muta concordemente con il numero di uscite, indicando una variabilità crescente nella distribuzione delle uscite con l'aumento della lunghezza del biliardo.
 
 
 \section{Struttura del codice}
@@ -190,7 +192,7 @@ Si implementano le strutture necessarie per l'analisi delle distibuzioni di $y_f
 \end{itemize}
 
 \subsection{Graphics}
-Si implementa la GUI servendosi del framework SFML 2.6.\\
+Si implementa la GUI servendosi del framework SFML 2.5.1.\\
 La grafica è logicamente suddivisa in $scenes$ (finestre grafiche) e $components$ (componenti condivisi dalle scenes).\\
 La classe MainWindow funge da interfaccia di rendering: tramite switch block condizionale secondo un valore della enum class $Scene$, viene mostrata una finestra specifica.\\
 Inoltre essa contiene un puntatore condiviso a $System$, così da garantirne la proprietà condivisa e leak-free con ogni $scene$.
@@ -228,7 +230,8 @@ Si implementa in aggiunta la classe $MockSystem$, che effettua l'override del me
 Il documento CMake compila $core\_lib$, libreria dinamica linkata agli eseguibili $Triangular\_Pool$ e $tests$.\\
 Le flags di compilazione includono le opzioni richieste per la rilevazione di warnings.\\
 È definita inoltre l'opzione $ENABLE\_SANITIZERS$, che permette di abilitare il supporto di Address Sanitizer al run-time.\\
-Se attiva, vengono aggiunte le appropriate flags per abilitare i sanitizzatori.
+Se attiva, vengono aggiunte le appropriate flags per abilitare i sanitizzatori. \\
+Con l'abilitazione dell'Address Sanitizer, si riscontrano due memory leaks provenienti da unknown modules. \\ Non è quindi stato possibile individuarli, ed è dunque molto probabile che siano imputabili alla libreria.
 
 \subsection{Istruzioni di compilazione}
 Per la compilazione su LinuxOS e WSL si raccomanda di seguire i seguenti passaggi:
@@ -253,7 +256,7 @@ cmake -B build/debug -DCMAKE_BUILD_TYPE=Debug -DENABLE_SANITIZERS=ON
 cmake --build build/debug --target tests
 \end{lstlisting}
 
-\item Per compilare l'eseguibile $Triangular_Pool$ in modalità Release:
+\item Per compilare l'eseguibile $Triangular\_Pool$ in modalità Release:
     \begin{lstlisting}[style=wsl]
 cmake -B build/release -DCMAKE_BUILD_TYPE=Release -DENABLE_SANITIZERS=OFF
 cmake --build build/release --target Triangular_Pool
@@ -286,7 +289,7 @@ cmake --build build/release --target tests
 
 \begin{itemize}
     \item Bjarne Stroustrup, "C++. Linguaggio, libreria standard, principi di programmazione", 2019, Pearson.
-    \item SFML 2.6, https://www.sfml-dev.org/tutorials/2.6/
+    \item SFML 2.5.1, https://www.sfml-dev.org/tutorials/2.6/
     \item Microsoft Learn, https://learn.microsoft.com/it-it/cpp/?view=msvc-170, per i seguenti temi:
     \begin{itemize}
         \item Generazione di numeri casuali (https://learn.microsoft.com/it-it/cpp/standard-library/random?view=msvc-170).
